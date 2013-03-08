@@ -1,5 +1,11 @@
 lliurex-ltsp-admin (0.1) UNRELEASED; urgency=low
 
+<<<<<<< HEAD
   * Initial release.
 
  -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 06 Mar 2013 10:51:39 +0100
+=======
+  * Initial release: testing some HTML GUI-python-n4d interaction.
+
+ -- joamuran <joamuran@gmail.com>  Wed, 06 Mar 2013 20:49:29 +0100
+>>>>>>> 21a4bad4c174d853ae38d35dc5402118752f040c
