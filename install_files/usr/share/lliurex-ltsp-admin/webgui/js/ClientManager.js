@@ -36,12 +36,12 @@ function DisplayClients(){
         
         
         ItemList="<div class='ClientConfig' id='Client"+i+"'> \
-                    <div class='ClientRow' id='ClientRow"+i+"' onclick='ShowDetails("+i+")'>\
-                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"'> \
+                    <div class='ClientRow' id='ClientRow"+i+"'>\
+                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"' onclick='ShowDetails("+i+")'> \
                             <img src='styles/images/arrowwhite.png'/></div> \
                             Client: "+clientData.clients[i].mac+" \
                             <div class='ButtonDeleteRight' onclick='handleDeleteClient("+i+")'> Delete\
-                            </div></div> \
+                            </div></div>\
                     <div class='ClientDetails' id='ClientDetails"+i+"'> \
                       <div class='ClientLine'> \
                         <div class='ClientItem'>Name:</div><input class='ClientItem' type='text' value='"+clientData.clients[i].name+"'></input>\
@@ -76,7 +76,7 @@ function handleDeleteClient(id){
      title="Delete Client";
      text="Do you want to delete the client "+clientData.clients[id].name+" with MAC "+clientData.clients[id].mac;
      image="images/confirm.png";
-     client="ClientConfig"+id;
+     client="Client"+id;
      
      buttons={"cancel":{"text":"Cancel·la","ReturnValue":"false","image":"images/cancel.png"},"ok":{"text":"d'Acord","ReturnValue":"true","image":"images/ok.png"}};
      
@@ -84,8 +84,13 @@ function handleDeleteClient(id){
      
      ShowDialog(title, text, image, buttons, tip, function(response){
         if (response) {
-            $("#"+this.client).hide();
-            //alert("DeleteImage "+client);
+            //$("#"+client).fadeOut(300);
+            //$("#"+client).slideUp(300, alert("DeleteImage "+client));
+            $("#"+client).animate({"opacity":"0","height":"0"},1000, function(){
+                    alert("DeleteImage "+client);
+                });
+            //$("#"+client).fadeOut(300, $("#"+client).hide());
+            
         }
         else alert("se queda "+client);
         });

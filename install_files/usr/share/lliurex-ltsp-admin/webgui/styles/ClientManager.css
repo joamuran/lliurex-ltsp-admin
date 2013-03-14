@@ -18,10 +18,11 @@
     text-shadow: 0px 1px 1px #000000; 
     width: 100%;
     background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
-    border: solid thin #2f92f5;
+    border-top: solid thin #2f92f5;
+    border-bottom: solid thin #2f92f5;
     color: #ffffff;
     float: left;
-    clear: both;
+    clear: left;
     padding: 5px 5px 5px 15px;
     font-size: 0.9em;
     font-weight: 700;
@@ -35,7 +36,7 @@
     display: compact;
     float: left;
     }
-.ClientRow{cursor: pointer; }
+.ClientRowArrow{cursor: pointer; }
 .NewClientRow{
     text-shadow: 0px 1px 1px #000000; 
     width: 100%;
@@ -55,3 +56,21 @@
 /*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
 
 .ButtonDeleteRight{float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 35px !important; z-index: 1;}
+.ButtonDeleteRight:hover{cursor: pointer;}
+
+/*
+.ButtonDeleteRight{
+    text-shadow: 0px 1px 1px #000000; 
+    width: 50px;
+    background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
+    border-top: solid thin #2f92f5;
+    border-bottom: solid thin #2f92f5;
+    color: #ffffff;
+    clear: right;
+    font-size: 0.9em;
+    font-weight: 700;
+    float: right; margin: 1px 20px 0px 0px !important; padding: 5px 15px 7px 50px !important; z-index: 1;
+    
+    
+    }
+*/
