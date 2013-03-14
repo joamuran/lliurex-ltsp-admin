@@ -1,0 +1,57 @@
+/* LOGIN CONTAINTER */
+
+
+#ClientContent{margin-top: 20px;}
+
+.ClientDetails{
+    padding: 0px 0px 25px 0px;
+    font-size: 0.8em;
+    height: 100px;
+    display: none;
+}
+.ClientLine{
+    float: left;
+    clear: both;
+}
+
+.ClientRow{
+    text-shadow: 0px 1px 1px #000000; 
+    width: 100%;
+    background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
+    border: solid thin #2f92f5;
+    color: #ffffff;
+    float: left;
+    clear: both;
+    padding: 5px 5px 5px 15px;
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-top:1px;
+    /*box-shadow: 0px 3px 3px #333333;*/
+}
+
+.ClientRowArrow{
+    /*width: 20px;*/
+    /*padding: 0px 0px 0px 25px;*/
+    display: compact;
+    float: left;
+    }
+.ClientRow{cursor: pointer; }
+.NewClientRow{
+    text-shadow: 0px 1px 1px #000000; 
+    width: 100%;
+    border: solid thin #669b04;
+    color: #ffffff;
+    float: left;
+    clear: both;
+    padding: 5px 5px 5px 15px;
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-top:1px;
+    background: -webkit-linear-gradient(top, #669b04 9%,#7aaf0f 100%);
+    }
+
+.ClientItem{ float: left; margin: 10px 5px 10px 5px;}
+.ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
+/*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
+
+.ButtonDeleteRight{float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 35px !important; z-index: 1;}
