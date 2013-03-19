@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="styles/login.css">
         
     <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
+    <!-- load dictonaries before i18n library -->
+    <script type="text/javascript" src="./i18n/es_ES.js"></script>
+    <script type="text/javascript" src="./i18n/qcv_ES.js"></script>
+    <script type="text/javascript" src="./lib/llx-i18n.js"></script>
+    <!-- Ending locales -->
     <script type="text/javascript" src="./js/data.js"></script>
     <script type="text/javascript" src="./js/login.js"></script>
     
@@ -21,25 +26,20 @@
       <div id="top"></div>
       
       <div id="LoginForm">
-        <div class="FormTitle">User Authentication</div>
+        <!--div class="FormTitle"><script>gettext("User Authentication");</script></div>
         <div class="FormSmalText">This application requires user authentication and admin privileges.</div>
         <div class="FormText">User</div>
         <div><input class="FormInput" type="text" id="username"/></div>
         <div class="FormText">Password</div>
         <div><input class="FormInput" type="text" id="userpass"/></div>
         <div id="ErrorLoginMessage" class="ErrorLoginMessage"></div>
-        <div class="Button Login" id="LoginButton">Login</div>
+        <div class="Button Login" id="LoginButton">Login</div-->
       </div>
       
       <div id="InitialWindow">
-        <div class="Title">Welcome to LliureX LTSP</div> 
-        <div id="AppDescription" >
-          <p>Lliurex LTSP és una solució de clients lleugers per a LliureX basada en LTSP. Des d'aquest mateix gestor podreu:
-          <ul>
-            <li>Actualitzar el mirror del sistema, a partir del qual es crearan i mantindran els clients lleugers.</li>
-            <li>Gestionar i crear imatges de sistemes LliureX amb pocs clics, així com el programari instal·lat en elles.</li>
-            <li>Gestionar els clients lleugers per tal d'adaptar les imatges a particularitats dels clients, com baixa memòria o capacitat gràfica.</li>
-          </ul>
+        <div class="Title"></div> 
+        <div id="AppDescription">
+          <p id="AppDescriptionText">
           </p>
           <div class="ButtonList" id="ButtonList"></div>
       </div>

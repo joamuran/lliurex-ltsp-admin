@@ -3,6 +3,7 @@
 from navigator import *
 import os
 import urllib
+import locale
 from xmlrpclib import *
 
 
@@ -11,6 +12,7 @@ class LliureXLTSPAdmin:
     connection_user = ''
     username=''
     password=''
+    language=locale.getdefaultlocale()[0] # Gettins system language
     
     # Init Bindings
     binding={}
@@ -75,16 +77,19 @@ class LliureXLTSPAdmin:
     
 if __name__ == "__main__":
     
-    
-   browser = Browser()
-   ltspadmin = LliureXLTSPAdmin()
+   ltspadmin = LliureXLTSPAdmin() 
+   browser = Browser(language=ltspadmin.language)
    
    browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
    file = os.path.abspath('webgui/login.html')
+   #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
    uri = 'file://' + urllib.pathname2url(file)
    ## print ("Goint to "+uri)
    print uri
    browser.open_url(uri)
+   
+   print browser.lang
+
     #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
    Gtk.main()
     #gtk.gdk.threads_init()

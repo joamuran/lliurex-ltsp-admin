@@ -11,15 +11,16 @@
     background-color: rgba(0,0,0,0.3);
 }
 #dialogWindow{
+    float: left;
     text-align:justify;
     text-justify:inter-word;
     padding-bottom: 30px;
     border-radius: 2px;
     /*border: thin solid;*/
     position: relative;
-    left: 150px;
+    left: 100px;
     top: 200px;
-    width: 500px;
+    width: 600px;
     /*height: 200px;*/
     /*background: #ffffff;
     color: #000000;*/
@@ -27,9 +28,9 @@
     color: #ffffff;
     
     background: #ffd65e; /* Old browsers */
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
-    /*background: linear-gradient(to bottom,  #ffd65e 0%,#febf04 100%); /* W3C */
+    background: linear-gradient(to bottom,  #ffd65e 0%,#febf04 100%); /* W3C */
     /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
     
     font-size: 0.9em;
@@ -57,6 +58,7 @@
 }
 
 #dialogContent{
+    color: #000000;
     display: block;
     height: auto;
     padding: 10px;
@@ -84,6 +86,7 @@
 
 .dialogButton{
     float: right;
+    color: #000000;
     border: solid 1px #333333;
     background: #cccccc;
     border-radius: 5px;

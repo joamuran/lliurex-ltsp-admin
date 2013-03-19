@@ -3,6 +3,9 @@
 
 #ClientContent{margin-top: 20px;}
 
+.ClientConfig{
+    max-height:120px;
+    }
 .ClientDetails{
     padding: 0px 0px 25px 0px;
     font-size: 0.8em;
@@ -12,6 +15,7 @@
 .ClientLine{
     float: left;
     clear: both;
+    display: block;
 }
 
 .ClientRow{
@@ -23,7 +27,7 @@
     color: #ffffff;
     float: left;
     clear: left;
-    padding: 5px 5px 5px 15px;
+    padding: 1px 5px 1px 15px;
     font-size: 0.9em;
     font-weight: 700;
     margin-top:1px;
@@ -44,12 +48,14 @@
     color: #ffffff;
     float: left;
     clear: both;
-    padding: 5px 5px 5px 15px;
+    padding: 1px 5px 1px 15px;
     font-size: 0.9em;
     font-weight: 700;
     margin-top:1px;
     background: -webkit-linear-gradient(top, #669b04 9%,#7aaf0f 100%);
     }
+
+.NewClientRow:hover{cursor: pointer;}
 
 .ClientItem{ float: left; margin: 10px 5px 10px 5px;}
 .ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}

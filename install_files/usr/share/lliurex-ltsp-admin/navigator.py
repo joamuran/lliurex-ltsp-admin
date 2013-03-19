@@ -5,12 +5,13 @@ import os
 
 
 class Browser:
-    def __init__(self, x=800, y=600, debug='false'):
+    def __init__(self, x=800, y=600, debug='false', language="en_EN"):
         self.window = Gtk.Window()
         self.window.set_size_request(x,y)
         self.window.connect("destroy",Gtk.main_quit)
         self.splitter = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
         self.window.add(self.splitter)
+        self.lang=language
 
         #create the WebView
         self.view = WebKit.WebView()
@@ -31,11 +32,12 @@ class Browser:
         return inspector_view
 
 
-    def open_url(self, url):
+    def open_url(self, url, title=""):
         "Load a webpage"
-        self.window.set_title("Webkit - %s" % url)
+        #self.window.set_title("Webkit - %s" % url)
+        self.window.set_title("LliureX LTSP: "+title)
         # abre la pagina
-        self.view.open(url)
+        self.view.open(url+"?lang="+self.lang)
         
     def execute_script(self, script):
         self.view.execute_script(script)
