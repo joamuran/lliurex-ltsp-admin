@@ -86,11 +86,65 @@
 
 .dialogButton{
     float: right;
-    color: #000000;
-    border: solid 1px #333333;
-    background: #cccccc;
-    border-radius: 5px;
+    color: #232323;
+    border: solid 1px #696969;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ */
+    
+    /*background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
+    border-radius: 10px;
     padding: 2px 10px 2px 25px;
-    margin: 5px;
+    margin: 10px 5px 5px 5px;
     cursor:pointer;
+    
+    box-shadow: 1px 1px 2px #232323;
 }
+
+.dialogButton:hover{
+    color: #696969;
+    border: solid 1px #696969;
+    cursor:pointer;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ */
+    
+}
+
+.dialogButton:active{
+    color: #232323;
+    border: solid 1px #232323;
+    cursor:pointer;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#696969)); /* Chrome,Safari4+ */
+    
+}
+
+input{
+    color: #232323;
+    border: solid 1px #232323;
+    border-radius: 5px;
+}
+
+select{
+ -webkit-appearance: button;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -webkit-user-select: none;
+  background-image: url(../images/select-arrow.png), 
+    -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+  background-position: center right;
+  background-repeat: no-repeat;
+  border: 1px solid #AAA;
+  color: #555;
+  font-size: inherit;
+  margin: 0;
+  overflow: hidden;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;}
+
+/*.myselect{
+    color: #232323;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ * /
+    border: solid 1px #232323;
+    border-radius: 10px;
+}*/

@@ -88,7 +88,7 @@ if __name__ == "__main__":
    print uri
    browser.open_url(uri)
    
-   print browser.lang
+   print ">>"+browser.lang
 
     #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
    Gtk.main()

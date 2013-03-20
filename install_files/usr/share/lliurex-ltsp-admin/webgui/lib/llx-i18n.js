@@ -8,19 +8,22 @@ $.urlParam = function(name){
 
 
 function gettext(cadena){
-    //alert("Translating: "+cadena);
+
+    if (language_list.indexOf(lang)==-1) // Not available language, use default english
+    return cadena;
+    
     ret=eval(lang)[cadena];
-    if (ret==undefined) return cadena;
+    if (ret==undefined) return cadena; // if not exists string in dictionary
     else return ret;
+    
 }
 
-//if ('undefined' == typeof lang)
 if (window.location.href.indexOf('?lang')==-1)
     var lang=window.lang;
   else
      {var lang=$.urlParam('lang'); // name
      //window.lang=lang;
      }
-
+     
 //alert(lang);
 

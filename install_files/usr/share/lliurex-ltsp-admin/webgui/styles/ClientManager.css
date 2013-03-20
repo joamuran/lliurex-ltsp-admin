@@ -57,12 +57,15 @@
 
 .NewClientRow:hover{cursor: pointer;}
 
-.ClientItem{ float: left; margin: 10px 5px 10px 5px;}
+.ClientItem{ float: left; margin: 10px 5px 10px 5px; display: block;}
 .ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
 /*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
 
 .ButtonDeleteRight{float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 35px !important; z-index: 1;}
 .ButtonDeleteRight:hover{cursor: pointer;}
+
+.NewClient{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
+.SaveChanges{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
 
 /*
 .ButtonDeleteRight{

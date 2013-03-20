@@ -22,7 +22,8 @@ function ShowDialog(title, text, image, buttons, tip, callback){
           </div>"
       
    $("#MessageArea").html(dialog);
-   $("#MessageArea").show();
+   //$("#MessageArea").show();
+   $("#MessageArea").fadeIn(300);
     
     /*
     <div id="EmergentMessage" class="floatDialog" style="display: none">
@@ -50,7 +51,9 @@ function ShowDialog(title, text, image, buttons, tip, callback){
 }
 
     function executeButton(ReturnValue, callback){
-        $("#MessageArea").hide();
+        //$("#MessageArea").hide();
+        $("#MessageArea").fadeOut(300, function(){
         callback(ReturnValue);
+        })
     }
 

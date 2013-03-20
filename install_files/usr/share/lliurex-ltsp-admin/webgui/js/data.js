@@ -11,19 +11,19 @@ var clientData = {"clients": [
          "username":"lliurex"},
          
         {"mac": "11:aa:bb:cc:55:66",
-         "name": "PC01",
-         "desc": "ordinador 1",
+         "name": "PC02",
+         "desc": "ordinador 2",
          "session":"gnome",
          "monitor":"auto",
          "autologin":"",
-         "username":"alu01"},
+         "username":"alu02"},
          {"mac": "11:22:33:aa:bb:cc",
-         "name": "PC01",
-         "desc": "ordinador 1",
+         "name": "PC03",
+         "desc": "ordinador 3",
          "session":"lubuntu",
          "monitor":"auto",
          "autologin":"checked",
-         "username":"profe01"}]}
+         "username":"profe03"}]}
 
 
 var imageData = {"images": [

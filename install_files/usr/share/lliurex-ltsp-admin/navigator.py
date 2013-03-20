@@ -5,7 +5,7 @@ import os
 
 
 class Browser:
-    def __init__(self, x=800, y=600, debug='false', language="en_EN"):
+    def __init__(self, x=800, y=600, debug='false', language="en_US"):
         self.window = Gtk.Window()
         self.window.set_size_request(x,y)
         self.window.connect("destroy",Gtk.main_quit)
