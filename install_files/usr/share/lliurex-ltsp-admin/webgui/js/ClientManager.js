@@ -290,16 +290,20 @@ function AddClient(){
         
     $("#ClientContent").append(ItemList);
     
-    
-    
+    newClient={"mac": mac, "name": clientname, "desc": clientdesc,  "session": sessionname,
+         "monitor":"auto", "autologin":autologin, "username":username};
+
+    clientData.clients[i]=newClient;
+    //alert(clientData.clients[i]);
     // Adding data to clientData
-    clientData.clients[i].name=name;
+    /*clientData.clients[i].name=name;
     clientData.clients[i].mac=mac;
     clientData.clients[i].desc=desc;
     clientData.clients[i].session=sessionname;
     clientData.clients[i].monitor="";
     clientData.clients[i].autologin=autologin;
-    clientData.clients[i].username=username;
+    clientData.clients[i].username=username;*/
+    
     
     
             
