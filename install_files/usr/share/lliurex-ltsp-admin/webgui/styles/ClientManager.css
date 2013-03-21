@@ -61,11 +61,13 @@
 .ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
 /*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
 
-.ButtonDeleteRight{float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 35px !important; z-index: 1;}
+.ButtonDeleteRight{
+    float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 25px !important; z-index: 1;
+    background-image: url('images/deleteclient.png');  background-repeat: no-repeat;background-position: left center;}
 .ButtonDeleteRight:hover{cursor: pointer;}
 
-.NewClient{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
-.SaveChanges{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
+.NewClient{background-image: url('images/addclient.png');  background-repeat: no-repeat;background-position: left center;}
+.SaveChanges{background-image: url('images/applychangeswhite.png');  background-repeat: no-repeat;background-position: left center;}
 
 /*
 .ButtonDeleteRight{

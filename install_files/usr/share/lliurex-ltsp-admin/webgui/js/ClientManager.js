@@ -35,15 +35,16 @@ function DisplayClients(){
             ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+i+"' value='"+clientData.clients[i].username+"' disabled></input>"
         
         
+        strid=(clientData.clients[i].mac).toString().replace(/:/g,"");
         
         ItemList="<div class='ClientConfig' id='Client"+i+"'> \
                     <div class='ClientRow' id='ClientRow"+i+"'>\
-                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"' onclick='ShowDetails("+i+")'> \
+                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"' onclick='ShowDetails(\""+strid+"\",\""+i+"\")'> \
                             <img src='styles/images/arrowwhite.png'/></div> \
                             Client: "+clientData.clients[i].mac+" \
                             <div class='ButtonDeleteRight' onclick='handleDeleteClient("+i+")'> Delete\
                     </div></div>\
-                    <div class='ClientDetails' id='ClientDetails"+i+"'> \
+                    <div class='ClientDetails' id='ClientDetails"+strid+"'> \
                       <div class='ClientLine'> \
                         <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' value='"+clientData.clients[i].name+"'></input>\
                         <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientData.clients[i].desc+"'></input>\
@@ -71,11 +72,18 @@ function DisplayClients(){
     
     //ButtonNew="<div class='Button' onclick='addNewClient()'>"+$.i18n("New Client")+"</div>"
     ButtonNew="<div class='Button NewClient' onclick='addNewClient()'>"+gettext("New Client")+"</div>"
-    ButtonSave="<div class='Button SaveChanges'>"+gettext("Apply Changes")+"</div>"
+    ButtonSave="<div class='Button SaveChanges' onclick='SaveChanges()'>"+gettext("Apply Changes")+"</div>"
     divButtons="<div class='ButtonList'>"+ButtonNew+ButtonSave+"</div>";
         
     $("#AppContainer").append(divButtons);
 }
+
+
+function SaveChanges(){
+    alert($.toJSON(clientData));
+    
+}
+
 
 function addNewClient(){
     newid=lastid+1;
@@ -156,7 +164,7 @@ function handleChange(cb) {
 function handleDeleteClient(id){
      title=gettext("Delete Client");
      text=gettext("Do you want to delete the client ")+clientData.clients[id].name+gettext(" with MAC ")+clientData.clients[id].mac;
-     image="images/confirm.png";
+     image="images/dialog-question.png";
      client=gettext("Client")+id;
      clientRow=gettext("ClientRow")+id;
      
@@ -166,44 +174,21 @@ function handleDeleteClient(id){
      
      ShowDialog(title, text, image, buttons, tip, function(response){
         if (response) {
-            //$("#"+client).fadeOut(400);
             
-        
-            //$(function () {
                 $("#"+client).slideUp(300);
-            //}),
-            /*$(function () {
-                $("#"+client).fadeOut(400);
-            })*/
-           
-            //$("#"+clientRow).slideUp(300);
-            
-            //$("#"+client).slideUp(300, alert("DeleteImage "+client));
-            
-            
-            /*$("#"+client).animate({"opacity":"0","height":"0"},1000, function(){
-                    alert("DeleteImage "+client);
-                });*/
-            
-            
-            //$("#"+client).fadeOut(300, $("#"+client).hide());
-            
+                clientData.clients.splice(id,1);
         }
-        else alert("se queda "+client);
+        //else alert("se queda "+client);
         });
-       //alert(clientData.clients[id].mac);
-         
-        /*$("#Messages").empty();
-        $("#Messages").append("<div class='ConfirmMessage' id='ConfirmMessage"+id+"' title='Confirm Delete'><p>Do you want to delete the client "+clientData.clients[id].name+" with MAC "+clientData.clients[id].mac+"</p></div> ");
-        
-        $( ".ConfirmMessage").dialog({ buttons: [ { text: "Ok", click: function() { $( this ).dialog( "close" ); } } ] });
-        $( ".ConfirmMessage" ).dialog({ modal: true });*/ 
     }
     
-function ShowDetails(i){
-    if($("#ClientDetails"+i).css("display")=="block")
+function ShowDetails(name,i){
+    alert(name);
+    alert($("#ClientDetails"+name).length);
+        
+    if($("#ClientDetails"+name).css("display")=="block")
     {
-        $("#ClientDetails"+i).slideUp(300);
+        $("#ClientDetails"+name).slideUp(300);
         $("#ClientRowArrow"+i).animate({  borderSpacing: 0 }, {
             step: function(now,fx) {
               $(this).css('-webkit-transform','rotate('+now+'deg)');
@@ -214,7 +199,7 @@ function ShowDetails(i){
     }
     else
     {
-        $("#ClientDetails"+i).slideDown(300);
+        $("#ClientDetails"+name).slideDown(300);
         $("#ClientRowArrow"+i).animate({  borderSpacing: 90 }, {
             step: function(now,fx) {
               $(this).css('-webkit-transform','rotate('+now+'deg)');
@@ -232,9 +217,11 @@ function AddClient(){
     var mac=$("#MACClient").val();
     var clientname=$("#newclientname").val();
     var clientdesc=$("#newclientdesc").val();
-    var autologin=$("#newcheck").is(':checked');
+    //var autologin=$("#newcheck").is(':checked');
     var username=$('#newclientlogin').val();
     var i=lastid+1; // Index of last id added to list
+    var autologin='';
+    if ($("#newcheck").is(':checked')) autologin='checked';
     
   /*  alert("session name: "+sessionname);
     alert("session id: "+ sessionid);
@@ -246,6 +233,7 @@ function AddClient(){
     
     
     if ($("#MACClient").val()=='') alert(gettext("MAC can not be empty"));
+    else if (ExistsMac(mac)) alert(gettext("MAC already exists"));
     else if (!ValidaMAC($("#MACClient").val())) alert (gettext("MAC format not valid"));
     else {
         //alert($("#MACClient").val());
@@ -289,7 +277,7 @@ function AddClient(){
     
         
     $("#ClientContent").append(ItemList);
-    
+        
     newClient={"mac": mac, "name": clientname, "desc": clientdesc,  "session": sessionname,
          "monitor":"auto", "autologin":autologin, "username":username};
 
@@ -331,6 +319,13 @@ function ValidaMAC(mac)
   else
    return true;
  }
+
+function ExistsMac(mac){
+    for (i=0; i<clientData.clients.length ;i++)
+        if (clientData.clients[i].mac==mac) return true;
+    // elsewhere return false
+    return false;
+}
 
 $(document).ready(function() {        
     // Display Clients
