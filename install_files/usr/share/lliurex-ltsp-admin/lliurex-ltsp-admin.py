@@ -14,16 +14,36 @@ class LliureXLTSPAdmin:
     password=''
     language=locale.getdefaultlocale()[0] # Gettins system language
     
+    # Temp data that we will extract from n4d-ltsp
+    jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
+    
     # Init Bindings
     binding={}
     binding[("ltsp", "login")] = 'onLogin';
     binding[("ltsp", "MirrorManager")] = 'onMirrorManager';
     binding[("ltsp", "ImageManager")] = 'onImageManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
+    binding[("ltsp", "ClientSaveConfig")] = 'ClientSaveConfig';
     
     def __init__(self):
         print ("Created LliureX LTSP Admin")
         self.server = ServerProxy("https://localhost:9779")
+        
+    def on_navigation_requested(self, view, frame, req, data=None):
+        # Procedure that routes the webkit navigation request
+        uri = req.get_uri()
+        url=uri.split(':')
+        scheme=url[0]
+        args=url[1].split('/')
+        function=args[2]
+        
+        if (scheme, function) in self.binding:
+            eval("self."+self.binding[(scheme, function)])(args)
+            return True
+            
+            
+        return False
+    
 
     #Event Handling
     def onLogin(self, args):
@@ -49,7 +69,6 @@ class LliureXLTSPAdmin:
         browser.open_url(uri)
         #browser.execute_script("alert('tralari');")
 
-        
 
     def onImageManager(self, args):   
         file = os.path.abspath('webgui/ImageManager.html')
@@ -58,22 +77,15 @@ class LliureXLTSPAdmin:
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
-        uri = 'file://' + urllib.pathname2url(file)
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
         browser.open_url(uri)
 
-    def on_navigation_requested(self, view, frame, req, data=None):
-        uri = req.get_uri()
-        url=uri.split(':')
-        scheme=url[0]
-        args=url[1].split('/')
-        function=args[2]
-        
-        if (scheme, function) in self.binding:
-            eval("self."+self.binding[(scheme, function)])(args)
-            return True
-            
-            
-        return False
+    def ClientSaveConfig(self, args):
+        print urllib.unquote(args[3])
+        self.jsonclients=urllib.unquote(args[3])
+        file = os.path.abspath('webgui/ClientManager.html')
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
+        browser.open_url(uri)
     
 if __name__ == "__main__":
     

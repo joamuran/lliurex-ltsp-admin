@@ -1,6 +1,5 @@
 
 var lastid=0; // To save the last image id
-var clientData=new Object();
 
 
 /*
@@ -15,12 +14,7 @@ var clientData = {"clients": [
 
 */
 function DisplayClients(){
-    // Display all clients, with possibility to expand its properties
-    
     for (var i=0;i<clientData.clients.length;i++){
-        
-        // Our clients will be identified by their MAC withou # (strid)
-        strid=(clientData.clients[i].mac).toString().replace(/:/g,""); 
         
         if (clientData.clients[i].session=="gnome"){
         ItemSession="<select class='ClientItem'> \
@@ -36,17 +30,19 @@ function DisplayClients(){
         
         
         if(clientData.clients[i].autologin=="checked"){
-            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"'></input>"
+            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+i+"' value='"+clientData.clients[i].username+"'></input>"
         } else
-            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"' disabled></input>"
-            
+            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+i+"' value='"+clientData.clients[i].username+"' disabled></input>"
         
-        ItemList="<div class='ClientConfig' id='Client"+strid+"'> \
-                    <div class='ClientRow' id='ClientRow"+strid+"'>\
-                        <div class='ClientRowArrow' id='ClientRowArrow"+strid+"' onclick='ShowDetails(\""+strid+"\")'> \
+        
+        strid=(clientData.clients[i].mac).toString().replace(/:/g,"");
+        
+        ItemList="<div class='ClientConfig' id='Client"+i+"'> \
+                    <div class='ClientRow' id='ClientRow"+i+"'>\
+                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"' onclick='ShowDetails("+strid.toString()+","+i.toString()+")'> \
                             <img src='styles/images/arrowwhite.png'/></div> \
                             Client: "+clientData.clients[i].mac+" \
-                            <div class='ButtonDeleteRight' onclick='handleDeleteClient(\""+strid+"\")'> Delete\
+                            <div class='ButtonDeleteRight' onclick='handleDeleteClient("+i+")'> Delete\
                     </div></div>\
                     <div class='ClientDetails' id='ClientDetails"+strid+"'> \
                       <div class='ClientLine'> \
@@ -54,7 +50,7 @@ function DisplayClients(){
                         <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientData.clients[i].desc+"'></input>\
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'>Session: </div> "+ItemSession+" \
-                        <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+clientData.clients[i].autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
+                        <div class='ClientItem'><input id='check"+i+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+clientData.clients[i].autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
                     </div> \
                  </div>";
@@ -84,18 +80,12 @@ function DisplayClients(){
 
 
 function SaveChanges(){
-    // send data to python core to save it and refresh the view
-    //alert($.toJSON(clientData));
-    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(clientData));
-
-    
-    
+    alert($.toJSON(clientData));
     
 }
 
 
 function addNewClient(){
-    // Form to add a new client to the client list
     newid=lastid+1;
     
     ItemSession="<select class='ClientItem' id='newclientsession'> \
@@ -109,6 +99,7 @@ function addNewClient(){
     dialog="<div id='dialogWindow'> \
           <div id='dialogHeader'>"+gettext("New Client")+"</div> \
           <div id='dialogContent'>\
+         <!--div id='dialogImg'><img src='"+""+"' /></div--> \
          <div class='ClientLine'> \
             <div class='ClientItem'>"+gettext("MAC:")+"</div><input class='ClientItem' type='text' id='MACClient'></input>\
             <div class='ClientItem'>"+""+"</div>\
@@ -157,11 +148,9 @@ function addNewClient(){
 };
 
 function handleChange(cb) {
-    //alert(cb.id);
     //alert(cb.id.indexOf("check"));
     if(cb.id.indexOf("check")==0){ // handling change on List of Clients
         id="#user"+cb.id.split("check")[1];
-        //alert(id);
         if (cb.checked==false) $(id).attr("disabled", true);
         else $(id).removeAttr("disabled");
     } else { // handling change on "New Client" Window
@@ -172,28 +161,12 @@ function handleChange(cb) {
 }
 
 
-function handleDeleteClient(strid){
-     
-     // Find Client on clientData
-     id=-1;
-     for(i=0;i<clientData.clients.length;i++){
-        currentstrid=(clientData.clients[i].mac).toString().replace(/:/g,"");
-        console.log("Compare: "+currentstrid+" \n with "+strid+" \n at position "+i);
-        if (currentstrid==strid) {
-            //alert("Found at position "+i);
-            id=i;
-            break;
-        }
-     }
-     if (id==-1) return false;
-     
-     console.log(clientData.clients.length+"-"+id);
-          
+function handleDeleteClient(id){
      title=gettext("Delete Client");
      text=gettext("Do you want to delete the client ")+clientData.clients[id].name+gettext(" with MAC ")+clientData.clients[id].mac;
      image="images/dialog-question.png";
-     client=gettext("Client")+strid;
-     clientRow=gettext("ClientRow")+strid;
+     client=gettext("Client")+id;
+     clientRow=gettext("ClientRow")+id;
      
      buttons={"cancel":{"text":gettext("Cancel·la"),"ReturnValue":"false","image":"images/cancel.png"},"ok":{"text":gettext("d'Acord"),"ReturnValue":"true","image":"images/ok.png"}};
      
@@ -201,29 +174,23 @@ function handleDeleteClient(strid){
      
      ShowDialog(title, text, image, buttons, tip, function(response){
         if (response) {
-                console.log("Deleting id:"+this.id);
-                $("#"+client).slideUp(300, function(){
-                    $("#"+client).remove();
-                })
-                
-                clientData.clients.splice(this.id,1);
+            
+                $("#"+client).slideUp(300);
+                clientData.clients.splice(id,1);
         }
         //else alert("se queda "+client);
         });
-     return true;
     }
     
-function ShowDetails(name){
-    //# Show or hide details about an specific client
-    
-    //alert(name);
-    //alert($("#ClientDetails"+name).length);
+function ShowDetails(name,i){
+    alert("123");
+    /*alert(name);
+    alert($("#ClientDetails"+name).length);
         
     if($("#ClientDetails"+name).css("display")=="block")
     {
         $("#ClientDetails"+name).slideUp(300);
-        //$("#ClientRowArrow"+i).animate({  borderSpacing: 0 }, {
-        $("#ClientRowArrow"+name).animate({  borderSpacing: 0 }, {
+        $("#ClientRowArrow"+i).animate({  borderSpacing: 0 }, {
             step: function(now,fx) {
               $(this).css('-webkit-transform','rotate('+now+'deg)');
               $(this).css('-moz-transform','rotate('+now+'deg)'); 
@@ -234,14 +201,14 @@ function ShowDetails(name){
     else
     {
         $("#ClientDetails"+name).slideDown(300);
-        $("#ClientRowArrow"+name).animate({  borderSpacing: 90 }, {
+        $("#ClientRowArrow"+i).animate({  borderSpacing: 90 }, {
             step: function(now,fx) {
               $(this).css('-webkit-transform','rotate('+now+'deg)');
               $(this).css('-moz-transform','rotate('+now+'deg)'); 
             $(this).css('transform','rotate('+now+'deg)');  
             },
             duration:'normal'},'linear');
-    };
+    };*/
 }
 
 
@@ -253,7 +220,7 @@ function AddClient(){
     var clientdesc=$("#newclientdesc").val();
     //var autologin=$("#newcheck").is(':checked');
     var username=$('#newclientlogin').val();
-    //var i=lastid+1; // Index of last id added to list
+    var i=lastid+1; // Index of last id added to list
     var autologin='';
     if ($("#newcheck").is(':checked')) autologin='checked';
     
@@ -272,7 +239,6 @@ function AddClient(){
     else {
         //alert($("#MACClient").val());
         // Adding a new Client
-        strid=mac.replace(/:/g,"");
         
         if (sessionid=="gnome"){
         ItemSession="<select class='ClientItem'> \
@@ -285,26 +251,27 @@ function AddClient(){
                         <option value='lxde' selected>"+gettext("LXDE, escriptori lleuger")+"</option> \
                     </select>";
         }
-                
+        
+        
         if(autologin=="true"){
-            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+username+"'></input>"
+            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+i+"' value='"+username+"'></input>"
         } else
-            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+username+"' disabled></input>"
+            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+i+"' value='"+username+"' disabled></input>"
                 
-        ItemList="<div class='ClientConfig' id='Client"+strid+"'> \
-                    <div class='NewClientRow' id='ClientRow"+strid+"'>\
-                        <div class='ClientRowArrow' id='ClientRowArrow"+strid+"' onclick='ShowDetails(\""+strid+"\")'> \
+        ItemList="<div class='ClientConfig' id='Client"+i+"'> \
+                    <div class='ClientRow' id='ClientRow"+i+"'>\
+                        <div class='ClientRowArrow' id='ClientRowArrow"+i+"' onclick='ShowDetails("+i+")'> \
                             <img src='styles/images/arrowwhite.png'/></div> \
                             Client: "+mac+" \
-                            <div class='ButtonDeleteRight' onclick='handleDeleteClient(\""+strid+"\")'> Delete\
+                            <div class='ButtonDeleteRight' onclick='handleDeleteClient("+i+")'> Delete\
                             </div></div>\
-                    <div class='ClientDetails' id='ClientDetails"+strid+"'> \
+                    <div class='ClientDetails' id='ClientDetails"+i+"'> \
                       <div class='ClientLine'> \
                         <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' value='"+clientname+"'></input>\
                         <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientdesc+"'></input>\
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'>Session: </div> "+ItemSession+" \
-                        <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
+                        <div class='ClientItem'><input id='check"+i+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
                     </div> \
                  </div>";
@@ -314,9 +281,8 @@ function AddClient(){
         
     newClient={"mac": mac, "name": clientname, "desc": clientdesc,  "session": sessionname,
          "monitor":"auto", "autologin":autologin, "username":username};
-    
-    clientData.clients.push(newClient);
-    //clientData.clients[i]=newClient;
+
+    clientData.clients[i]=newClient;
     //alert(clientData.clients[i]);
     // Adding data to clientData
     /*clientData.clients[i].name=name;
@@ -363,30 +329,7 @@ function ExistsMac(mac){
 }
 
 $(document).ready(function() {        
-    
-    function getUrlVar(uv) {
-        //extract the query string from the url
-    //var query = window.location.search.substring(1);
-    var query = window.location.search.substring(1).split('?')[0]
-        //split the query into separate name/value pairs
-    var vars = query.split("&amp;");
-    for (var i=0;i<vars.length;i++) {
-                //split each pair into separate names and values
-        var pair = vars[i].split("=");
-                //find the required name and return it's value
-        if (pair[0] == uv) {
-            return pair[1];
-        }
-        }
-    return false;
-    }
-    
-    var clients=getUrlVar('clientlist'); // name
-    alert (decodeURIComponent(clients));
-    clientData=$.parseJSON(decodeURIComponent(clients));
-        
-    
-
+    // Display Clients
     DisplayClients();
 
     // Bind events with actions
