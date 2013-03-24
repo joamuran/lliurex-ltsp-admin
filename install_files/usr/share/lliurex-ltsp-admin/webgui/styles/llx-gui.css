@@ -8,7 +8,7 @@
     top: 0px;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
 }
 #dialogWindow{
     float: left;
@@ -26,11 +26,18 @@
     color: #000000;*/
     
     color: #ffffff;
+    border-radius: 5px;
+    border: 1 px solid #e1e1de;
+    background: #adada2; /* Old browsers */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#adada2), color-stop(100%,#e1e1de)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #adada2 0%,#e1e1de 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom,  #adada2 0%,#e1e1de 100%); /* W3C */
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
     
-    background: #ffd65e; /* Old browsers */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
-    background: linear-gradient(to bottom,  #ffd65e 0%,#febf04 100%); /* W3C */
+    /*background: #ffd65e; /* Old browsers * /
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ * /
+    background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ * /
+    background: linear-gradient(to bottom,  #ffd65e 0%,#febf04 100%); /* W3C * /
     /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
     
     font-size: 0.9em;
@@ -79,13 +86,16 @@
 
 
 .dialogListButtons{
-    float: right;
+    float: left;
     clear: both;
     width: 100%;
+    padding-top: 15px;
+    /*margin: 0px -20px 0px 20px;*/
+    border-top: 1px solid #696969;
 }
 
 .dialogButton{
-    float: right;
+    float: left;
     color: #232323;
     border: solid 1px #696969;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ */

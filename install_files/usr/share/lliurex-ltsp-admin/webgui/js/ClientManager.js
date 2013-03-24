@@ -122,7 +122,7 @@ function addNewClient(){
          </div><div class='ClientLine'> \
             <div class='ClientItem'>\<input id='newcheck' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin'>"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
             </div> \
-        </div><div class='ClientLine'> \
+        </div><div class='dialogListButtons'> \
             <div class='dialogButton' onclick='AddClient()'>"+gettext("Afig el Client")+"</div>\
             <div class='dialogButton' onclick='Cancel()'>"+gettext("Cancel·la")+"</div>\
           </div> </div>"
