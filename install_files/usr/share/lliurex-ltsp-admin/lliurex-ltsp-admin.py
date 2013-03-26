@@ -24,6 +24,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ImageManager")] = 'onImageManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
     binding[("ltsp", "ClientSaveConfig")] = 'ClientSaveConfig';
+    binding[("ltsp", "GetMacFromN4d")] = 'GetMacFromN4d';
     
     def __init__(self):
         print ("Created LliureX LTSP Admin")
@@ -86,6 +87,13 @@ class LliureXLTSPAdmin:
         file = os.path.abspath('webgui/ClientManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
         browser.open_url(uri)
+    
+    def GetMacFromN4d(self, args):
+        #Maybe we'll want to comunicate remotely with other server instead of localhost...
+        #server = ServerProxy("https://server:9779")
+        server = ServerProxy("https://localhost:9779")
+        mac=self.server.getClipboard("","LTSPClipboard")
+        browser.execute_script("setMac('"+mac+"')")
     
 if __name__ == "__main__":
     

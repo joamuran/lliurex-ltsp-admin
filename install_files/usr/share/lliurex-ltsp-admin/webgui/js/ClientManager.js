@@ -112,7 +112,7 @@ function addNewClient(){
          <div class='ClientLine'> \
             <div class='ClientItem'>"+gettext("MAC:")+"</div><input class='ClientItem' type='text' id='MACClient'></input>\
             <div class='ClientItem'>"+""+"</div>\
-            <div class='dialogButton' onclick='alert(\'Getting MAC'\)'>"+gettext("Importa MAC del portaretalls LTSP")+"</div>\
+            <div class='dialogButton' onclick='getMacFromClipboard()'>"+gettext("Importa MAC del portaretalls LTSP")+"</div>\
          </div><div class='ClientLine'> \
          <div class='ClientLine'> \
             <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' id='newclientname'></input>\
@@ -155,6 +155,14 @@ function addNewClient(){
     */            
             
 };
+
+function getMacFromClipboard() {
+    location.href='ltsp://GetMacFromN4d';
+}
+function setMac(mac){
+    $("#MACClient").val(mac);
+}
+
 
 function handleChange(cb) {
     //alert(cb.id);
@@ -382,7 +390,7 @@ $(document).ready(function() {
     }
     
     var clients=getUrlVar('clientlist'); // name
-    alert (decodeURIComponent(clients));
+    //alert (decodeURIComponent(clients));
     clientData=$.parseJSON(decodeURIComponent(clients));
         
     
