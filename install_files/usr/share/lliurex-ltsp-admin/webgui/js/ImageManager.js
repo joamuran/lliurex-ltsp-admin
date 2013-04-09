@@ -54,7 +54,9 @@ function DisplayImageWindow(){
     }
     $(".Button").bind('click', function(){
         console.log("You pressed on install" +this.id);
-        tralari();
+        location.href='ltsp://SoftwareManager/';
+        //location.href='ltsp://SoftwareManager/'+escape($.toJSON(clientData));        
+        
      });
     /*$(".Button").bind('mouseover', function(){
         ----> PRova hover... en css...

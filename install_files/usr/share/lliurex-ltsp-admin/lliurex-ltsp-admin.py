@@ -16,13 +16,15 @@ class LliureXLTSPAdmin:
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
-    
+    jsonimagesoft='{"meta":[{"name": "infantil", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"gimp", "version":"2.8", "installed":"yes"},{"name":"gcompris", "version":"3.2", "installed":"no"}] }, {"name": "desktop", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"inkscape", "version":"2.8", "installed":"yes"},{"name":"mono", "version":"3.2", "installed":"no"}] }]}'
+   
     # Init Bindings
     binding={}
     binding[("ltsp", "login")] = 'onLogin';
     binding[("ltsp", "MirrorManager")] = 'onMirrorManager';
     binding[("ltsp", "ImageManager")] = 'onImageManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
+    binding[("ltsp", "SoftwareManager")] = 'onSoftwareManager';
     binding[("ltsp", "ClientSaveConfig")] = 'ClientSaveConfig';
     binding[("ltsp", "GetMacFromN4d")] = 'GetMacFromN4d';
     
@@ -80,6 +82,12 @@ class LliureXLTSPAdmin:
         file = os.path.abspath('webgui/ClientManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
         browser.open_url(uri)
+        
+    def onSoftwareManager(self, args):
+        file = os.path.abspath('webgui/SoftwareManager.html')
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft
+        browser.open_url(uri)
+        
 
     def ClientSaveConfig(self, args):
         print urllib.unquote(args[3])

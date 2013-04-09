@@ -1,6 +1,25 @@
 var mirrorData={"installed": "true", "date": "10/10/2012"}
 
 
+var metaPkgData = {"meta": [
+        {"mac": "11:22:33:44:55:66",
+         "name": "PC01",
+         "desc": "ordinador 1",
+         "session":"gnome",
+         "monitor":"auto",
+         "autologin":"checked",
+         "username":"lliurex"},
+         
+        {"mac": "11:aa:bb:cc:55:66",
+         "name": "PC02",
+         "desc": "ordinador 2",
+         "session":"gnome",
+         "monitor":"auto",
+         "autologin":"",
+         "username":"alu02"}
+         ]
+}
+
 var clientData = {"clients": [
         {"mac": "11:22:33:44:55:66",
          "name": "PC01",
