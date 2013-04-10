@@ -11,10 +11,10 @@ function DisplayImageWindow(){
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
-                        <div class='ButtonSel Install' id='install"+i+"'>Instal·la</div>\
-                        <div class='Button Update' id='update"+i+"'>Actualitza</div>\
-                        <div class='Button Add' id='add"+i+"'>Afig Programari</div>\
-                        <div class='Button Delete' id='delete"+i+"'>Suprimeix</div>\
+                        <div class='ButtonSel Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
+                        <div class='Button Update' id='update:"+i+"'>"+gettext("Update")+"</div>\
+                        <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='Button DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> \
@@ -30,10 +30,10 @@ function DisplayImageWindow(){
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
-                        <div class='Button Install' id='install"+i+"'>Instal·la</div>\
-                        <div class='ButtonSel Update' id='update"+i+"'>Actualitza</div>\
-                        <div class='ButtonSel Add' id='add"+i+"'>Afig Programari</div>\
-                        <div class='ButtonSel DeleteSel' id='delete"+i+"'>Suprimeix</div>\
+                        <div class='Button Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
+                        <div class='ButtonSel Update' id='update:"+i+"'>"+gettext("Update")+"</div>\
+                        <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='ButtonSel DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> \
@@ -53,8 +53,28 @@ function DisplayImageWindow(){
         
     }
     $(".Button").bind('click', function(){
-        console.log("You pressed on install" +this.id);
-        location.href='ltsp://SoftwareManager/';
+        // NOTA: COM A id, UTILITZAR EL META !!!!!!!
+        console.log("You pressed on " +this.id);
+        var command=this.id.split(":")[0];
+        var imageid=this.id.split(":")[1];
+        
+        switch (command) {
+            case "install":
+                console.log("You pressed on install ");
+                break;
+            case "update":
+                console.log("You pressed on update ");
+                break;
+            case "adv":
+                console.log("You pressed on Advanced ");
+                location.href='ltsp://ImageAdvanced/'+imageid;
+                break;
+            case "delete":
+                console.log("You pressed on delete ");
+                break;
+                
+        }
+        
         //location.href='ltsp://SoftwareManager/'+escape($.toJSON(clientData));        
         
      });

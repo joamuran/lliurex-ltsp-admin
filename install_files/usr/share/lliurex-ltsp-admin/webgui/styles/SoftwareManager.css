@@ -39,14 +39,14 @@
     text-shadow: 0px 1px 1px #cccccc;
     width: 100%;
     background: #ffffff;
-    border-bottom: solid thin #2f92f5;
+    /*border-bottom: solid 20px #888888;*/
     color: #333333;
     float: left;
     clear: left;
     padding: 1px 5px 1px 15px;
     font-size: 0.9em;
-    font-weight: 700;
-    margin-top:1px;
+    font-weight: 600;
+    margin-top:5px;
 }
 
 .MetaRowArrow{

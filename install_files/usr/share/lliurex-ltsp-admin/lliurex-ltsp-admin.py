@@ -25,6 +25,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ImageManager")] = 'onImageManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
     binding[("ltsp", "SoftwareManager")] = 'onSoftwareManager';
+    binding[("ltsp", "ImageAdvanced")] = 'onImageAdvanced';
     binding[("ltsp", "ClientSaveConfig")] = 'ClientSaveConfig';
     binding[("ltsp", "GetMacFromN4d")] = 'GetMacFromN4d';
     
@@ -88,6 +89,12 @@ class LliureXLTSPAdmin:
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft
         browser.open_url(uri)
         
+    def onImageAdvanced(self, args):
+        file = os.path.abspath('webgui/ImageAdvanced.html')
+        print args
+        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(args[3]);
+        browser.open_url(uri)
+
 
     def ClientSaveConfig(self, args):
         print urllib.unquote(args[3])

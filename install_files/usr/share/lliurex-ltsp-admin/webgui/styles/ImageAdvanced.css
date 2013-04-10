@@ -1,56 +1,131 @@
 /* LOGIN CONTAINTER */
 
+html, body {
+margin:0;
+padding:0;
+height:100%;
+}
+
+#ImageDesktop{
+    background-size: cover;
+    /*margin: 20px;*/
+    border: solid thin #000000;
+    /*padding: 0px;*/
+    bottom: 20px;
+    top: 120px;
+    left: 20px;
+    right: 20px;
+    position: absolute;
+}
+
+.Desktop{
+    background-image: url('images/desktop.png');
+}
+ 
+.Infantil{
+    background-image: url('images/infantil.png');
+}   
+
+.iconContainer{
+    border-radius: 5px;
+    float: left;
+    width: 56px;
+    padding: 4px;
+}
+
+.iconContainer:hover{
+    background: rgba(200,200,250,0.7);
+    border:solid thin #d5d5ff;}
+    
+
+.iconImage{
+    float: left;
+    width: 56px;
+    /*padding: 4px;*/
+    /*height: 70px;*/
+}
+
+.iconText{
+    text-shadow: 0px 0px 2px #000000; 
+    width: 100%;
+    font-family: ubuntu;
+    font-size: 0.8em;
+    color: #ffffff;
+    text-align: center;
+    
+}
+
+
+
+/*
+.InstallCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
+
+.MetaConfig{
+    max-height:120px;
+    }
 
 #ClientContent{margin-top: 20px;}
 
-.ClientConfig{
-    max-height:120px;
+
+.PgkItem{
+    float: left;
+    width: 200px;
+}
+
+.pkgInstalled{
+    float: left;
+    color: #008800;
+    font-size: 1em;
+    margin-left: 25px;
+    font-weight: bold;
     }
-.ClientDetails{
-    padding: 0px 0px 25px 0px;
-    font-size: 0.8em;
+
+.MetaDetails{
+    font-size: 0.9em;
     height: 100px;
     display: none;
 }
-.ClientLine{
+.MetaLine{
+    margin:5px 0px 5px 20px;
     float: left;
     clear: both;
     display: block;
 }
 
-.ClientRow{
-    text-shadow: 0px 1px 1px #333333; 
+.MetaRow{
+    text-shadow: 0px 1px 1px #cccccc;
     width: 100%;
-    background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
-    /*background: -webkit-linear-gradient(top, #11419b 0%,#1a5fcd 50%,#060f4b 51%,#06247d 100%);*/
-    /*border-top: solid thin #2f92f5;
-    border-bottom: solid thin #2f92f5;*/
-    color: #ffffff;
+    background: #ffffff;
+    /*border-bottom: solid 20px #888888;* /
+    color: #333333;
     float: left;
     clear: left;
     padding: 1px 5px 1px 15px;
     font-size: 0.9em;
     font-weight: 600;
-    margin-top:1px;
-    /*box-shadow: 0px 3px 3px #333333;*/
+    margin-top:5px;
 }
 
-.ClientRowArrow{
-    /*width: 20px;*/
-    /*padding: 0px 0px 0px 25px;*/
+.MetaRowArrow{
     display: compact;
     float: left;
     }
-.ClientRowArrow{cursor: pointer; }
+.MetaRowArrow{cursor: pointer; }
+
+
+/*
+ *
+ 
+ 
 .NewClientRow{
-    text-shadow: 0px 1px 1px #333333; 
+    text-shadow: 0px 1px 1px #000000; 
     width: 100%;
     color: #ffffff;
     float: left;
     clear: both;
     padding: 1px 5px 1px 15px;
     font-size: 0.9em;
-    font-weight: 600;
+    font-weight: 700;
     margin-top:1px;
     background: -webkit-linear-gradient(top, #7aaf0f 0%,#add737 100%);
     border-top: solid thin #7aaf0f;
@@ -59,9 +134,7 @@
     }
 .NewClientRow:hover{cursor: pointer;}
 
-.ClientItem{ float: left; margin: 10px 5px 10px 5px; display: block;}
-.ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
-/*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
+
 
 .ButtonDeleteRight{
     float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 25px !important; z-index: 1;
