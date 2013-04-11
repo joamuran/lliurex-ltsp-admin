@@ -35,7 +35,9 @@ height:100%;
 
 .iconContainer:hover{
     background: rgba(200,200,250,0.7);
-    border:solid thin #d5d5ff;}
+    border:solid thin #d5d5ff;
+    cursor: pointer;
+    }
     
 
 .iconImage{

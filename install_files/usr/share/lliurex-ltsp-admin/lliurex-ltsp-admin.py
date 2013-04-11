@@ -28,6 +28,8 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ImageAdvanced")] = 'onImageAdvanced';
     binding[("ltsp", "ClientSaveConfig")] = 'ClientSaveConfig';
     binding[("ltsp", "GetMacFromN4d")] = 'GetMacFromN4d';
+    binding[("ltsp", "ExecuteInChroot")] = 'onExecuteInChroot';
+
     
     def __init__(self):
         print ("Created LliureX LTSP Admin")
@@ -109,6 +111,17 @@ class LliureXLTSPAdmin:
         server = ServerProxy("https://localhost:9779")
         mac=self.server.getClipboard("","LTSPClipboard")
         browser.execute_script("setMac('"+mac+"')")
+        
+        
+    def onExecuteInChroot(self, args):
+        print "Executing "+args[3]
+        import os
+        p = os.popen("sudo "+args[3],"r")
+        while 1:
+            line = p.readline()
+            if not line: break
+            print line
+    
     
 if __name__ == "__main__":
     

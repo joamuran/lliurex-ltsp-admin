@@ -3,13 +3,38 @@ var lastid=0; // To save the last image id
 //var clientData=new Object();
 var metaPkgData = new Object();
 
+var DesktopApps= {"Apps": [
+        {"id": "synaptic",
+        "icon": "styles/images/synaptic.png",
+         "text": "Synaptic, Package Manager"},
+        {"id": "terminal",
+        "icon": "styles/images/gnome-terminal.png",
+         "text": "Terminal"},
+        {"id": "gedit",
+        "icon": "styles/images/accessories-text-editor.png",
+         "text": "Edit File"}]}
+
 
 function DisplayDesktop() {
- 
+        var AppsList="";
+        for (var i=0;i<DesktopApps.Apps.length;i++){
+            AppsList=AppsList+"<div class='iconContainer' onclick='ExecuteApp(this);' id='"+DesktopApps.Apps[i].id+"'> \
+                    <div class='iconImage'><img src='"+DesktopApps.Apps[i].icon+"'/></div> \
+                    <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
+        }
+            AppsList=AppsList+"<div class='iconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
+                    <div class='iconImage'><img src='styles/images/lliurex-installer.png'/></div> \
+                    <div class='iconText'>"+gettext('Apply to Image')+"</div> </div>";
+        $("#ImageDesktop").append(AppsList);
 }
 
 
-function handleChange(cb) {
+function ExecuteApp(cb) {
+    alert("Execute "+cb.id);
+    location.href='ltsp://ExecuteInChroot/'+cb.id;
+}
+
+/*function handleChange(cb) {
     if (cb.checked){
         for (var i=0; i<document.getElementsByName(cb.name).length;i++)
             document.getElementsByName(cb.name).item(i).checked=true;
@@ -18,10 +43,10 @@ function handleChange(cb) {
         for (var i=0; i<document.getElementsByName(cb.name).length;i++)
             document.getElementsByName(cb.name).item(i).checked=false;
         }
-}
+}*/
 
  
-    
+   /* 
 function ShowDetails(name){
     //# Show or hide details about an specific client
     
@@ -51,7 +76,7 @@ function ShowDetails(name){
     };
 }
 
-
+*/
 $(document).ready(function() {        
     
     function getUrlVar(uv) {
@@ -84,7 +109,7 @@ $(document).ready(function() {
             break;
     }
     
-    DisplayMeta();
+    DisplayDesktop();
 
     // Bind events with actions
     //BindEventHandlers();

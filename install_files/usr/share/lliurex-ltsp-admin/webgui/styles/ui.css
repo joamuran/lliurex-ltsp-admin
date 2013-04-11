@@ -22,14 +22,13 @@ body
 
 #top{
     
-  /*margin-bottom: 10px;*/
     position: relative;
-    /*box-shadow: 0px 5px 4px #888888;*/
     height: 100px;
-    /*background: #ffffff;*/
     background-image: url('images/top2.png');
-   /* background-image: url('images/top.png');
-    background-repeat: no-repeat;*/
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  
 
 }
 
