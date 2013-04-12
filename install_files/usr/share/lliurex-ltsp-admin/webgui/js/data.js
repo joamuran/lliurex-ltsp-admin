@@ -3,6 +3,7 @@ var mirrorData={"installed": "true", "date": "10/10/2012"}
 
 var metaPkgData = {"meta": [
         {"mac": "11:22:33:44:55:66",
+         "type": "thin",
          "name": "PC01",
          "desc": "ordinador 1",
          "session":"gnome",
@@ -22,6 +23,7 @@ var metaPkgData = {"meta": [
 
 var clientData = {"clients": [
         {"mac": "11:22:33:44:55:66",
+         "type": "thin",
          "name": "PC01",
          "desc": "ordinador 1",
          "session":"gnome",
@@ -30,6 +32,7 @@ var clientData = {"clients": [
          "username":"lliurex"},
          
         {"mac": "11:aa:bb:cc:55:66",
+         "type": "thin",
          "name": "PC02",
          "desc": "ordinador 2",
          "session":"gnome",
@@ -37,6 +40,7 @@ var clientData = {"clients": [
          "autologin":"",
          "username":"alu02"},
          {"mac": "11:22:33:aa:bb:cc",
+         "type": "thin",
          "name": "PC03",
          "desc": "ordinador 3",
          "session":"lubuntu",
