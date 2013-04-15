@@ -15,7 +15,8 @@ class LliureXLTSPAdmin:
     language=locale.getdefaultlocale()[0] # Gettins system language
     
     # Temp data that we will extract from n4d-ltsp
-    jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","type": "thin","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","type": "thin", "name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","type": "fat","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
+    jsonclients=''
+    #jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","type": "thin","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","type": "thin", "name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","type": "fat","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
     jsonimagesoft='{"meta":[{"name": "infantil", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"gimp", "version":"2.8", "installed":"yes"},{"name":"gcompris", "version":"3.2", "installed":"no"}] }, {"name": "desktop", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"inkscape", "version":"2.8", "installed":"yes"},{"name":"mono", "version":"3.2", "installed":"no"}] }]}'
    
     # Init Bindings
@@ -32,11 +33,20 @@ class LliureXLTSPAdmin:
 
     
     def __init__(self):
+        ''' Init LTSP Admin and connects to N4D '''
         print ("Created LliureX LTSP Admin")
         self.server = ServerProxy("https://localhost:9779")
+        user = "joamuran"
+        password = "lliurex"
+        connection_user = (user,password)
+        self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+        print self.jsonclients
+
+
+        
         
     def on_navigation_requested(self, view, frame, req, data=None):
-        # Procedure that routes the webkit navigation request
+        ''' Procedure that routes the webkit navigation request '''
         uri = req.get_uri()
         url=uri.split(':')
         scheme=url[0]
@@ -50,7 +60,6 @@ class LliureXLTSPAdmin:
             
         return False
     
-
     #Event Handling
     def onLogin(self, args):
         self.username=urllib.unquote(args[3])

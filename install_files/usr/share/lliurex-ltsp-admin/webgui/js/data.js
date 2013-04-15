@@ -20,7 +20,7 @@ var metaPkgData = {"meta": [
          "username":"alu02"}
          ]
 }
-
+/*
 var clientData = {"clients": [
         {"mac": "11:22:33:44:55:66",
          "type": "thin",
@@ -48,7 +48,7 @@ var clientData = {"clients": [
          "autologin":"checked",
          "username":"profe03"}]}
 
-
+*/
 var imageData = {"images": [
         {
          "id": "client",

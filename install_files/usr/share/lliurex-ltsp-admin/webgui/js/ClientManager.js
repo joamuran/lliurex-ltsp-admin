@@ -23,22 +23,35 @@ function DisplayClients(){
         strid=(clientData.clients[i].mac).toString().replace(/:/g,""); 
         
         if (clientData.clients[i].session=="gnome"){
-        ItemSession="<select class='ClientItem'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector'> \
                         <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
                         <option value='lxde'>"+gettext("LXDE, escriptori lleuger")+"</option> \
                     </select>";
         } else {
-        ItemSession="<select class='ClientItem'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector'> \
                         <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
                         <option value='lxde' selected>"+gettext("LXDE, escriptori lleuger")+"</option> \
                     </select>";
         }
         
+        if (clientData.clients[i].type=="false"){ // True: FatClient; False: Thin Client
+        ItemType="<select class='ClientItem' name='TypeSelector'> \
+                        <option value='thin' selected>"+gettext("Thin Client")+"</option> \
+                        <option value='fat'>"+gettext("Fat-Thin Client (default)")+"</option> \
+                    </select>";
+        } else {
+        ItemType="<select class='ClientItem' name='TypeSelector'> \
+                        <option value='thin'>"+gettext("Thin Client")+"</option> \
+                        <option value='fat' selected>"+gettext("Fat-Thin Client (default)")+"</option> \
+                  </select>";}
+               
         
         if(clientData.clients[i].autologin=="checked"){
-            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"'></input>"
+            ItemLogin="<div class='ClientItem' name='username'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"'></input> \
+                    <div class='ClientItem' name='password'>"+gettext("Password: ")+"</div><input class='ClientItem' type='password' id='pass"+strid+"' value='"+clientData.clients[i].password+"'></input> ";
         } else
-            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"' disabled></input>"
+            ItemLogin="<div class='ClientItem' name='username' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"' disabled></input> \
+                      <div class='ClientItem' name='password' disabled>"+gettext("Password: ")+"</div><input class='ClientItem' type='password' id='pass"+strid+"' value='"+clientData.clients[i].password+"' disabled></input>";
             
         
         ItemList="<div class='ClientConfig' id='Client"+strid+"'> \
@@ -50,10 +63,12 @@ function DisplayClients(){
                     </div></div>\
                     <div class='ClientDetails' id='ClientDetails"+strid+"'> \
                       <div class='ClientLine'> \
-                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' value='"+clientData.clients[i].name+"'></input>\
-                        <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientData.clients[i].desc+"'></input>\
+                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' name='clientname' value='"+clientData.clients[i].name+"'></input>\
+                        <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' name='clientdetails' value='"+clientData.clients[i].desc+"'></input>\
                         </div><div class='ClientLine'> \
-                        <div class='ClientItem'>Session: </div> "+ItemSession+" \
+                        <div class='ClientItem'> "+gettext("Client Type: ")+" </div> "+ItemType+" \
+                        <div class='ClientItem'>Session: "+gettext("Client Session: ")+"</div> "+ItemSession+" \
+                        </div><div class='ClientLine'> \
                         <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+clientData.clients[i].autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
                     </div> \
@@ -86,6 +101,23 @@ function DisplayClients(){
 function SaveChanges(){
     // send data to python core to save it and refresh the view
     //alert($.toJSON(clientData));
+    var newclientData = new Object();
+    
+     $("#ClientContent .ClientDetails").each(function (index) {
+        
+        //$(".ClientConfig").each(function (index) {
+                //alert($(this)+"**"+index);
+             //   alert($(this).attr('id'));
+                      
+        //   })
+        
+     })
+
+     
+     
+     
+     
+
     location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(clientData));
 
     
@@ -169,9 +201,16 @@ function handleChange(cb) {
     //alert(cb.id.indexOf("check"));
     if(cb.id.indexOf("check")==0){ // handling change on List of Clients
         id="#user"+cb.id.split("check")[1];
-        //alert(id);
-        if (cb.checked==false) $(id).attr("disabled", true);
-        else $(id).removeAttr("disabled");
+        idpass="#pass"+cb.id.split("check")[1];
+       // alert(id);
+        if (cb.checked==false) {
+            $(id).attr("disabled", true);
+            $(idpass).attr("disabled", true);
+            }
+        else {
+            $(id).removeAttr("disabled");
+            $(idpass).removeAttr("disabled");
+        }
     } else { // handling change on "New Client" Window
         //alert("CB Checked: "+ cb.checked);
         if (cb.checked==false) $("#newclientlogin").attr("disabled", true);
@@ -391,6 +430,7 @@ $(document).ready(function() {
     
     var clients=getUrlVar('clientlist'); // name
     //alert (decodeURIComponent(clients));
+    //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
         
     
