@@ -34,24 +34,24 @@ function DisplayClients(){
                     </select>";
         }
         
-        if (clientData.clients[i].type=="false"){ // True: FatClient; False: Thin Client
+        if (clientData.clients[i].fat=="false"){ // True: FatClient; False: Thin Client
         ItemType="<select class='ClientItem' name='TypeSelector'> \
-                        <option value='thin' selected>"+gettext("Thin Client")+"</option> \
-                        <option value='fat'>"+gettext("Fat-Thin Client (default)")+"</option> \
+                        <option value='false' selected>"+gettext("Thin Client")+"</option> \
+                        <option value='true'>"+gettext("Fat-Thin Client (default)")+"</option> \
                     </select>";
         } else {
         ItemType="<select class='ClientItem' name='TypeSelector'> \
-                        <option value='thin'>"+gettext("Thin Client")+"</option> \
-                        <option value='fat' selected>"+gettext("Fat-Thin Client (default)")+"</option> \
+                        <option value='false'>"+gettext("Thin Client")+"</option> \
+                        <option value='true' selected>"+gettext("Fat-Thin Client (default)")+"</option> \
                   </select>";}
                
         
-        if(clientData.clients[i].autologin=="checked"){
-            ItemLogin="<div class='ClientItem' name='username'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"'></input> \
-                    <div class='ClientItem' name='password'>"+gettext("Password: ")+"</div><input class='ClientItem' type='password' id='pass"+strid+"' value='"+clientData.clients[i].password+"'></input> ";
+        if(clientData.clients[i].autologin=="checked"){            
+            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' name='username' id='user"+strid+"' value='"+clientData.clients[i].username+"'></input> \
+                    <div class='ClientItem'>"+gettext("Password: ")+"</div><input class='ClientItem' name='password' type='password' id='pass"+strid+"' value='"+clientData.clients[i].userpass+"'></input>";
         } else
-            ItemLogin="<div class='ClientItem' name='username' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"' disabled></input> \
-                      <div class='ClientItem' name='password' disabled>"+gettext("Password: ")+"</div><input class='ClientItem' type='password' id='pass"+strid+"' value='"+clientData.clients[i].password+"' disabled></input>";
+            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input name='username' class='ClientItem' type='text' id='user"+strid+"' value='"+clientData.clients[i].username+"' disabled></input> \
+                      <div class='ClientItem' disabled>"+gettext("Password: ")+"</div><input name='password' class='ClientItem' type='password' id='pass"+strid+"' value='"+clientData.clients[i].userpass+"' disabled></input>";
             
         
         ItemList="<div class='ClientConfig' id='Client"+strid+"'> \
@@ -101,16 +101,37 @@ function DisplayClients(){
 function SaveChanges(){
     // send data to python core to save it and refresh the view
     //alert($.toJSON(clientData));
-    var newclientData = new Object();
     
-     $("#ClientContent .ClientDetails").each(function (index) {
+    var newClientList=new Object();
+    newClientList.clients=new Array();
+    
+     $(".ClientDetails").each(function (index) {
         
-        //$(".ClientConfig").each(function (index) {
-                //alert($(this)+"**"+index);
-             //   alert($(this).attr('id'));
-                      
-        //   })
+        var newclientData = new Object();
         
+        
+        var mac=$(this).attr('id').substring(13);
+        newclientData.mac=mac.substring(0,2)+":"+mac.substring(2,4)+":"+mac.substring(4,6)+":"+
+                          mac.substring(6,8)+":"+mac.substring(8,10)+":"+mac.substring(10,12);
+        newclientData.name=$(this).find("[name='clientname']").val();
+        //alert("name="+newclientData.name);
+        newclientData.desc= $(this).find("[name='clientdetails']").val();
+        //alert("Details="+newclientData.desc);
+        newclientData.fat = $(this).find("[name='TypeSelector']").val();
+        //alert("type="+newclientData.type);
+        newclientData.session= $(this).find("[name='SessionSelector']").val();
+        //alert("session="+newclientData.session);
+        newclientData.username = $(this).find("[name='username']").val();
+        //alert("username="+newclientData.username);
+        newclientData.userpass = $(this).find("[name='password']").val();
+        //alert("pass="+newclientData.password);
+        var checked=$(this).find("[name='autologin']").is(':checked');
+        if (checked) newclientData.autologin = "checked";
+        else newclientData.autologin = "unchecked";
+        //alert("autologin="+newclientData.autologin);
+        newclientData.monitor="auto";
+    
+        newClientList.clients[newClientList.clients.length]=newclientData;
      })
 
      
@@ -118,7 +139,7 @@ function SaveChanges(){
      
      
 
-    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(clientData));
+    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList));
 
     
     
@@ -360,7 +381,7 @@ function AddClient(){
     $("#ClientContent").append(ItemList);
         
     newClient={"mac": mac, "name": clientname, "desc": clientdesc,  "session": sessionname,
-         "monitor":"auto", "autologin":autologin, "username":username};
+         "monitor":"auto", "autologin":autologin, "username":username, "userpass":userpass};
     
     clientData.clients.push(newClient);
     //clientData.clients[i]=newClient;

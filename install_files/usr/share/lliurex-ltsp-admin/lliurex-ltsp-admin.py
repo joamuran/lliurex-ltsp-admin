@@ -78,7 +78,7 @@ class LliureXLTSPAdmin:
             return False
         
 
-    def onMirrorManager(self, args):   
+    def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
         uri = 'file://' + urllib.pathname2url(file)
         browser.open_url(uri)
@@ -108,8 +108,14 @@ class LliureXLTSPAdmin:
 
 
     def ClientSaveConfig(self, args):
-        print urllib.unquote(args[3])
+        #print urllib.unquote(args[3])
         self.jsonclients=urllib.unquote(args[3])
+        print self.jsonclients
+        user = "joamuran" ##
+        password = "lliurex" ###        
+        connection_user = (user,password)
+        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',"Hola")
+        
         file = os.path.abspath('webgui/ClientManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
         browser.open_url(uri)
@@ -117,7 +123,9 @@ class LliureXLTSPAdmin:
     def GetMacFromN4d(self, args):
         #Maybe we'll want to comunicate remotely with other server instead of localhost...
         #server = ServerProxy("https://server:9779")
-        server = ServerProxy("https://localhost:9779")
+        
+        # We use self-server, not need to define server twice
+        #server = ServerProxy("https://localhost:9779")
         mac=self.server.getClipboard("","LTSPClipboard")
         browser.execute_script("setMac('"+mac+"')")
         
