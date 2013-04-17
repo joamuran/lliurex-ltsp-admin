@@ -450,7 +450,7 @@ $(document).ready(function() {
     }
     
     var clients=getUrlVar('clientlist'); // name
-    //alert (decodeURIComponent(clients));
+    alert (decodeURIComponent(clients));
     //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
         

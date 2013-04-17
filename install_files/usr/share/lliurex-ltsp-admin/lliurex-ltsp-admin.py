@@ -40,6 +40,7 @@ class LliureXLTSPAdmin:
         password = "lliurex"
         connection_user = (user,password)
         self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+        print "***"
         print self.jsonclients
 
 
