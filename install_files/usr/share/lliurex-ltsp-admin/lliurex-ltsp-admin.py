@@ -115,7 +115,7 @@ class LliureXLTSPAdmin:
         user = "joamuran" ##
         password = "lliurex" ###        
         connection_user = (user,password)
-        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',"Hola")
+        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients)
         
         file = os.path.abspath('webgui/ClientManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients

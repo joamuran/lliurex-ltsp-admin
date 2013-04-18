@@ -11,6 +11,10 @@
     font-size: 0.8em;
     height: 100px;
     display: none;
+    
+    /*border: #000000 solid thin;
+    border-radius: 10px 0px 10px 10px;*/
+    
 }
 .ClientLine{
     float: left;
@@ -19,8 +23,10 @@
 }
 
 .ClientRow{
-    text-shadow: 0px 1px 1px #333333; 
+    text-shadow: 0px 1px 1px #333333;
     width: 100%;
+    /*border: #000000 solid thin;
+    border-radius: 10px 10px 0px 0px;*/
     background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
     /*background: -webkit-linear-gradient(top, #11419b 0%,#1a5fcd 50%,#060f4b 51%,#06247d 100%);*/
     /*border-top: solid thin #2f92f5;

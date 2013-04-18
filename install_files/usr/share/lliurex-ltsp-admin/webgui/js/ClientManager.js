@@ -23,12 +23,12 @@ function DisplayClients(){
         strid=(clientData.clients[i].mac).toString().replace(/:/g,""); 
         
         if (clientData.clients[i].session=="gnome"){
-        ItemSession="<select class='ClientItem' name='SessionSelector'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" onchange='handleChangeSession(this);'> \
                         <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
                         <option value='lxde'>"+gettext("LXDE, escriptori lleuger")+"</option> \
                     </select>";
         } else {
-        ItemSession="<select class='ClientItem' name='SessionSelector'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector' onchange='handleChangeSession(this);'> \
                         <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
                         <option value='lxde' selected>"+gettext("LXDE, escriptori lleuger")+"</option> \
                     </select>";
@@ -63,11 +63,13 @@ function DisplayClients(){
                     </div></div>\
                     <div class='ClientDetails' id='ClientDetails"+strid+"'> \
                       <div class='ClientLine'> \
-                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' name='clientname' value='"+clientData.clients[i].name+"'></input>\
+                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' name='clientname' disabled value='"+clientData.clients[i].name+"'></input>\
                         <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' name='clientdetails' value='"+clientData.clients[i].desc+"'></input>\
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'> "+gettext("Client Type: ")+" </div> "+ItemType+" \
-                        <div class='ClientItem'>Session: "+gettext("Client Session: ")+"</div> "+ItemSession+" \
+                        <div class='ClientItem'>"+gettext("Client Session: ")+"</div> "+ItemSession+" \
+                        </div><div class='ClientLine' id='sessionline"+strid+"' style='color: #0000ff; display:none; padding-top: 0px; margin-top:-10px; margin-left:360px;'> \
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+clientData.clients[i].autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
@@ -216,6 +218,22 @@ function setMac(mac){
     $("#MACClient").val(mac);
 }
 
+
+function handleChangeSession(cb){
+    if (cb.value=="lxde") {
+        id="#sessionline"+cb.id.split("sessionselector")[1];
+        alert(id);
+        $(id).attr("display", "block");
+
+        
+              
+    }
+     //id=sessionselector"+strid+" 
+        //alert(cb.id);
+
+    //alert($("#clientsession"));
+    
+}
 
 function handleChange(cb) {
     //alert(cb.id);
@@ -430,7 +448,7 @@ function ExistsMac(mac){
     return false;
 }
 
-$(document).ready(function() {        
+$(document).ready(function() {
     
     function getUrlVar(uv) {
         //extract the query string from the url
@@ -450,7 +468,7 @@ $(document).ready(function() {
     }
     
     var clients=getUrlVar('clientlist'); // name
-    alert (decodeURIComponent(clients));
+    // alert (decodeURIComponent(clients));
     //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
         
