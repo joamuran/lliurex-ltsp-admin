@@ -96,6 +96,7 @@ body
 .Install{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
 .Update{background-image: url('images/updatewhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Add{background-image: url('images/packageswhite.png'); background-repeat: no-repeat;background-position: left center;}
+.Adv{background-image: url('images/advancedwhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Delete{background-color: #e51212; border-color: #cf1111; background-image: url('images/deletewhite.png'); background-repeat: no-repeat;background-position: left center;}
 .DeleteSel{background-image: url('images/deletewhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Delete:hover{background-color: #cf1111 !important;}

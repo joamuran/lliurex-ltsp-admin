@@ -23,14 +23,16 @@ function DisplayClients(){
         strid=(clientData.clients[i].mac).toString().replace(/:/g,""); 
         
         if (clientData.clients[i].session=="gnome"){
-        ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" onchange='handleChangeSession(this);'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" \
+                    onchange='handleChangeSession(this);'> \
                         <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, escriptori lleuger")+"</option> \
+                        <option value='lxde'>"+gettext("LXDE, light Deskton")+"</option> \
                     </select>";
         } else {
-        ItemSession="<select class='ClientItem' name='SessionSelector' onchange='handleChangeSession(this);'> \
+        ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" \
+                    onchange='handleChangeSession(this);'> \
                         <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde' selected>"+gettext("LXDE, escriptori lleuger")+"</option> \
+                        <option value='lxde' selected>"+gettext("LXDE, light Desktop")+"</option> \
                     </select>";
         }
         
@@ -68,8 +70,8 @@ function DisplayClients(){
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'> "+gettext("Client Type: ")+" </div> "+ItemType+" \
                         <div class='ClientItem'>"+gettext("Client Session: ")+"</div> "+ItemSession+" \
-                        </div><div class='ClientLine' id='sessionline"+strid+"' style='color: #0000ff; display:none; padding-top: 0px; margin-top:-10px; margin-left:360px;'> \
-                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+                        </div><div class='ClientLineInfo' id='sessionline"+strid+"'> \
+                        "+gettext("Be careful to have installed LXDE on the client!<br>You can do it through the Advanced Button in the Image Manager.")+"\
                         </div><div class='ClientLine'> \
                         <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+clientData.clients[i].autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
@@ -92,6 +94,7 @@ function DisplayClients(){
     //newItem="<div class='NewClientRow' id='AddRow"+lastid+"'   onclick='addNewClient(LastClientId)'>Add a new client</div>"
     
     //ButtonNew="<div class='Button' onclick='addNewClient()'>"+$.i18n("New Client")+"</div>"
+    
     ButtonNew="<div class='Button NewClient' onclick='addNewClient()'>"+gettext("New Client")+"</div>"
     ButtonSave="<div class='Button SaveChanges' onclick='SaveChanges()'>"+gettext("Apply Changes")+"</div>"
     divButtons="<div class='ButtonList'>"+ButtonNew+ButtonSave+"</div>";
@@ -153,13 +156,21 @@ function addNewClient(){
     // Form to add a new client to the client list
     newid=lastid+1;
     
-    ItemSession="<select class='ClientItem' id='newclientsession'> \
+    ItemSession="<select class='ClientItem' name='SessionSelector' id='sessionselectornew'\
+                onchange='handleChangeSession(this);'> \
                         <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, escriptori lleuger")+"</option> \
+                        <option value='lxde'>"+gettext("LXDE, light Desktop")+"</option> \
                     </select>";
     
-    //ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+newid+"' value='' disabled></input>";
-    ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='newclientlogin' value='' disabled></input>";
+    ItemType="<select class='ClientItem' id='newclienttype'> \
+                        <option value='false' selected>"+gettext("Thin Client")+"</option> \
+                        <option value='true'>"+gettext("Fat-Thin Client (default)")+"</option> \
+                    </select>";
+
+    ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' \
+    type='text' id='newclientlogin' value='' disabled></input> \
+    <div class='ClientItem'>"+gettext("Password: ")+"</div><input class='ClientItem' name='password' \
+    type='password' id='newpass' value='' disabled></input>";
     
     dialog="<div id='dialogWindow'> \
           <div id='dialogHeader'>"+gettext("New Client")+"</div> \
@@ -170,10 +181,13 @@ function addNewClient(){
             <div class='dialogButton' onclick='getMacFromClipboard()'>"+gettext("Importa MAC del portaretalls LTSP")+"</div>\
          </div><div class='ClientLine'> \
          <div class='ClientLine'> \
-            <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' id='newclientname'></input>\
+            <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' id='newclientname' disabled></input>\
             <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' id='newclientdesc'></input>\
          </div><div class='ClientLine'> \
+            <div class='ClientItem'> "+gettext("Client Type: ")+" </div> "+ItemType+" \
             <div class='ClientItem'>"+gettext("Session: ")+"</div> "+ItemSession+" \
+            </div><div class='ClientLineInfo' id='sessionlinenew'> \
+                        "+gettext("Be careful to have installed LXDE on the client!<br>You can do it through the Advanced Button in the Image Manager.")+"\
          </div><div class='ClientLine'> \
             <div class='ClientItem'>\<input id='newcheck' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin'>"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
             </div> \
@@ -186,28 +200,6 @@ function addNewClient(){
    //$("#MessageArea").show();
    $("#MessageArea").fadeIn(300);
     
-    /*
-            //alert("Adding client: "+newid);
-            
-            ItemSession="<select class='ClientItem'> \
-                        <option value='gnome' selected>Gnome Classic</option> \
-                        <option value='lxde'>LXDE, escriptori lleuger</option> \
-                    </select>";
-            
-            element="<div class='ClientDetails' id='ClientDetails"+newid+"'> \
-                      <div class='ClientLine'> \
-                        <div class='ClientItem'>Name:</div><input class='ClientItem' type='text'></input>\
-                        <div class='ClientItem'>Description: </div><input class='ClientItem' type='text'></input>\
-                        </div><div class='ClientLine'> \
-                        <div class='ClientItem'>Session: </div> "+ItemSession+" \
-                        <div class='ClientItem'>\<input id='check"+newid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin'>Autologin</input></div>"+ItemLogin+" \
-                      </div> \
-                    </div>";
-            
-            //alert("#"+NewRow);
-            //$("#"+NewRow).append(element);
-            $("#AddRow2").append(element);
-    */            
             
 };
 
@@ -220,14 +212,12 @@ function setMac(mac){
 
 
 function handleChangeSession(cb){
-    if (cb.value=="lxde") {
-        id="#sessionline"+cb.id.split("sessionselector")[1];
-        alert(id);
-        $(id).attr("display", "block");
-
-        
-              
-    }
+    id="#sessionline"+cb.id.split("sessionselector")[1];
+    if (cb.value=="lxde")
+        $(id).css("display", "block");
+    else
+        $(id).css("display", "none");
+    
      //id=sessionselector"+strid+" 
         //alert(cb.id);
 
@@ -252,8 +242,15 @@ function handleChange(cb) {
         }
     } else { // handling change on "New Client" Window
         //alert("CB Checked: "+ cb.checked);
-        if (cb.checked==false) $("#newclientlogin").attr("disabled", true);
-        else $("#newclientlogin").removeAttr("disabled");
+        if (cb.checked==false) {
+            $("#newclientlogin").attr("disabled", true);
+            $("#newpass").attr("disabled", true);
+            
+        }
+        else {
+            $("#newclientlogin").removeAttr("disabled");
+            $("#newpass").removeAttr("disabled");
+        }
     }
 }
 
@@ -332,25 +329,21 @@ function ShowDetails(name){
 
 
 function AddClient(){
-    var sessionname = $('#newclientsession').find(":selected").text();
-    var sessionid = $('#newclientsession').find(":selected").val();
+    var sessionname = $('#sessionselectornew').find(":selected").text();
+    var sessionid = $('#sessionselectornew').find(":selected").val();
+    var sessiontype = $('#newclienttype').find(":selected").val();
+
     var mac=$("#MACClient").val();
     var clientname=$("#newclientname").val();
     var clientdesc=$("#newclientdesc").val();
     //var autologin=$("#newcheck").is(':checked');
     var username=$('#newclientlogin').val();
+    var userpass=$('#newpass').val();
+
     //var i=lastid+1; // Index of last id added to list
     var autologin='';
     if ($("#newcheck").is(':checked')) autologin='checked';
-    
-  /*  alert("session name: "+sessionname);
-    alert("session id: "+ sessionid);
-    alert("mac: "+mac);
-    alert("clientname: "+clientname);
-    alert("client desc: "+ clientdesc);
-    alert("autologin: "+ autologin);
-    alert("username: "+ username);*/
-    
+
     
     if ($("#MACClient").val()=='') alert(gettext("MAC can not be empty"));
     else if (ExistsMac(mac)) alert(gettext("MAC already exists"));
@@ -360,24 +353,39 @@ function AddClient(){
         // Adding a new Client
         strid=mac.replace(/:/g,"");
         
+        
         if (sessionid=="gnome"){
         ItemSession="<select class='ClientItem'> \
                         <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, escriptori lleuger")+"</option> \
+                        <option value='lxde'>"+gettext("LXDE, light Desktop")+"</option> \
                     </select>";
         } else {
         ItemSession="<select class='ClientItem'> \
                         <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde' selected>"+gettext("LXDE, escriptori lleuger")+"</option> \
+                        <option value='lxde' selected>"+gettext("LXDE, light Desktop")+"</option> \
                     </select>";
         }
+
+        if (sessiontype=="false"){ // True: FatClient; False: Thin Client
+        ItemType="<select class='ClientItem' name='TypeSelector'> \
+                        <option value='false' selected>"+gettext("Thin Client")+"</option> \
+                        <option value='true'>"+gettext("Fat-Thin Client (default)")+"</option> \
+                    </select>";
+        } else {
+        ItemType="<select class='ClientItem' name='TypeSelector'> \
+                        <option value='false'>"+gettext("Thin Client")+"</option> \
+                        <option value='true' selected>"+gettext("Fat-Thin Client (default)")+"</option> \
+                  </select>";}
+
+        
+        ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div>\
+        <input class='ClientItem' type='text' id='user"+strid+"' value='"+username+"' disabled></input> \
+        <div class='ClientItem'>"+gettext("Password: ")+"</div>\
+        <input class='ClientItem' name='password' \
+        type='password' id='newpass' value='"+userpass+"' disabled></input>"
+    
                 
-        if(autologin=="true"){
-            ItemLogin="<div class='ClientItem'>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+username+"'></input>"
-        } else
-            ItemLogin="<div class='ClientItem' disabled>"+gettext("Username: ")+"</div><input class='ClientItem' type='text' id='user"+strid+"' value='"+username+"' disabled></input>"
-                
-        ItemList="<div class='ClientConfig' id='Client"+strid+"'> \
+        ItemList="<div class='ClientConfig' id='Client"+strid+"' > \
                     <div class='NewClientRow' id='ClientRow"+strid+"'>\
                         <div class='ClientRowArrow' id='ClientRowArrow"+strid+"' onclick='ShowDetails(\""+strid+"\")'> \
                             <img src='styles/images/arrowwhite.png'/></div> \
@@ -386,11 +394,13 @@ function AddClient(){
                             </div></div>\
                     <div class='ClientDetails' id='ClientDetails"+strid+"'> \
                       <div class='ClientLine'> \
-                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' value='"+clientname+"'></input>\
-                        <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientdesc+"'></input>\
+                        <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' value='"+clientname+"' disabled></input>\
+                        <div class='ClientItem'>"+gettext("Description: ")+"</div><input class='ClientItem' type='text' value='"+clientdesc+"' disabled></input>\
                         </div><div class='ClientLine'> \
+                        <div class='ClientItem'> "+gettext("Client Type: ")+" </div> "+ItemType+" \
                         <div class='ClientItem'>Session: </div> "+ItemSession+" \
-                        <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+autologin+">"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
+                        </div><div class='ClientLine'> \
+                        <div class='ClientItem'><input id='check"+strid+"' onchange='handleChange(this);' class='ClientItemCheckBox' type='checkbox' name='autologin' value='autologin' "+autologin+" disabled>"+gettext("Autologin")+"</input></div>"+ItemLogin+" \
                       </div> \
                     </div> \
                  </div>";
@@ -412,6 +422,11 @@ function AddClient(){
     clientData.clients[i].monitor="";
     clientData.clients[i].autologin=autologin;
     clientData.clients[i].username=username;*/
+    
+    
+    
+    
+    
     
     
     

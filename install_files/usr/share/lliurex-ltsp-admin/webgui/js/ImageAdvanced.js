@@ -10,9 +10,13 @@ var DesktopApps= {"Apps": [
         {"id": "terminal",
         "icon": "styles/images/gnome-terminal.png",
          "text": "Terminal"},
-        {"id": "gedit",
+                 {"id": "gedit",
         "icon": "styles/images/accessories-text-editor.png",
-         "text": "Edit File"}]}
+         "text": "Edit File"},
+        {"id": "lxde",
+        "icon": "styles/images/lxde.png",
+         "text": "Install LXDE Light Client"}]}
+
 
 
 function DisplayDesktop() {

@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="buttons.svg"
-   inkscape:export-filename="/home/joamuran/dev/ltsp-admin-ng/webgui/styles/images/userwhite.png"
+   inkscape:export-filename="/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin/webgui/styles/images/advancedwhite.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -234,17 +234,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="46.474607"
-     inkscape:cy="-39.653877"
+     inkscape:zoom="3.959798"
+     inkscape:cx="30.431748"
+     inkscape:cy="-46.998825"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="true"
      inkscape:window-width="1280"
-     inkscape:window-height="947"
+     inkscape:window-height="931"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="32"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata6439">
@@ -268,8 +268,8 @@
        id="rect6544-7"
        width="104.55079"
        height="28.284271"
-       x="143.47189"
-       y="1027.1146" />
+       x="66.195221"
+       y="1026.6096" />
     <g
        id="g6209"
        transform="matrix(0.58752104,0,0,0.41074434,-406.93217,619.22968)">
@@ -498,5 +498,10 @@
          d="m 10.614634,1042.9728 c -3.5675306,0 -6.4446164,1.8 -6.4446164,4.0317 l 14.8965714,0 c 0,-2.2317 -2.877086,-4.0317 -6.444616,-4.0317 l -2.007339,0 z"
          style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.95792395;stroke-opacity:1" />
     </g>
+    <path
+       style="fill:#ffffff;fill-opacity:1"
+       d="m -88.795085,1106.9419 c -0.283598,-0.1297 -1.983574,-1.8047 -5.792379,-5.7075 -5.884706,-6.0297 -5.903546,-6.0461 -6.784146,-5.8858 -0.25802,0.047 -0.80781,0.085 -1.22176,0.084 -0.6119,0 -0.84682,-0.051 -1.25637,-0.2635 -0.58116,-0.3014 -1.34017,-1.0713 -1.64498,-1.6689 -0.43709,-0.8567 -0.65192,-2.1771 -0.37172,-2.2845 0.0764,-0.029 0.64793,0.2655 1.27014,0.6553 0.82444,0.5166 1.22363,0.7089 1.47174,0.7089 1.19606,0 2.25117,-1.8158 1.68798,-2.9049 -0.0914,-0.1769 -0.5523,-0.5437 -1.2089,-0.9623 -0.71516,-0.4559 -1.05114,-0.7283 -1.03052,-0.8354 0.10278,-0.5338 2.57132,-0.7764 3.51289,-0.3453 0.967513,0.443 1.723753,1.1606 2.112133,2.0039 0.187741,0.4078 0.217718,0.6207 0.188406,1.338 -0.0767,1.8767 -0.07893,1.8498 0.18641,2.2447 0.13798,0.2055 2.62053,2.5729 5.516769,5.2611 2.896239,2.6881 5.428399,5.054 5.62702,5.2576 0.593329,0.6081 0.753691,1.4903 0.40704,2.239 -0.487458,1.0529 -1.668253,1.5245 -2.669753,1.0664 z m 1.478594,-1.1084 c 0.281364,-0.2512 0.327725,-0.3589 0.327725,-0.7608 0,-0.4018 -0.04638,-0.5094 -0.327725,-0.7609 -0.935312,-0.8356 -2.287206,0.3761 -1.514912,1.3579 0.419366,0.5331 1.027991,0.5989 1.514912,0.1638 z"
+       id="path2996"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
