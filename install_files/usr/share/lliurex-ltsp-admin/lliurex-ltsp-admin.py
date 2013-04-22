@@ -2,6 +2,7 @@
 
 from navigator import *
 import os
+import sys
 import urllib
 import locale
 from xmlrpclib import *
@@ -17,7 +18,7 @@ class LliureXLTSPAdmin:
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
     #jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","type": "thin","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","type": "thin", "name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","type": "fat","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
-    jsonimagesoft='{"meta":[{"name": "infantil", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"gimp", "version":"2.8", "installed":"yes"},{"name":"gcompris", "version":"3.2", "installed":"no"}] }, {"name": "desktop", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"inkscape", "version":"2.8", "installed":"yes"},{"name":"mono", "version":"3.2", "installed":"no"}] }]}'
+    #jsonimagesoft='{"meta":[{"name": "infantil", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"gimp", "version":"2.8", "installed":"yes"},{"name":"gcompris", "version":"3.2", "installed":"no"}] }, {"name": "desktop", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"inkscape", "version":"2.8", "installed":"yes"},{"name":"mono", "version":"3.2", "installed":"no"}] }]}'
    
     # Init Bindings
     binding={}
@@ -86,9 +87,19 @@ class LliureXLTSPAdmin:
         #browser.execute_script("alert('tralari');")
 
 
-    def onImageManager(self, args):   
+    def onImageManager(self, args):
+        import simplejson as json
+        #from pprint import pprint
+        fd=open('webgui/data.json')
+        json_data=fd.read();
+        fd.close()
+        json_obj=json.loads(json_data)
+        
+        ## QUEDA FER QUIE  CONCORDE AMB EL QUE TE INSTALAT!!!!!!!!!
+        
         file = os.path.abspath('webgui/ImageManager.html')
-        uri = 'file://' + urllib.pathname2url(file)
+        #uri = 'file://' + urllib.pathname2url(file)
+        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)
         browser.open_url(uri)
 
     def onClientManager(self, args):   
@@ -97,6 +108,7 @@ class LliureXLTSPAdmin:
         browser.open_url(uri)
         
     def onSoftwareManager(self, args):
+        ## TO DELETE!!!!!!
         file = os.path.abspath('webgui/SoftwareManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft
         browser.open_url(uri)
@@ -132,13 +144,32 @@ class LliureXLTSPAdmin:
         
         
     def onExecuteInChroot(self, args):
+        sys.stdout = open('/tmp/stdout.txt', 'a')
         print "Executing "+args[3]
-        import os
-        p = os.popen("sudo "+args[3],"r")
-        while 1:
-            line = p.readline()
-            if not line: break
-            print line
+        
+        if args[3]!="lxde":
+            import os
+            p = os.popen("sudo "+args[3],"r")
+            while 1:
+                line = p.readline()
+                if not line: break
+                print line
+        else:
+            from subprocess import Popen, PIPE
+            
+            
+            p = Popen(['ping', 'localhost', '-c', '3'], stdout=PIPE)
+            while True:
+                line = p.stdout.readline()
+                if not line:
+                    break
+                print line;
+                browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
+                
+                
+    def update_config_images(self, imageData):
+        
+        pass
     
     
 if __name__ == "__main__":

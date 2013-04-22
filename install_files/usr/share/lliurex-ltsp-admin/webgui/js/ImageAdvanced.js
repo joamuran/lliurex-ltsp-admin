@@ -33,8 +33,16 @@ function DisplayDesktop() {
 }
 
 
+function ShowConsole(args) {
+    shellMsg="<p>"+unescape(args)+"</p>";
+    $("#shell").append(shellMsg);
+    //alert();
+    
+    
+}
+
 function ExecuteApp(cb) {
-    alert("Execute "+cb.id);
+    //alert("Execute "+cb.id);
     location.href='ltsp://ExecuteInChroot/'+cb.id;
 }
 
@@ -81,7 +89,7 @@ function ShowDetails(name){
 }
 
 */
-$(document).ready(function() {        
+$(document).ready(function() {
     
     function getUrlVar(uv) {
         //extract the query string from the url

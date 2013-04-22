@@ -33,6 +33,25 @@ height:100%;
     padding: 4px;
 }
 
+.shellContainer{
+    background:#000000;
+    color:#ffffff;
+    float: left;
+    font-family: monospace;
+    font-size: 0.8em;
+    text-align:justify;
+    text-justify:inter-word;
+    padding-bottom: 30px;
+    border-radius: 2px;
+    position: fixed;
+    left: 100px;
+    top: 200px;
+    width: 600px;
+    overflow: auto;
+    float:left;
+    
+}
+
 .iconContainer:hover{
     background: rgba(200,200,250,0.7);
     border:solid thin #d5d5ff;
