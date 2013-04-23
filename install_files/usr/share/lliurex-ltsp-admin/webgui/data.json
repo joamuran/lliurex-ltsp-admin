@@ -7,7 +7,7 @@
          "image_file":"/opt/ltsp/images/llx-client.img",
          "squashfs_dir":"/opt/ltsp/llx-client/",
          "installed":"false",
-         "lliurex-version":""},
+         "lliurex_version":"cdd, desktop, edu, lliurex, 13.06.0.162"},
          
          {"id": "desktop",
           "name": "LliureX Escriptori",
@@ -16,7 +16,7 @@
          "image_file":"/opt/ltsp/images/llx-desktop.img",
          "squashfs_dir":"/opt/ltsp/llx-desktop/",
          "installed":"false",
-         "lliurex-version":""},
+         "lliurex_version":""},
          
          {"id": "infantil",
           "name": "LliureX Infantil",
@@ -25,7 +25,7 @@
          "image_file":"/opt/ltsp/images/llx-infantil.img",
          "squashfs_dir":"/opt/ltsp/llx-infantil/",
          "installed":"false",
-         "lliurex-version":""},
+         "lliurex_version":""},
          
          {"id": "musica",
           "name": "LliureX Música",
@@ -34,7 +34,7 @@
          "image_file":"/opt/ltsp/images/llx-musica.img",
          "squashfs_dir":"/opt/ltsp/llx-musica/",
          "installed":"false",
-         "lliurex-version":""},
+         "lliurex_version":""},
          
          {"id": "pime",
           "name": "LliureX Pime",
@@ -43,7 +43,7 @@
          "image_file":"/opt/ltsp/images/llx-pime.img",
          "squashfs_dir":"/opt/ltsp/llx-pime/",
          "installed":"false",
-         "lliurex-version":""}
+         "lliurex_version":""}
          
     ]
 }
