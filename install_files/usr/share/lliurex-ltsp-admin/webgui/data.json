@@ -6,8 +6,10 @@
          "img": "lliurex-client.png",
          "image_file":"/opt/ltsp/images/llx-client.img",
          "squashfs_dir":"/opt/ltsp/llx-client/",
-         "installed":"false",
-         "lliurex_version":"cdd, desktop, edu, lliurex, 13.06.0.162"},
+         "installed":null,
+         "lliurex_version":"cdd, desktop, edu, lliurex, 13.06.0.162",
+         "errorcode":null,
+         "errormsg":null},
          
          {"id": "desktop",
           "name": "LliureX Escriptori",
@@ -15,8 +17,10 @@
          "img": "lliurex-escriptori.png",
          "image_file":"/opt/ltsp/images/llx-desktop.img",
          "squashfs_dir":"/opt/ltsp/llx-desktop/",
-         "installed":"false",
-         "lliurex_version":""},
+         "installed":"10/10/13",
+         "lliurex_version":null,
+         "errorcode":null,
+         "errormsg":null},
          
          {"id": "infantil",
           "name": "LliureX Infantil",
@@ -24,8 +28,10 @@
          "img": "lliurex-infantil.png",
          "image_file":"/opt/ltsp/images/llx-infantil.img",
          "squashfs_dir":"/opt/ltsp/llx-infantil/",
-         "installed":"false",
-         "lliurex_version":""},
+         "installed":null,
+         "lliurex_version":null,
+         "errorcode":null,
+         "errormsg":null},
          
          {"id": "musica",
           "name": "LliureX Música",
@@ -33,8 +39,10 @@
          "img": "lliurex-musica.png",
          "image_file":"/opt/ltsp/images/llx-musica.img",
          "squashfs_dir":"/opt/ltsp/llx-musica/",
-         "installed":"false",
-         "lliurex_version":""},
+         "installed":null,
+         "lliurex_version":null,
+         "errorcode":null,
+         "errormsg":null},
          
          {"id": "pime",
           "name": "LliureX Pime",
@@ -42,8 +50,10 @@
          "img": "lliurex-pime.png",
          "image_file":"/opt/ltsp/images/llx-pime.img",
          "squashfs_dir":"/opt/ltsp/llx-pime/",
-         "installed":"false",
-         "lliurex_version":""}
+         "installed":null,
+         "lliurex_version":null,
+         "errorcode":null,
+         "errormsg":null}
          
     ]
 }

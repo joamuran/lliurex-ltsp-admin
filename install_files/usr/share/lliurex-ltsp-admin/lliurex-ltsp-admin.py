@@ -101,8 +101,8 @@ class LliureXLTSPAdmin:
         json_obj=json.loads(json_data)
         
         
-        for i in range(len(json_obj["images"])):
-            json_obj["images"][i]["name"]=json_obj["images"][i]["name"]+"***"
+        #for i in range(len(json_obj["images"])):
+         #   json_obj["images"][i]["name"]=json_obj["images"][i]["name"]+"***"
             
             
             # "image_file":"/opt/ltsp/images/llx-client.img",

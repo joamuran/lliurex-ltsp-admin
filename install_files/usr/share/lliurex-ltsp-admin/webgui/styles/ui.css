@@ -59,10 +59,12 @@ body
 .ImageRow:hover{background: #e5e5e5; border-color: #e5e5e5;}
 .ImageImage{clear: left; float: left; width: 90px; height: 100px; margin: 5px;}
 .ImageDetail{float: left; width: 560px;}
+
 .ImageStatus{margin-top: 5px;clear: right; float: left; width: 80px; height: 90px; text-align: center; font-size: 0.7em; color: #006600;}
 .ImageName{clear: both; float: left; width: 100%; font-size: 20px; }
 .ImageDesc{clear: both; float: left; width: 100%; font-size: 12px; cursor:pointer;}
 .ImageDesc:hover{color: #87ceeb;}
+.llx-version{font-size: 0.6em}
 
 /* UI Buttons */
 

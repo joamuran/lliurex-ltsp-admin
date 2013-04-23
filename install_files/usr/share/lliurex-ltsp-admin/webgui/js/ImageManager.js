@@ -4,11 +4,11 @@ function DisplayImageWindow(){
     $("#ImageManagerContainer").css("display", "block");
     for (var i=0;i<imageData.images.length;i++){    
     
-    if(imageData.images[i].installed!="false"){
+    if(imageData.images[i].installed!=null){
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
-                    <div class='ImageName'>"+imageData.images[i].name+"</div>\
+                    <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
@@ -27,7 +27,7 @@ function DisplayImageWindow(){
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
-                    <div class='ImageName'>"+imageData.images[i].name+"</div>\
+                    <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='Button Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
@@ -120,6 +120,7 @@ $(document).ready(function() {
 function showDescription(id){
     
      title=imageData.images[id].name;
+     version=imageData.images[id].lliurex_version;
      text=imageData.images[id].desc;
      image="images/"+imageData.images[id].img;
      //buttons={"ok":{"text":"d'Acord","ReturnValue":"true","image":"images/ok.png"},"ok2":{"text":"d'Acord","ReturnValue":"true","image":"images/ok.png"}};     
