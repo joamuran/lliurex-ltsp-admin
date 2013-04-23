@@ -1,10 +1,26 @@
-
+function parseData(data) {
+    return data.getDate()+"/"+data.getMonth()+"/"+data.getFullYear();
+}
 
 function DisplayImageWindow(){
     $("#ImageManagerContainer").css("display", "block");
     for (var i=0;i<imageData.images.length;i++){    
     
     if(imageData.images[i].installed!=null){
+        //if (imageData.images[i].installed)
+        today=new Date();
+        img_date=new Date(imageData.images[i].installed*1000); // #mm / dd / yy
+                        
+        if (((today-img_date)/86400000)>30) {
+            UpdatedImage="<div style='width:100%;clear:both; float:left'><img src='images/check_old.png' /></div>\
+                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Actualitzat el "+parseData(img_date)+"</div>";
+            Updateable="Updateable"
+        } else
+            {
+                UpdatedImage="<div style='width:100%;clear:both; float:left'><img src='images/check.png' /></div>\
+                 <div style='width:100%;clear:both; float:left'>Actualitzat el "+parseData(img_date)+"</div>";
+                Updateable=""
+            }
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -12,22 +28,25 @@ function DisplayImageWindow(){
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
-                        <div class='Button Update' id='update:"+i+"'>"+gettext("Update")+"</div>\
+                        <div class='Button Update "+Updateable+"' id='update:"+i+"'>"+gettext("Update")+"</div>\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
-                <div class='ImageStatus'> \
-                  <div style='width:100%;clear:both; float:left'><img src='images/check.png' /></div>\
-                 <div style='width:100%;clear:both; float:left'>Actualitzat el "+imageData.images[i].installed+"</div> \
+                <div class='ImageStatus'> "+UpdatedImage+"\
                 </div> \
                  \
             </div>";
     }else{
+        if (imageData.images[i].errorcode!=null) {
+              ErrorLine="<div style='width:100%;clear:both; float:left'><img src='images/error.png' /></div>\
+                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Error: "+imageData.images[i].errorcode+":"+imageData.images[i].errormsg+"</div>";
+        } else {ErrorLine=""}
+        
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
-                    <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
+                    <div class='ImageName'>"+imageData.images[i].name+"</div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='Button Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
@@ -36,9 +55,8 @@ function DisplayImageWindow(){
                         <div class='ButtonSel DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
-                <div class='ImageStatus'> \
+                <div class='ImageStatus'>"+ErrorLine+" \
                 </div> \
-                 \
             </div>";
     }
     $("#content").append(ItemList);

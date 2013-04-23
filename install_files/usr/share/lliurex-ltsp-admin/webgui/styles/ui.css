@@ -64,7 +64,7 @@ body
 .ImageName{clear: both; float: left; width: 100%; font-size: 20px; }
 .ImageDesc{clear: both; float: left; width: 100%; font-size: 12px; cursor:pointer;}
 .ImageDesc:hover{color: #87ceeb;}
-.llx-version{font-size: 0.6em}
+.llx-version{font-size: 0.7em; padding-left: 10px; color: #333333;}
 
 /* UI Buttons */
 
@@ -97,6 +97,7 @@ body
 
 .Install{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
 .Update{background-image: url('images/updatewhite.png'); background-repeat: no-repeat;background-position: left center;}
+.Updateable{border-color: #e18113 !important; background-color: #f59f1d !important;}
 .Add{background-image: url('images/packageswhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Adv{background-image: url('images/advancedwhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Delete{background-color: #e51212; border-color: #cf1111; background-image: url('images/deletewhite.png'); background-repeat: no-repeat;background-position: left center;}

@@ -11,6 +11,7 @@ from xmlrpclib import *
 class LliureXLTSPAdmin:
     server = ''
     connection_user = ''
+    ConnectionStatus='off'
     username=''
     password=''
     language=locale.getdefaultlocale()[0] # Gettins system language
@@ -35,16 +36,20 @@ class LliureXLTSPAdmin:
     
     def __init__(self):
         ''' Init LTSP Admin and connects to N4D '''
-        print ("Created LliureX LTSP Admin")
-        self.server = ServerProxy("https://localhost:9779")
-        user = "joamuran"
-        password = "lliurex"
-        connection_user = (user,password)
-        self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
-        print "***"
-        print self.jsonclients
-
-
+        
+        try:
+            self.ConnectionStatus='on'
+            print ("Created LliureX LTSP Admin")
+            self.server = ServerProxy("https://localhost:9779")
+            user = "joamuran"
+            password = "lliurex"
+            connection_user = (user,password)
+            self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+            print "***"
+            print self.jsonclients
+        except Exception:
+            self.ConnectionStatus='off'
+            pass
         
         
     def on_navigation_requested(self, view, frame, req, data=None):
@@ -90,34 +95,21 @@ class LliureXLTSPAdmin:
     def onImageManager(self, args):
         import simplejson as json
         #from pprint import pprint
-        #TODO
-        # Get from n4d
         
-        fd=open('webgui/data.json')
+        ##########
+        #fd=open('webgui/data.json')
+        #json_data=fd.read();
+        #fd.close()
+        #json_obj=json.loads(json_data)
+        ###########        
         
-        
-        json_data=fd.read();
-        fd.close()
-        json_obj=json.loads(json_data)
-        
-        
-        #for i in range(len(json_obj["images"])):
-         #   json_obj["images"][i]["name"]=json_obj["images"][i]["name"]+"***"
-            
-            
-            # "image_file":"/opt/ltsp/images/llx-client.img",
-            #"squashfs_dir":"/opt/ltsp/llx-client/",         
-            #print (json_obj["images"][i]["name"])
-            #print (images["id"])
-            #for images in json_obj["images"]:
-            #print (images["id"])
-            
-        
-        
-        
+        dic=self.server.get_json_images("","LtspChroot")
+        print dic["status"]
+        print json.dumps(dic["images"])
+             
         file = os.path.abspath('webgui/ImageManager.html')
-        #uri = 'file://' + urllib.pathname2url(file)
-        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)
+        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])
+        ##uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)
         browser.open_url(uri)
 
     def onClientManager(self, args):   
@@ -191,22 +183,33 @@ class LliureXLTSPAdmin:
     
     
 if __name__ == "__main__":
+    ltspadmin = LliureXLTSPAdmin() 
+    browser = Browser(language=ltspadmin.language)
+   
+    if ltspadmin.ConnectionStatus=='off':
+        file = os.path.abspath('webgui/ServerError.html')
+        pass
+    else:
+        file = os.path.abspath('webgui/login.html')
+        print "CONECTION"+ltspadmin.ConnectionStatus
+        pass
     
-   ltspadmin = LliureXLTSPAdmin() 
-   browser = Browser(language=ltspadmin.language)
+    browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
+    
+    #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
    
-   browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
-   file = os.path.abspath('webgui/login.html')
-   #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
-   uri = 'file://' + urllib.pathname2url(file)
-   ## print ("Goint to "+uri)
-   print uri
-   browser.open_url(uri)
+        
    
-   print ">>"+browser.lang
+    uri = 'file://' + urllib.pathname2url(file)
+   
+    ## print ("Goint to "+uri)
+    print uri
+    browser.open_url(uri)
+   
+    print ">>"+browser.lang
 
-    #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
-   Gtk.main()
-    #gtk.gdk.threads_init()
-    #thread.start_new_thread(gtk.main, ())
-    #browser.webview.execute_script('saluda()')
+     #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
+    Gtk.main()
+     #gtk.gdk.threads_init()
+     #thread.start_new_thread(gtk.main, ())
+     #browser.webview.execute_script('saluda()')    
