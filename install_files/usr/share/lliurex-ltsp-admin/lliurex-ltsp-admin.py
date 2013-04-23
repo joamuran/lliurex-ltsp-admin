@@ -90,12 +90,30 @@ class LliureXLTSPAdmin:
     def onImageManager(self, args):
         import simplejson as json
         #from pprint import pprint
+        #TODO
+        # Get from n4d
+        
         fd=open('webgui/data.json')
+        
+        
         json_data=fd.read();
         fd.close()
         json_obj=json.loads(json_data)
         
-        ## QUEDA FER QUIE  CONCORDE AMB EL QUE TE INSTALAT!!!!!!!!!
+        
+        for i in range(len(json_obj["images"])):
+            json_obj["images"][i]["name"]=json_obj["images"][i]["name"]+"***"
+            
+            
+            # "image_file":"/opt/ltsp/images/llx-client.img",
+            #"squashfs_dir":"/opt/ltsp/llx-client/",         
+            #print (json_obj["images"][i]["name"])
+            #print (images["id"])
+            #for images in json_obj["images"]:
+            #print (images["id"])
+            
+        
+        
         
         file = os.path.abspath('webgui/ImageManager.html')
         #uri = 'file://' + urllib.pathname2url(file)

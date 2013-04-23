@@ -88,7 +88,7 @@ $(document).ready(function() {
     //$("#EmergentMessage").hide();
     
     
-       function getUrlVar(uv) {
+    function getUrlVar(uv) {
         //extract the query string from the url
     //var query = window.location.search.substring(1);
     var query = window.location.search.substring(1).split('?')[0]
@@ -109,10 +109,8 @@ $(document).ready(function() {
     // alert (decodeURIComponent(clients));
     //alert(clients)
     imageData=$.parseJSON(decodeURIComponent(clients));
-    alert(imageData)
+    //alert(imageData)
         
-    
-    
     
     
     

@@ -6,7 +6,8 @@
          "img": "lliurex-client.png",
          "image_file":"/opt/ltsp/images/llx-client.img",
          "squashfs_dir":"/opt/ltsp/llx-client/",
-         "installed":"false"},
+         "installed":"false",
+         "lliurex-version":""},
          
          {"id": "desktop",
           "name": "LliureX Escriptori",
@@ -14,7 +15,8 @@
          "img": "lliurex-escriptori.png",
          "image_file":"/opt/ltsp/images/llx-desktop.img",
          "squashfs_dir":"/opt/ltsp/llx-desktop/",
-         "installed":"false"},
+         "installed":"false",
+         "lliurex-version":""},
          
          {"id": "infantil",
           "name": "LliureX Infantil",
@@ -22,7 +24,8 @@
          "img": "lliurex-infantil.png",
          "image_file":"/opt/ltsp/images/llx-infantil.img",
          "squashfs_dir":"/opt/ltsp/llx-infantil/",
-         "installed":"false"},
+         "installed":"false",
+         "lliurex-version":""},
          
          {"id": "musica",
           "name": "LliureX Música",
@@ -30,7 +33,8 @@
          "img": "lliurex-musica.png",
          "image_file":"/opt/ltsp/images/llx-musica.img",
          "squashfs_dir":"/opt/ltsp/llx-musica/",
-         "installed":"false"},
+         "installed":"false",
+         "lliurex-version":""},
          
          {"id": "pime",
           "name": "LliureX Pime",
@@ -38,7 +42,8 @@
          "img": "lliurex-pime.png",
          "image_file":"/opt/ltsp/images/llx-pime.img",
          "squashfs_dir":"/opt/ltsp/llx-pime/",
-         "installed":"false"}
+         "installed":"false",
+         "lliurex-version":""}
          
     ]
 }
