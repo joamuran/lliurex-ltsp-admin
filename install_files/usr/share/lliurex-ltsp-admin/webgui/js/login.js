@@ -1,13 +1,18 @@
+var srvip="";
 
 function DisplayLoginWindow(){
     loginform="<div class='FormTitle'>"+gettext("User Authentication")+"</div>\
         <div class='FormSmalText'>"+gettext("This application requires user authentication and admin privileges.")+"</div>\
-        <div class='FormText'>"+gettext("User.")+"</div>\
+        <div class='FormText'>"+gettext("User")+"</div>\
         <div><input class='FormInput' type='text' id='username'/></div>\
-        <div class='FormText'>"+gettext("Password.")+"</div>\
-        <div><input class='FormInput' type='text' id='userpass'/></div>\
+        <div class='FormText'>"+gettext("Password")+"</div>\
+        <div><input class='FormInput' type='password' id='userpass'/></div>\
+        \
+        <div class='FormText'>"+gettext("Server")+"\
+        <input class='FormInput' type='text' style='width:300px; float:right;clear:left' id='remoteserver' value='"+srvip+"'/></div>\
+        \
         <div id='ErrorLoginMessage' class='ErrorLoginMessage'></div>\
-        <div class='Button Login' id='LoginButton'>"+gettext("Login.")+"</div>";
+        <div class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
     
     appdescription=gettext("Lliurex LTSP és una solució de clients lleugers per a LliureX basada en LTSP. Des d'aquest mateix gestor podreu: \
           <ul>\
@@ -26,6 +31,25 @@ function DisplayLoginWindow(){
 }
 
 $(document).ready(function() {
+    function getUrlVar(uv) {
+        //extract the query string from the url
+    //var query = window.location.search.substring(1);
+    var query = window.location.search.substring(1).split('?')[0]
+        //split the query into separate name/value pairs
+    var vars = query.split("&amp;");
+    for (var i=0;i<vars.length;i++) {
+                //split each pair into separate names and values
+        var pair = vars[i].split("=");
+                //find the required name and return it's value
+        if (pair[0] == uv) {
+            return pair[1];
+        }
+        }
+    return false;
+    }
+    
+    srvip=getUrlVar('server'); // name
+    
     
     // Display Main Window
     DisplayLoginWindow();
@@ -73,8 +97,15 @@ function BindEventHandlers(){
    
     // Click on Login Button
     $("#LoginButton").bind('click', function( event ){
-        location.href='ltsp://login/'+escape($("#username").val())+'/'+escape($("#userpass").val());
-    
+        
+        $("#ErrorLoginMessage").empty();
+        $("#ErrorLoginMessage").append(gettext("<span>Validing user...</span>"));
+        
+        // We must establish a timeout to wait that jquery writes the validating message
+        setTimeout(function() 
+        {location.href='ltsp://login/'+escape($("#username").val())+'/'+escape($("#userpass").val())+'/'+escape($("#remoteserver").val());
+        }, 1);
+        
     });
     
      $("#ClientManager").bind('click', function( event ){

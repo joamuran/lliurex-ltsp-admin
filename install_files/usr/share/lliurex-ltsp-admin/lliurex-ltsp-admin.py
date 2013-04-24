@@ -10,6 +10,7 @@ from xmlrpclib import *
 
 class LliureXLTSPAdmin:
     server = ''
+    srv_ip= ''
     connection_user = ''
     ConnectionStatus='off'
     username=''
@@ -38,16 +39,29 @@ class LliureXLTSPAdmin:
         ''' Init LTSP Admin and connects to N4D '''
         
         try:
+            # Connecto to n4s-server to get SRV_IP
+            localserver=ServerProxy("https://localhost:9779")
+            self.srv_ip=localserver.get_variable("", 'VariablesManager', 'SRV_IP')
+            print ("srv_ip:"+self.srv_ip)
+            # Now connect to n4s server on SRV_IP
+                       
             self.ConnectionStatus='on'
-            print ("Created LliureX LTSP Admin")
-            self.server = ServerProxy("https://localhost:9779")
-            user = "joamuran"
-            password = "lliurex"
-            connection_user = (user,password)
-            self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+            
+            # n4d connection done in login
+            
+            ## self.server = ServerProxy("https://"+self.srv_ip+":9779")
+            ## TODO !!!!!!!!!!!!!!!!
+            #user = "joamuran"
+            #password = "lliurex"
+            #connection_user = (user,password)
+            #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+            ######################################
+            
+            
             print "***"
             print self.jsonclients
         except Exception:
+            print Exception
             self.ConnectionStatus='off'
             pass
         
@@ -71,12 +85,31 @@ class LliureXLTSPAdmin:
     def onLogin(self, args):
         self.username=urllib.unquote(args[3])
         self.password=urllib.unquote(args[4])
+        self.srv_ip=urllib.unquote(args[5])
         #print urllib.unquote(username)
         #print urllib.unquote(password)
         
+        # n4d connection to server
+            
+        try:
+            self.server = ServerProxy("https://"+self.srv_ip+":9779")
+            # TODO !!!!!!!!!!!!!!!!
+            user = "joamuran"
+            password = "lliurex"
+            connection_user = (user,password)
+            self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+        except Exception:
+            file = os.path.abspath('webgui/ServerError.html')
+            pass
+            ######################################
+        
         # n4d has to validate username and password for sudo
         #if (self.username,self.password)==("lliurex", "lliurex"):
-        if (self.username,self.password)==("", ""):
+        c=self.server.validate_user(self.username,self.password)
+        
+        if (('adm' in c[1])or('admins' in c[1])or('teachers' in c[1])):
+            print "User Validated"  
+        #if (self.username,self.password)==("", ""):
             self.connection_user = (self.username,self.password)
             browser.execute_script("loginSuccess()")
             return True
@@ -150,7 +183,24 @@ class LliureXLTSPAdmin:
         # We use self-server, not need to define server twice
         #server = ServerProxy("https://localhost:9779")
         mac=self.server.getClipboard("","LTSPClipboard")
-        browser.execute_script("setMac('"+mac+"')")
+        
+        try:
+            hostname=self.server.has_name("","Dnsmasq", "'"+mac+"'")
+        except Exception:
+            pass
+            
+        #print mac
+        #print hostname
+        
+        if hostname==None:
+            hostname="client-no-registrat"
+            
+        browser.execute_script("setMac('"+mac+"','"+hostname+"')")
+        
+        
+        
+        
+    
         
         
     def onExecuteInChroot(self, args):
@@ -187,7 +237,7 @@ if __name__ == "__main__":
     browser = Browser(language=ltspadmin.language)
    
     if ltspadmin.ConnectionStatus=='off':
-        file = os.path.abspath('webgui/ServerError.html')
+        file = os.path.abspath('webgui/LocalServerError.html')
         pass
     else:
         file = os.path.abspath('webgui/login.html')
@@ -200,7 +250,7 @@ if __name__ == "__main__":
    
         
    
-    uri = 'file://' + urllib.pathname2url(file)
+    uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
    
     ## print ("Goint to "+uri)
     print uri

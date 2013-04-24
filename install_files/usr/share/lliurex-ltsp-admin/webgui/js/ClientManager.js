@@ -3,17 +3,6 @@ var lastid=0; // To save the last image id
 var clientData=new Object();
 
 
-/*
-var clientData = {"clients": [
-        {"mac": "11:22:33:44:55:66",
-         "name": "PC01",
-         "desc": "ordinador 1",
-         "session":"gnome",
-         "monitor":"auto",
-         "autologin":"true",
-         "username":"lliurex"},
-
-*/
 function DisplayClients(){
     // Display all clients, with possibility to expand its properties
     
@@ -178,7 +167,7 @@ function addNewClient(){
          <div class='ClientLine'> \
             <div class='ClientItem'>"+gettext("MAC:")+"</div><input class='ClientItem' type='text' id='MACClient'></input>\
             <div class='ClientItem'>"+""+"</div>\
-            <div class='dialogButton' onclick='getMacFromClipboard()'>"+gettext("Importa MAC del portaretalls LTSP")+"</div>\
+            <div class='dialogButton' onclick='getMacFromClipboard()'>"+gettext("Import MAC from LTSP Clipboard")+"</div>\
          </div><div class='ClientLine'> \
          <div class='ClientLine'> \
             <div class='ClientItem'>"+gettext("Name: ")+"</div><input class='ClientItem' type='text' id='newclientname' disabled></input>\
@@ -206,8 +195,9 @@ function addNewClient(){
 function getMacFromClipboard() {
     location.href='ltsp://GetMacFromN4d';
 }
-function setMac(mac){
+function setMac(mac, hostname){
     $("#MACClient").val(mac);
+    $("#newclientname").val(hostname);
 }
 
 
