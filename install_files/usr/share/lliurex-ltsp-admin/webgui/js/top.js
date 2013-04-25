@@ -1,8 +1,13 @@
 
 $(document).ready(function() {
     
+    mirror_installed=getUrlVar('mirror_installed');
+    //alert (mirror_installed)
+    
     // Hide or show buttons depending on mirror is installed or not
-    if (mirrorData["installed"]=="true"){
+    //if (mirrorData["installed"]=="true"){
+    if (mirror_installed=="available"){
+        //alert ("hohoho")
         buttons="<div class='MiniButtonContainer'><span class='MiniButtonText' id='textclients'>"+gettext("Manage Clients")+"</span><div class='MiniButton ButtonClients' id='MiniClientManager'></div></div> \
                  <div class='MiniButtonContainer'><span class='MiniButtonText'id='textimages' >"+gettext("Manage Images")+"</span><div class='MiniButton ButtonImages' id='MiniImageManager'></div></div> \
                  <div class='MiniButtonContainer'><span class='MiniButtonText' id='textmirror'>"+gettext("Update Mirror")+"</span><div class='MiniButton ButtonMirror' id='MiniMirrorManager'></div></div>";

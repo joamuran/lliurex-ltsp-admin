@@ -33,7 +33,7 @@ body
 }
 
 #content{
-    height: 400px;
+    height: 450px;
     /*background: #eeeeee;*/
     overflow-y: auto;
 }
@@ -41,8 +41,13 @@ body
 #aa{ height: 1000px;}
 
 #bottom{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    display: block;
+    
     height: 20px;
-    background: #ffffff;
+    background: #ffff00;
     font-size: 12px;
     overflow-y: auto;
 

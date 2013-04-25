@@ -15,7 +15,10 @@
    height="48"
    id="svg2408"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="network-error.svg">
+   sodipodi:docname="network-error.svg"
+   inkscape:export-filename="/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin/webgui/images/server-error.png"
+   inkscape:export-xdpi="281.25"
+   inkscape:export-ydpi="281.25">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -1482,7 +1485,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -15,6 +15,7 @@ class LliureXLTSPAdmin:
     ConnectionStatus='off'
     username=''
     password=''
+    mirror_installed='false'
     language=locale.getdefaultlocale()[0] # Gettins system language
     
     # Temp data that we will extract from n4d-ltsp
@@ -77,8 +78,7 @@ class LliureXLTSPAdmin:
         if (scheme, function) in self.binding:
             eval("self."+self.binding[(scheme, function)])(args)
             return True
-            
-            
+                        
         return False
     
     #Event Handling
@@ -86,18 +86,37 @@ class LliureXLTSPAdmin:
         self.username=urllib.unquote(args[3])
         self.password=urllib.unquote(args[4])
         self.srv_ip=urllib.unquote(args[5])
-        #print urllib.unquote(username)
-        #print urllib.unquote(password)
         
         # n4d connection to server
-            
+                    
         try:
+            # Connection
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
-            # TODO !!!!!!!!!!!!!!!!
-            user = "joamuran"
-            password = "lliurex"
-            connection_user = (user,password)
-            self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+            
+            # Authentication        
+            groups=self.server.validate_user(self.username,self.password)
+        
+            if (('adm' in groups[1])or('admins' in groups[1])or('teachers' in groups[1])):
+                print "User Validated"  
+            #if (self.username,self.password)==("", ""):
+                self.connection_user = (self.username,self.password)
+                self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
+                ## TODO: Modify when get_status return a dictionary...
+                self.mirror_installed=self.server.get_status("","LliurexMirror")[11:20]
+                
+                
+                browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
+                #print "*******"+self.mirror_installed
+                #print self.server.get_status('LliurexMirror')
+                
+                return True
+            else:
+                browser.execute_script("loginFail('"+self.username+"')")
+                return False
+            
+
+            #connection_user = (self.username,self.password)
+            #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
         except Exception:
             file = os.path.abspath('webgui/ServerError.html')
             pass
@@ -105,17 +124,7 @@ class LliureXLTSPAdmin:
         
         # n4d has to validate username and password for sudo
         #if (self.username,self.password)==("lliurex", "lliurex"):
-        c=self.server.validate_user(self.username,self.password)
         
-        if (('adm' in c[1])or('admins' in c[1])or('teachers' in c[1])):
-            print "User Validated"  
-        #if (self.username,self.password)==("", ""):
-            self.connection_user = (self.username,self.password)
-            browser.execute_script("loginSuccess()")
-            return True
-        else:
-            browser.execute_script("loginFail('"+self.username+"')")
-            return False
         
 
     def onMirrorManager(self, args):
@@ -135,31 +144,30 @@ class LliureXLTSPAdmin:
         #fd.close()
         #json_obj=json.loads(json_data)
         ###########        
-        
         dic=self.server.get_json_images("","LtspChroot")
         print dic["status"]
         print json.dumps(dic["images"])
-             
         file = os.path.abspath('webgui/ImageManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])
+        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
+        print uri
         ##uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)
         browser.open_url(uri)
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
         
     def onSoftwareManager(self, args):
         ## TO DELETE!!!!!!
         file = os.path.abspath('webgui/SoftwareManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft++'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
         
     def onImageAdvanced(self, args):
         file = os.path.abspath('webgui/ImageAdvanced.html')
         print args
-        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(args[3]);
+        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(args[3])++'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
 
 
@@ -173,7 +181,7 @@ class LliureXLTSPAdmin:
         self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients)
         
         file = os.path.abspath('webgui/ClientManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients++'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
     
     def GetMacFromN4d(self, args):

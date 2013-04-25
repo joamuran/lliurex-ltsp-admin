@@ -455,7 +455,7 @@ function ExistsMac(mac){
 
 $(document).ready(function() {
     
-    function getUrlVar(uv) {
+    /*function getUrlVar(uv) {
         //extract the query string from the url
     //var query = window.location.search.substring(1);
     var query = window.location.search.substring(1).split('?')[0]
@@ -470,7 +470,7 @@ $(document).ready(function() {
         }
         }
     return false;
-    }
+    }*/
     
     var clients=getUrlVar('clientlist'); // name
     // alert (decodeURIComponent(clients));

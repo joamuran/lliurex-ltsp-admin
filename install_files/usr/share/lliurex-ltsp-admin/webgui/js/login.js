@@ -31,7 +31,7 @@ function DisplayLoginWindow(){
 }
 
 $(document).ready(function() {
-    function getUrlVar(uv) {
+    /*function getUrlVar(uv) {
         //extract the query string from the url
     //var query = window.location.search.substring(1);
     var query = window.location.search.substring(1).split('?')[0]
@@ -47,15 +47,18 @@ $(document).ready(function() {
         }
     return false;
     }
-    
+    */
     srvip=getUrlVar('server'); // name
+    //mirror_installed=getUrlVar('mirror_installed');
     
     
     // Display Main Window
     DisplayLoginWindow();
     
     // Hide or show buttons depending on mirror is installed or not
-    if (mirrorData["installed"]=="true"){
+
+    /*if (mirrorData["installed"]=="true"){
+        alert(mirror_installed)
         buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
           <div class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
           <div class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
@@ -70,9 +73,10 @@ $(document).ready(function() {
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
         }
-    
+    */
     // Bind events with actions
-    BindEventHandlers();
+    
+    BindLoginEventHandlers();
     
 });
 
@@ -80,9 +84,32 @@ $(document).ready(function() {
 // Event Dispatchers
 // Functions called from python
 
-function loginSuccess(){
+function loginSuccess(mirror_installed){
+    
+    
+    if (mirror_installed=="available"){
+        buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
+          <div class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
+          <div class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
+          <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
+        $("#ButtonList").empty();
+        $("#ButtonList").append(buttons);
+    }
+    else{
+        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Clients")+"</div> \
+          <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
+          <div class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+        $("#ButtonList").empty();
+        $("#ButtonList").append(buttons);
+        }
+    
+    // Binding New Event Handlers
+    BindMainEventHandlers();
+    
     $("#LoginForm").css("display", "none");
     $("#InitialWindow").css("display", "block");
+    
+    
 }
 
 function loginFail(username){
@@ -93,8 +120,8 @@ function loginFail(username){
 
 // Event Handlers
 // Handle events on page to python
-function BindEventHandlers(){
-   
+
+function BindLoginEventHandlers(){
     // Click on Login Button
     $("#LoginButton").bind('click', function( event ){
         
@@ -107,7 +134,11 @@ function BindEventHandlers(){
         }, 1);
         
     });
-    
+}
+
+function BindMainEventHandlers(){
+   
+   
      $("#ClientManager").bind('click', function( event ){
         location.href='ltsp://ClientManager';
     });
