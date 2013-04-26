@@ -36,6 +36,10 @@
           margin: 30px 100px 10px 100px !important;
           
         }
+        
+        .Back{background-image: url('styles/images/backwhite.png');  background-repeat: no-repeat;background-position: left center;}
+       
+        
     </style>
     
     <script type="text/javascript">
@@ -44,7 +48,8 @@
       // Display Main Window
       $("#MainContainer").css("display", "block");
     $("#ErrorTitle").append(gettext("LTSP N4D Local Server Error"));
-    $("#ErrorDescription").append(gettext("Could not connect to localhost n4d service!."));      
+    $("#ErrorDescription").append(gettext("Could not connect to localhost n4d service!."));
+    $("#BackButton").append(gettext("Back"));
     });
     </script>
     
@@ -63,7 +68,9 @@
         </div>
         <div id="ErrorMessage">
           <div class="ErrorTitle" id="ErrorTitle"></div>
-          <div class="ErrorDescription" id="ErrorDescription"></div> 
+          <div class="ErrorDescription" id="ErrorDescription"></div>
+          <div class='Button Back' id="BackButton" onclick="location.href='ltsp://reconnectN4D/';"></div>
+
         </div>
       
     </div>

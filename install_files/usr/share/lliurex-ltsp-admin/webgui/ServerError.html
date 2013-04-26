@@ -33,18 +33,22 @@
           text-align: justify !important;
           text-shadow: rgb(100,100,100);
           font-size: 0.9em;
-          margin: 30px 100px 10px 100px !important;
-          
+          margin: 30px 100px 10px 100px !important;          
         }
+        .Back{background-image: url('styles/images/backwhite.png');  background-repeat: no-repeat;background-position: left center;}
+
+        
     </style>
     
     <script type="text/javascript">
     
     $(document).ready(function() {    
       // Display Main Window
-      $("#MainContainer").css("display", "block");
+    $("#MainContainer").css("display", "block");
     $("#ErrorTitle").append(gettext("LTSP Network Error"));
-    $("#ErrorDescription").append(gettext("No connection could be possible with LTSP Server. Maybe Network is unreacheable or service n4d is disabled on the server."));      
+    $("#ErrorDescription").append(gettext("No connection could be possible with LTSP Server. Maybe Network is unreacheable or service n4d is disabled on the server."));
+    $("#BackButton").append(gettext("Back"));
+    
     });
     </script>
     
@@ -63,7 +67,8 @@
         </div>
         <div id="ErrorMessage">
           <div class="ErrorTitle" id="ErrorTitle"></div>
-          <div class="ErrorDescription" id="ErrorDescription"></div> 
+          <div class="ErrorDescription" id="ErrorDescription"></div>
+          <div class='Button Back' id="BackButton" onclick="window.history.back()"></div>
         </div>
       
     </div>
