@@ -1,3 +1,6 @@
+
+var srv_ip="unknown"
+
 function parseData(data) {
     return data.getDate()+"/"+data.getMonth()+"/"+data.getFullYear();
 }
@@ -105,8 +108,7 @@ function DisplayImageWindow(){
 $(document).ready(function() {
     //$("#EmergentMessage").hide();
     
-    
-    function getUrlVar(uv) {
+    /* function getUrlVar(uv) {
         //extract the query string from the url
     //var query = window.location.search.substring(1);
     var query = window.location.search.substring(1).split('?')[0]
@@ -121,7 +123,7 @@ $(document).ready(function() {
         }
         }
     return false;
-    }
+    }*/
     
     var clients=getUrlVar('imageData'); // name
     // alert (decodeURIComponent(clients));
@@ -129,6 +131,11 @@ $(document).ready(function() {
     imageData=$.parseJSON(decodeURIComponent(clients));
     //alert(imageData)
         
+    srv_ip=getUrlVar('srv_ip'); // name
+    rv_ip=getUrlVar('mirror_installed'); // name
+    
+    $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
+    
     
     
     

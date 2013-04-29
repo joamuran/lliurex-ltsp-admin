@@ -8,10 +8,16 @@ function DisplayLoginWindow(){
         <div class='FormText'>"+gettext("Password")+"</div>\
         <div><input class='FormInput' type='password' id='userpass'/></div>\
         \
-        <div class='FormText'>"+gettext("Server")+"\
-        <input class='FormInput' type='text' style='width:300px; float:right;clear:left' id='remoteserver' value='"+srvip+"'/></div>\
+                \
+        <div class='ServerBoxContainer'><div id='ServerBox' class='ServerBox'> \
+        <div class='FormText'>"+gettext("Server")+"</div>\
+        <input class='FormInput' type='text' id='remoteserver' style='width:350px;' value='"+srvip+"'/></div>\
+        </div> \
+        <div class='ServerTabContainer'><div onclick='handleServerTab()' class='ServerTab'>Advanced</div></div> \
+        </div> \
         \
         <div id='ErrorLoginMessage' class='ErrorLoginMessage'></div>\
+        <div id='ErrorLoginImage' class='ErrorLoginMessage'></div>\
         <div class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
     
     appdescription=gettext("Lliurex LTSP és una solució de clients lleugers per a LliureX basada en LTSP. Des d'aquest mateix gestor podreu: \
@@ -28,6 +34,13 @@ function DisplayLoginWindow(){
     $("#AppDescriptionText").append(appdescription);
     
     $("#LoginContainer").css("display", "block");
+}
+
+
+function handleServerTab() {
+    
+    if($("#ServerBox").css("display")=="block") $("#ServerBox").slideUp(300);
+        else $("#ServerBox").slideDown(300);
 }
 
 $(document).ready(function() {
@@ -69,7 +82,7 @@ $(document).ready(function() {
 // Functions called from python
 
 function loginSuccess(mirror_installed){
-    
+    $('body').css('cursor', 'default');
     
     if (mirror_installed=="available"){
         buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
@@ -97,25 +110,29 @@ function loginSuccess(mirror_installed){
 }
 
 function loginFail(username){
+    $('body').css('cursor', 'default');
     $("#ErrorLoginMessage").empty();
     $("#ErrorLoginMessage").append(gettext("<span>Authentication Error</span>"));
 }
-
 
 // Event Handlers
 // Handle events on page to python
 
 function BindLoginEventHandlers(){
     // Click on Login Button
+        
     $("#LoginButton").bind('click', function( event ){
         
+        $('body').css('cursor', 'wait');  // Seem that does not run...
+
         $("#ErrorLoginMessage").empty();
         $("#ErrorLoginMessage").append(gettext("<span>Validing user...</span>"));
         
         // We must establish a timeout to wait that jquery writes the validating message
         setTimeout(function() 
-        {location.href='ltsp://login/'+escape($("#username").val())+'/'+escape($("#userpass").val())+'/'+escape($("#remoteserver").val());
-        }, 1);
+        {
+            location.href='ltsp://login/'+escape($("#username").val())+'/'+escape($("#userpass").val())+'/'+escape($("#remoteserver").val());
+        }, 0.5);
         
     });
 }

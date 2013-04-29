@@ -13,9 +13,9 @@ var DesktopApps= {"Apps": [
                  {"id": "gedit",
         "icon": "styles/images/accessories-text-editor.png",
          "text": "Edit File"},
-        {"id": "lxde",
-        "icon": "styles/images/lxde.png",
-         "text": "Install LXDE Light Client"}]}
+        {"id": "xfce",
+        "icon": "styles/images/llx-xfcelogo.png",
+         "text": "Install LliureX Light Desktop"}]}
 
 
 

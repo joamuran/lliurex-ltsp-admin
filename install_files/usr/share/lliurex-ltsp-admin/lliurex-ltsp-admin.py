@@ -9,8 +9,9 @@ from xmlrpclib import *
 
 
 class LliureXLTSPAdmin:
-    server = ''
-    srv_ip= ''
+    server = ''             # Efective n4d-ltsp server
+    localserver='127.0.0.1' # Local n4d server (to getting server ip)
+    srv_ip= ''              # Class server IP
     connection_user = ''
     ConnectionStatus='off'
     username=''
@@ -42,8 +43,8 @@ class LliureXLTSPAdmin:
         
         try:
             # Connecto to n4s-server to get SRV_IP
-            localserver=ServerProxy("https://localhost:9779")
-            self.srv_ip=localserver.get_variable("", 'VariablesManager', 'SRV_IP')
+            self.localserver=ServerProxy("https://localhost:9779")
+            self.srv_ip=self.localserver.get_variable("", 'VariablesManager', 'SRV_IP')
             print ("srv_ip:"+self.srv_ip)
             # Now connect to n4s server on SRV_IP
                        
@@ -113,6 +114,14 @@ class LliureXLTSPAdmin:
     
     #Event Handling
     def onLogin(self, args):
+        
+        #import time
+        #win = Browser(language=ltspadmin.language)
+        #win.load_html_string('<h1>Hello Mars</h1>')
+        #time.sleep(5)
+        
+        
+        
         self.username=urllib.unquote(args[3])
         self.password=urllib.unquote(args[4])
         self.srv_ip=urllib.unquote(args[5])
@@ -187,13 +196,14 @@ class LliureXLTSPAdmin:
         file = os.path.abspath('webgui/ImageManager.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
         
-        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)
+        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         print uri
         browser.open_url(uri)
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed
+        print '&amp;srv_ip='+self.srv_ip
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
         
     def onSoftwareManager(self, args):
