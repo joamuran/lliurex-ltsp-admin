@@ -263,7 +263,7 @@ class LliureXLTSPAdmin:
         sys.stdout = open('/tmp/stdout.txt', 'a')
         print "Executing "+args[3]
         
-        if args[3]!="lxde":
+        if args[3]!="xfce":
             import os
             p = os.popen("sudo "+args[3],"r")
             while 1:

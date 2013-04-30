@@ -14,14 +14,14 @@ function DisplayClients(){
         if (clientData.clients[i].session=="gnome"){
         ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" \
                     onchange='handleChangeSession(this);'> \
-                        <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, light Deskton")+"</option> \
+                        <option value='gnome' selected>"+gettext("Classic Desktop (Gnome)")+"</option> \
+                        <option value='xfce'>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
                     </select>";
         } else {
         ItemSession="<select class='ClientItem' name='SessionSelector' id=sessionselector"+strid+" \
                     onchange='handleChangeSession(this);'> \
-                        <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde' selected>"+gettext("LXDE, light Desktop")+"</option> \
+                        <option value='gnome'>"+gettext("Classic Desktop (Gnome)")+"</option> \
+                        <option value='xfce' selected>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
                     </select>";
         }
         
@@ -147,8 +147,8 @@ function addNewClient(){
     
     ItemSession="<select class='ClientItem' name='SessionSelector' id='sessionselectornew'\
                 onchange='handleChangeSession(this);'> \
-                        <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, light Desktop")+"</option> \
+                        <option value='gnome' selected>"+gettext("Classic Desktop (Gnome)")+"</option> \
+                        <option value='xfce'>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
                     </select>";
     
     ItemType="<select class='ClientItem' id='newclienttype'> \
@@ -203,7 +203,7 @@ function setMac(mac, hostname){
 
 function handleChangeSession(cb){
     id="#sessionline"+cb.id.split("sessionselector")[1];
-    if (cb.value=="lxde")
+    if (cb.value=="xfce")
         $(id).css("display", "block");
     else
         $(id).css("display", "none");
@@ -346,13 +346,13 @@ function AddClient(){
         
         if (sessionid=="gnome"){
         ItemSession="<select class='ClientItem'> \
-                        <option value='gnome' selected>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde'>"+gettext("LXDE, light Desktop")+"</option> \
+                        <option value='gnome' selected>"+gettext("Classic Desktop (Gnome)")+"</option> \
+                        <option value='xfce'>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
                     </select>";
         } else {
         ItemSession="<select class='ClientItem'> \
-                        <option value='gnome'>"+gettext("Gnome Classic")+"</option> \
-                        <option value='lxde' selected>"+gettext("LXDE, light Desktop")+"</option> \
+                        <option value='gnome'>"+gettext("Classic Desktop (Gnome)")+"</option> \
+                        <option value='xfce' selected>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
                     </select>";
         }
 
