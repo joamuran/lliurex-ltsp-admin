@@ -84,6 +84,8 @@ $(document).ready(function() {
 function loginSuccess(mirror_installed){
     $('body').css('cursor', 'default');
     
+    var mirrorData={"installed": "true", "date": "10/10/2012"}
+    
     if (mirror_installed=="available"){
         buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
           <div class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \

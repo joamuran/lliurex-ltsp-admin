@@ -477,8 +477,8 @@ $(document).ready(function() {
     //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
         
-    
-
+    srv_ip=getUrlVar('srv_ip');     
+    $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
     DisplayClients();
 
     // Bind events with actions

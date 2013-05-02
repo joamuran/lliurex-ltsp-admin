@@ -131,8 +131,8 @@ $(document).ready(function() {
     imageData=$.parseJSON(decodeURIComponent(clients));
     //alert(imageData)
         
-    srv_ip=getUrlVar('srv_ip'); // name
-    rv_ip=getUrlVar('mirror_installed'); // name
+    srv_ip=getUrlVar('srv_ip'); 
+    //rv_ip=getUrlVar('mirror_installed'); // name
     
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
     

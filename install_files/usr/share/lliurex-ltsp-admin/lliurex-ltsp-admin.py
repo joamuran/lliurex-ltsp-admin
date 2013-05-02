@@ -131,7 +131,6 @@ class LliureXLTSPAdmin:
         try:
             # Connection
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
-            
             # Authentication        
             groups=self.server.validate_user(self.username,self.password)
             print groups
@@ -141,8 +140,12 @@ class LliureXLTSPAdmin:
             #if (self.username,self.password)==("", ""):
                 self.connection_user = (self.username,self.password)
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
+                
                 ## TODO: Modify when get_status return a dictionary...
-                self.mirror_installed=self.server.get_status("","LliurexMirror")[11:20]
+                #####self.mirror_installed=self.server.get_status("","LliurexMirror")[11:20]
+                self.mirror_installed='available'
+                #self.mirror_installed=self.server.get_status("","LliurexMirror")['status']
+    
                 
                 
                 browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
@@ -173,7 +176,7 @@ class LliureXLTSPAdmin:
 
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
-        uri = 'file://' + urllib.pathname2url(file)
+        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
         #browser.execute_script("alert('tralari');")
 

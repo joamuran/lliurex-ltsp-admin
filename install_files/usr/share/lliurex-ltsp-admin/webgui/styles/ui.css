@@ -47,10 +47,12 @@ body
     display: block;
     
     height: 20px;
-    background: #ffffff;
+    background: #eeeeee;
     border-top: thin solid #000000;
     font-size: 12px;
     overflow-y: auto;
+    padding-top: 3px;
+    box-shadow: inset 0px 4px 2px  -1px #cccccc;
 
 }
 
