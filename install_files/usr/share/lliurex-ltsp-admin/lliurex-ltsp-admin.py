@@ -17,6 +17,8 @@ class LliureXLTSPAdmin:
     username=''
     password=''
     mirror_installed='false'
+    abstract=''
+    date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     
     # Temp data that we will extract from n4d-ltsp
@@ -36,6 +38,8 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "GetMacFromN4d")] = 'GetMacFromN4d';
     binding[("ltsp", "ExecuteInChroot")] = 'onExecuteInChroot';
     binding[("ltsp", "reconnectN4D")] = 'onreconnectN4D';
+    binding[("ltsp", "UpdateMirrorCommand")] = 'onUpdateMirrorCommand';
+    
 
     
     def __init__(self):
@@ -67,6 +71,15 @@ class LliureXLTSPAdmin:
             print Exception
             self.ConnectionStatus='off'
             pass
+        
+        
+    def onUpdateMirrorCommand(self, args):
+        import time
+        for i in range(1,10):
+            browser.execute_script("add_text_to_output('"+str(i)+"')")
+            time.sleep(2)
+
+        pass
         
     def onreconnectN4D(self, args):
         import subprocess
@@ -137,27 +150,51 @@ class LliureXLTSPAdmin:
         
             if (('adm' in groups[1])or('admins' in groups[1])or('teachers' in groups[1])):
                 print "User Validated"  
-            #if (self.username,self.password)==("", ""):
+            
                 self.connection_user = (self.username,self.password)
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
                 
-                ## TODO: Modify when get_status return a dictionary...
-                #####self.mirror_installed=self.server.get_status("","LliurexMirror")[11:20]
-                self.mirror_installed='available'
-                #self.mirror_installed=self.server.get_status("","LliurexMirror")['status']
-    
+                #status
+                exec("status="+self.server.get_status("","LliurexMirror"))
+                #print ":::::::::::"+status
+                self.mirror_installed=status['status']
+                ######################
+                ##self.mirror_installed='unavailable'
+                print self.mirror_installed
+                #print ":::::::::::"+status
                 
+                if self.mirror_installed=='available':
+                    
+                    # Abstract
+                    try:
+                        file = open('/var/log/lliurex/lliurex-mirror.log', 'r')
+                        self.abstract=file.read()
+                    except Exception:
+                        self.abstract="Mirror log file not found."
+                        pass
+        
+                    # Date
+                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirror"))
+                    if datestatus['status']:
+                        self.date=datestatus['date']
+                    else:
+                        self.date=""
+                    
+                else:
+                    self.abstract="Mirror Not Installed"
+                    self.date=""
                 
+                # Launch browser    
                 browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
-                #print "*******"+self.mirror_installed
-                #print self.server.get_status('LliurexMirror')
+
+                    
+                # END if self.mirror_installed=="available":
                 
                 return True
             else:
                 browser.execute_script("loginFail('"+self.username+"')")
                 return False
             
-
             #connection_user = (self.username,self.password)
             #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
         except Exception:
@@ -176,7 +213,7 @@ class LliureXLTSPAdmin:
 
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
+        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
         browser.open_url(uri)
         #browser.execute_script("alert('tralari');")
 
