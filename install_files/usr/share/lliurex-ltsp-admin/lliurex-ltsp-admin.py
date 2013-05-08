@@ -8,6 +8,14 @@ import locale
 from xmlrpclib import *
 
 
+import gobject
+
+#from gi.repository import GLib,Gdk
+#GLib.threads_init()
+
+#import gtk
+#gtk.gdk.threads_init()
+
 class LliureXLTSPAdmin:
     server = ''             # Efective n4d-ltsp server
     localserver='127.0.0.1' # Local n4d server (to getting server ip)
@@ -74,13 +82,55 @@ class LliureXLTSPAdmin:
         
         
     def onUpdateMirrorCommand(self, args):
-        import time
-        for i in range(1,10):
-            browser.execute_script("add_text_to_output('"+str(i)+"')")
-            time.sleep(2)
-
-        pass
         
+        self.initline=0;
+        self.numlines=3;
+        self.endline=0;
+        
+        def readlog():
+            #import time
+            #print self.i
+            
+            loglines=self.server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)                        
+            self.initline=self.initline+len(loglines['file'])
+            browser.execute_script("add_text_to_output('"+str(loglines['file'])+"')")
+
+            status=self.server.get_status("", "LliurexMirror")
+            if (status[11:20]!='available'):
+                return False
+            else:
+                return True
+    
+        
+        integer_id = gobject.timeout_add( 500, readlog)
+        
+        
+        
+        connection_user = (self.username,self.password)
+        print "Connection: "+str(connection_user)
+        # n4d connection to server
+        
+        try:
+            self.server.n4dupdate(connection_user,"LliurexMirror")
+            
+        except Exception:
+            pass
+            
+            
+        return 0
+        
+        
+    
+    def UpdateMirrorBackground(self):
+        import time
+        for i in range(1,5):
+            print i
+            #browser.execute_script("add_text_to_output('"+str(i)+"')")
+            time.sleep(1)
+            
+        
+    
+    
     def onreconnectN4D(self, args):
         import subprocess
         import time

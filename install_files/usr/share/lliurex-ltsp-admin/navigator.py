@@ -41,6 +41,7 @@ class Browser:
         
     def execute_script(self, script):
         self.view.execute_script(script)
+        
     
     def connectEvents(self, event, action):
         self.view.connect(event, action)

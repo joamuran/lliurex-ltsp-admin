@@ -31,10 +31,25 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
 // Event Handlers
 // Handle events on page to python
 
+/*Element.addMethods({
+  redraw: function(element){
+    element = $(element);
+    var n = document.createTextNode(' ');
+    element.appendChild(n);
+    (function(){n.parentNode.removeChild(n)}).defer();
+    return element;
+  }
+});
+*/
+
 function add_text_to_output(text) {
+    $("#OutputCommand").hide();
     $("#OutputCommand").append("<p>"+text+"</p>");
-    //$("#MirrorText").append("<p>"+text+"</p>");
+    console.log("<p>"+text+"</p>");
+    $("#OutputCommand").show();
+     return true;
 }
+
 
 function BindMirrorEventHandlers() {
     $("#UpdateMirror").bind('click', function( event ){
