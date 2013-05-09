@@ -81,53 +81,100 @@ class LliureXLTSPAdmin:
             pass
         
         
+    def readlog(self):
+        import os.path
+        import time
+        #print self.i
+        
+        #print "I am in readlog, count: "+str(self.count)
+        #self.count=self.count+1
+        #return True
+        
+            
+        ##### CAL N4Ditzar-ho per a que estiga al server!!!!!
+        if (os.path.isfile("/tmp/n4drmirror.log")==False):
+            print "FILE NOT EXISTS"
+            return True
+        
+        print ("FILE EXISTS")
+        #time.sleep(10)
+        
+        loglines=self.server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)
+        self.initline=self.initline+len(loglines['file'])
+        print loglines
+        
+        if len(loglines['file'])>0:
+            length=len(str(loglines['file']))
+            parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#00ffff;'>[ LliureX Mirror ]</span>") 
+            print "**********"+parsed_string+"&&&&&&&"
+            browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
+        
+        status=self.server.get_status("", "LliurexMirror")
+        print "MIRROR STATUS: "+status[11:20]
+        if (status[11:20]!='available'):
+            print "is NOT available"
+            return True
+        else:
+            browser.execute_script("alert('Mirror has been updated');")
+            print "is available (Finished work!)"
+            return False
+
+
+    def n4updatemirror(self):
+        import time
+        print "Updating Mirror"
+        connection_user = (self.username,self.password)
+        print "Connection user: "+str(connection_user)
+        # n4d connection to server
+        self.server.n4dupdate(connection_user,"LliurexMirror")
+        print "End Mirror"
+        return False
+        
     def onUpdateMirrorCommand(self, args):
+        import threading
         
         self.initline=0;
-        self.numlines=3;
+        self.numlines=1;
         self.endline=0;
         
-        def readlog():
-            #import time
-            #print self.i
-            
-            loglines=self.server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)                        
-            self.initline=self.initline+len(loglines['file'])
-            browser.execute_script("add_text_to_output('"+str(loglines['file'])+"')")
-
-            status=self.server.get_status("", "LliurexMirror")
-            if (status[11:20]!='available'):
-                return False
-            else:
-                return True
-    
-        
-        integer_id = gobject.timeout_add( 500, readlog)
-        
-        
-        
-        connection_user = (self.username,self.password)
-        print "Connection: "+str(connection_user)
-        # n4d connection to server
+        self.count=0;
         
         try:
-            self.server.n4dupdate(connection_user,"LliurexMirror")
+            connection_user = (self.username,self.password)
+            #print "Connection user: "+str(connection_user)
+            # n4d connection to server
+            # Delete Mirror Log
+            self.server.prepare_log(connection_user,"LliurexMirror")
             
-        except Exception:
-            pass
+            print "Setting timer log"
+            gobject.timeout_add(500, self.readlog)
+            print "Set timer log"
+            
+            print "Setting timer mirror"
+        
+            t = threading.Thread(target=self.n4updatemirror) 
+            t.daemon=True
+            t.start()
+            
+            #self.n4updatemirror()
+            #gobject.timeout_add(100, n4dupdatemirror)
+            print "Set timer mirror"
+            
+        except Exception as e:
+            print str(e)
             
             
         return 0
         
         
     
-    def UpdateMirrorBackground(self):
-        import time
-        for i in range(1,5):
-            print i
-            #browser.execute_script("add_text_to_output('"+str(i)+"')")
-            time.sleep(1)
-            
+    #def UpdateMirrorBackground(self):
+    #    import time
+    #    for i in range(1,5):
+    #        print i
+    #        #browser.execute_script("add_text_to_output('"+str(i)+"')")
+    #        time.sleep(1)
+    #        
         
     
     

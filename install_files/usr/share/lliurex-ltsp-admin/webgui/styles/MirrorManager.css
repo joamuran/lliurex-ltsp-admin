@@ -11,13 +11,11 @@
     text-align: center;
     text-shadow: 1px 1px 1px #000000;
     box-shadow: 0px 0px 20px #888;
-
     }
 
 .BigButton:hover{
     cursor:pointer; background-color: #2f92f5;
     }
-
     
 .ButtonMirror{
     background-image: url('images/bigmirrorwhite.png');
@@ -25,6 +23,7 @@
     /*background-position: center 10px;*/
     background-color: #95e632;
     border-color: #75e115;}
+
 .ButtonMirror:hover{background-color: #75e115;}
 
 .MirrorText{
@@ -61,9 +60,10 @@
 .OutputCommand{
     background:#000000;
     color:#ffffff;
+    border-color:#aaaaaa;
     float: left;
     clear: both;
-    font-family: monospace;
+    font-family: 'Lucida Console';
     font-size: 0.8em;
     text-align:justify;
     text-justify:inter-word;

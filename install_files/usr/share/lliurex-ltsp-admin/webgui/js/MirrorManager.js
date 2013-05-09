@@ -13,7 +13,7 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
         MirrorButton="<div><div class='BigButton ButtonMirror' id='InstallMirror'><div>"+gettext("Install Mirror")+"</div></div>";
         }
     
-    OutputCommand="<div id='OutputCommand' class='OutputCommand'>111111</div>"
+    OutputCommand="<div id='OutputCommand' class='OutputCommand'></div>"
     OutputText="<div class='MirrorText'>"+gettext("Command Output:")+"</div>"
     
     
@@ -44,8 +44,10 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
 
 function add_text_to_output(text) {
     $("#OutputCommand").hide();
-    $("#OutputCommand").append("<p>"+text+"</p>");
-    console.log("<p>"+text+"</p>");
+    //alert(text)
+    $("#OutputCommand").append("<p>"+decodeURIComponent(text)+"</p>");
+    console.log("<p>"+decodeURIComponent(text)+"</p>");
+    
     $("#OutputCommand").show();
      return true;
 }
