@@ -1,4 +1,4 @@
-.BigButton{
+/*.BigButton{
     float: left;
     width: 120px !important;
     height: 40px !important;
@@ -16,21 +16,94 @@
 .BigButton:hover{
     cursor:pointer; background-color: #2f92f5;
     }
-    
-.ButtonMirror{
+  */  
+.BtMirror{
+    width: 100px;
+    height: 36px;
+    padding: 10px 10px 0px 55px;
+    margin: 5px 10px 5px 50px;
+    color: #ffffff;
+    text-shadow: 1px 1px white, -1px -1px #444;
+    float: left;
+    clear: both;
     background-image: url('images/bigmirrorwhite.png');
     background-repeat: no-repeat;
-    /*background-position: center 10px;*/
+    border-color: #75e115;
+    border-radius: 2px;
     background-color: #95e632;
-    border-color: #75e115;}
+}
 
-.ButtonMirror:hover{background-color: #75e115;}
+.BtMirrorText{
+    float: left;
+    clear: right;
+    font-size: 0.8em;
+    color: #333333;
+    margin-top: 10px;
+}
+
+.BtMirror:hover{background-color: #75e115;}
+
+/*.OutputHeader{
+    overflow:hidden;
+    padding: 2px;
+    float: left;
+    clear: both;
+    background-color: #cccccc;
+    font-weight: 700;
+    border: solid thin #bbbbbb;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 1em;
+    color: #ffffff;
+    /*text-shadow: inset 1px 1px white, -1px -1px #f00;* /
+    box-shadow: inset 0px 0px 10px #aaaaaa; }*/
+
+.MirrorStatusHeader{
+    padding: 2px;
+    background-color: #aaaaaa;
+    font-weight: 700;
+    border: solid thin #bbbbbb;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 1em;
+    color: #ffffff;
+    /*text-shadow: inset 1px 1px black, -1px -1px #444;*/
+    box-shadow: inset 0px 0px 10px #aaaaaa;
+}
+.MirrorStatus{
+    overflow: hidden;
+    position: relative;
+    float: left;
+    clear: both;
+    margin-left: 50px;
+    width: 650px;
+    text-shadow: inset 1px 1px white, -1px -1px #444;
+    /*box-shadow: inset 0px 0px 10px #000;*/
+}
+.MirrorStatusRow{
+    overflow:hidden;
+    padding: 1px;
+    box-shadow: inset 0px 0px 10px #cccccc;
+    background-color: #eeeeee;
+    border-left: solid thin #bbbbbb;
+    border-bottom: solid thin #bbbbbb;
+    border-right: solid thin #bbbbbb;
+}
+.MirrorLastRow{
+    overflow:hidden;
+    padding: 1px;
+    box-shadow: inset 0px 0px 10px #cccccc;
+    background-color: #eeeeee;
+    border-left: solid thin #bbbbbb;
+    border-bottom: solid thin #bbbbbb;
+    border-right: solid thin #bbbbbb;
+    border-radius: 0px 0px 5px 5px;
+}
+
 
 .MirrorText{
     font-weight: bold;
     margin-left: 30px;
-    margin-top: 5px;
-    font-size: 0.9em;
+    margin-top: 3px;
+    font-size: 0.8em;
     float: left;
     clear: left;
 }
@@ -38,15 +111,17 @@
 .abstract{
     font-size: 0.9em;
     color: #888;
-    border: solid thin #000000;
+    background-color: #fefefe;
     overflow-y: auto;
     float: left;
     clear: both;
-    width: 500px;
-    height: 100px;
-    margin: 5px 50px 0px 50px;
-    border-radius: 2px;
-    box-shadow: 1px 1px 2px #000;
+    width: 580px;
+    height: 50px;
+    margin: 3px 10px 5px 30px;
+    border-radius: 5px;
+    padding: 5px;
+    border: thin solid #aaaaaa;
+    box-shadow: inset 0px 0px 5px #cccccc;
 }
 
 .MirrorInfo{
@@ -57,7 +132,28 @@
     clear: right;
 }
 
+.CommandOutput{
+    overflow:hidden;
+    /*width: 300px;*/
+    height: 200px;
+    overflow: auto;
+    padding: 2px;
+    box-shadow: inset 0px 0px 10px #cccccc;
+    text-shadow: none;
+    background-color: #eeeeee;
+    border-left: solid thin #bbbbbb;
+    border-bottom: solid thin #bbbbbb;
+    border-right: solid thin #bbbbbb;
+    border-radius: 0px 0px 5px 5px;
+    font-family: 'Lucida Console';
+    font-size: 0.8em;
+    text-align:justify;
+    text-justify:inter-word;
+}
+
 .OutputCommand{
+    overflow:hidden;
+    position: relative;
     background:#000000;
     color:#ffffff;
     border-color:#aaaaaa;
@@ -69,9 +165,9 @@
     text-justify:inter-word;
     padding-bottom: 30px;
     border-radius: 2px;
-    margin-left: 100px;
+    margin-left: 50px;
     margin-top: 20px;
-    width: 600px;
+    width: 500px;
     height: 200px;
     overflow: auto;
     box-shadow: 0px 0px 20px #888;

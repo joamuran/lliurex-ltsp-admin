@@ -27,10 +27,21 @@
     <div id="top">
       <div class="MiniButtonList" id="MiniButtonList"></div>
     </div>
-    <div id="MirrorStatus" style="float: left; clear: left;width: 550px; "></div>
-    <div id="MirrorButton" style="float: left; clear: right;"></div>
     
-    <div id="OutputContainer"></div>
+    <div id="MirrorStatus" class="MirrorStatus">
+      <div class="MirrorStatusHeader" id="MirrorStatusHeader">Mirror Status</div>
+      <div class="MirrorStatusRow" id="StatusRow"></div>
+      <div class="MirrorStatusRow" id="DataRow"> </div>
+      <div class="MirrorLastRow" id="LogRow"> </div>
+      
+    </div>
+    <div id="MirrorButton"></div><div id="MirrorBtText"></div>
+    
+    
+    <div id="OutputContainer" class="MirrorStatus">
+      <div id="HeaderOutput" class="MirrorStatusHeader"></div>
+      <div id="Output" class="CommandOutput"></div>
+    </div>
      <div id="bottom"></div>
   </div>
   

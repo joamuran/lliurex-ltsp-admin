@@ -84,32 +84,30 @@ class LliureXLTSPAdmin:
     def readlog(self):
         import os.path
         import time
-        #print self.i
         
-        #print "I am in readlog, count: "+str(self.count)
-        #self.count=self.count+1
-        #return True
+        # Is log prepared?
+        server = ServerProxy("https://"+self.srv_ip+":9779")
         
-            
-        ##### CAL N4Ditzar-ho per a que estiga al server!!!!!
-        if (os.path.isfile("/tmp/n4drmirror.log")==False):
-            print "FILE NOT EXISTS"
+        log_prepared=server.exist_log_file("", "LliurexMirror");
+        print "Log_Prepared=*"+log_prepared[0:4]
+        
+        if (log_prepared[0:4]!='True'):
+            print "[LliureX-LTSP-Admin] Mirror File Does not Exists. Waiting..."
             return True
         
-        print ("FILE EXISTS")
-        #time.sleep(10)
+        # When Log is prepared, read it
+        print ("[LliureX-LTSP-Admin] Mirror File Exists. Reading...")
         
-        loglines=self.server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)
+        loglines=server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)
         self.initline=self.initline+len(loglines['file'])
         print loglines
         
         if len(loglines['file'])>0:
             length=len(str(loglines['file']))
-            parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#00ffff;'>[ LliureX Mirror ]</span>") 
-            print "**********"+parsed_string+"&&&&&&&"
+            parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>") 
             browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
         
-        status=self.server.get_status("", "LliurexMirror")
+        status=server.get_status("", "LliurexMirror")
         print "MIRROR STATUS: "+status[11:20]
         if (status[11:20]!='available'):
             print "is NOT available"
@@ -122,19 +120,24 @@ class LliureXLTSPAdmin:
 
     def n4updatemirror(self):
         import time
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+
         print "Updating Mirror"
         connection_user = (self.username,self.password)
         print "Connection user: "+str(connection_user)
         # n4d connection to server
-        self.server.n4dupdate(connection_user,"LliurexMirror")
+        
+        server.n4dupdate(connection_user,"LliurexMirror")
         print "End Mirror"
+        
         return False
         
     def onUpdateMirrorCommand(self, args):
         import threading
         
         self.initline=0;
-        self.numlines=1;
+        self.numlines=1000;
         self.endline=0;
         
         self.count=0;
@@ -152,6 +155,7 @@ class LliureXLTSPAdmin:
             
             print "Setting timer mirror"
         
+            #self.n4updatemirror()
             t = threading.Thread(target=self.n4updatemirror) 
             t.daemon=True
             t.start()

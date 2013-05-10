@@ -3,26 +3,30 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
     
     DivAbstract="<div class='MirrorText'>"+gettext("Mirror Log: ")+"</div><div class='abstract'>"+mirror_abstract+"</div>"
     
-    if (mirror_installed=="available") {        
+    if (mirror_installed=="available") {
         DivDate="<div class='MirrorText'>"+gettext("Last Update: ")+"</div><div class='MirrorInfo'>"+date+"</div>"
         DivStatus="<div class='MirrorText'>"+gettext("Mirror Status: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
-        MirrorButton="<div><div class='BigButton ButtonMirror' id='UpdateMirror'><div>"+gettext("Update Mirror")+"</div></div>";
+        MirrorButton="<div><div class='BtMirror' id='UpdateMirror'><div>"+gettext("Update Mirror")+"</div></div>";
+        MirrorBtText="<div class='BtMirrorText'>"+gettext("Press on Update Mirror to udate Packages in the local mirror.")+"</div>"
     } else   {
         DivDate="<div class='MirrorText'>"+gettext("Last Update: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
-        DivStatus="<div class='MirrorText'>"+gettext("Mirror Status: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"        
-        MirrorButton="<div><div class='BigButton ButtonMirror' id='InstallMirror'><div>"+gettext("Install Mirror")+"</div></div>";
+        DivStatus="<div class='MirrorText'>"+gettext("Mirror Status: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
+        MirrorButton="<div class='BtMirror' id='InstallMirror'>"+gettext("Install Mirror")+"</div>";
+        MirrorBtText="<div class='BtMirrorText'>"+gettext("Press on Install Mirror to install a clean copy from lliurex.net")+"</div>"
+        
         }
+    OutputCommand="<div id='OutputCommand'></div>"
+    /*OutputCommand="<div id='OutputCommand' class='OutputCommand'></div>"
+    /*OutputText="<div class='MirrorText'>"+gettext("Command Output:")+"</div>"*/
+    OutputText=gettext("Command Output:");
     
-    OutputCommand="<div id='OutputCommand' class='OutputCommand'></div>"
-    OutputText="<div class='MirrorText'>"+gettext("Command Output:")+"</div>"
-    
-    
-    $("#MirrorStatus").append(DivStatus);
-    $("#MirrorStatus").append(DivDate);
-    $("#MirrorStatus").append(DivAbstract);
+    $("#StatusRow").append(DivStatus);
+    $("#DataRow").append(DivDate);
+    $("#LogRow").append(DivAbstract);
     $("#MirrorButton").append(MirrorButton);
-    $("#OutputContainer").append(OutputText);
-    $("#OutputContainer").append(OutputCommand);
+    $("#MirrorBtText").append(MirrorBtText);
+    $("#HeaderOutput").append(OutputText);
+    $("#Output").append(OutputCommand);
     
     
     }
