@@ -28,6 +28,7 @@ class LliureXLTSPAdmin:
     abstract=''
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
+    imagelist=None; # List of images installed, chroots, etc
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
@@ -333,7 +334,8 @@ class LliureXLTSPAdmin:
         #print dic["status"]
         #print json.dumps(dic["images"])
         ##############
-        
+        self.imagelist=json_obj;
+
         file = os.path.abspath('webgui/ImageManager.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
         
@@ -355,10 +357,20 @@ class LliureXLTSPAdmin:
         
     def onImageAdvanced(self, args):
         file = os.path.abspath('webgui/ImageAdvanced.html')
-        print args
-        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(args[3])+'&amp;mirror_installed='+self.mirror_installed
+        id=args[3]
+        print "ARGS: "+str(args)
+        #print "IMAGELIST: "+str(self.getChrootFromImageList(id))
+        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))
         browser.open_url(uri)
 
+
+
+    def getChrootFromImageList(self, id):
+        for element in self.imagelist['images']:
+            if element['id']==id:
+                return element['squashfs_dir']
+
+        return None
 
     def ClientSaveConfig(self, args):
         #print urllib.unquote(args[3])
@@ -394,36 +406,77 @@ class LliureXLTSPAdmin:
             
         browser.execute_script("setMac('"+mac+"','"+hostname+"')")
         
-        
-        
-        
     
-        
-        
+     
     def onExecuteInChroot(self, args):
-        sys.stdout = open('/tmp/stdout.txt', 'a')
-        print "Executing "+args[3]
-        
-        if args[3]!="xfce":
-            import os
-            p = os.popen("sudo "+args[3],"r")
-            while 1:
-                line = p.readline()
-                if not line: break
-                print line
+        import urllib
+        #sys.stdout = open('/tmp/stdout.txt', 'a')
+        if args[3]=='terminal':
+            command="terminal"
+        elif args[3]=='synaptic':
+            command="synaptic"
+        elif args[3]=='texteditor':
+            command="x-editor"
         else:
-            from subprocess import Popen, PIPE
-            
-            
-            p = Popen(['ping', 'localhost', '-c', '3'], stdout=PIPE)
-            while True:
-                line = p.stdout.readline()
-                if not line:
-                    break
-                print line;
-                browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
+            return -1
+
+        chroot=urllib.url2pathname(args[4])
+        print "Executing "+command+" on "+chroot
+
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        
+        my_ip_for_server=self.get_my_ip_for_server()
+        #print my_ip_for_server
+        server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server)
+        
+        return 0
+
+
+        #server.run_command_on_chroot(connection_user,'chroot')
+        #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
+        #log_prepared=server.("", "LliurexMirror");
+        #print "Log_Prepared=*"+log_prepared[0:4]
+     
+        
+        #if args[3]!="xfce":
+        #    import os
+        #    p = os.popen("sudo "+args[3],"r")
+        #    while 1:
+        #        line = p.readline()
+        #        if not line: break
+        #        print line
+        #else:
+        #    from subprocess import Popen, PIPE
+        #    
+        #    
+        #    p = Popen(['ping', 'localhost', '-c', '3'], stdout=PIPE)
+        #    while True:
+        #        line = p.stdout.readline()
+        #        if not line:
+        #            break
+        #        print line;
+        #        browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
                 
-                
+    def get_my_ip_for_server(self):
+        import lliurex.net
+
+        if self.srv_ip=='127.0.0.1':
+            return '127.0.0.1'
+
+        for interface in lliurex.net.get_devices_info():
+            ip=interface['ip']
+            mask=interface['netmask']
+            ipnet=lliurex.net.get_network_ip(ip, mask)
+            ipsrvnet=lliurex.net.get_network_ip(str(self.srv_ip), mask)
+            if ipnet==ipsrvnet:
+                return ip
+
+        # If arrives here (not shuld!), return localhost
+        return '127.0.0.1'
+        pass
+
+            
     def update_config_images(self, imageData):
         
         pass

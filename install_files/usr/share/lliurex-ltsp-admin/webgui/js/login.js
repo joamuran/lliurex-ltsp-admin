@@ -18,7 +18,7 @@ function DisplayLoginWindow(){
         \
         <div id='ErrorLoginMessage' class='ErrorLoginMessage'></div>\
         <div id='ErrorLoginImage' class='ErrorLoginMessage'></div>\
-        <div class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
+        <div tabindex='0' class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
     
     appdescription=gettext("Lliurex LTSP és una solució de clients lleugers per a LliureX basada en LTSP. Des d'aquest mateix gestor podreu: \
           <ul>\
@@ -120,11 +120,22 @@ function loginFail(username){
 // Event Handlers
 // Handle events on page to python
 
-function BindLoginEventHandlers(){
-    // Click on Login Button
-        
-    $("#LoginButton").bind('click', function( event ){
-        
+
+
+// JQUERY PLUGIN TO DETECT "ENTER" KEY
+$.fn.enterKey = function (fnc) {
+    return this.each(function () {
+        $(this).keypress(function (ev) {
+            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keycode == '13') {
+                fnc.call(this, ev);
+            }
+        })
+    })
+}
+
+
+function SubmitLogin() {
         $('body').css('cursor', 'wait');  // Seem that does not run...
 
         $("#ErrorLoginMessage").empty();
@@ -135,8 +146,18 @@ function BindLoginEventHandlers(){
         {
             location.href='ltsp://login/'+escape($("#username").val())+'/'+escape($("#userpass").val())+'/'+escape($("#remoteserver").val());
         }, 0.5);
-        
+}
+
+function BindLoginEventHandlers(){
+    // Click on Login Button
+
+    $("#LoginButton").bind('click', function( event ){
+        SubmitLogin();        
     });
+
+    $("#LoginButton").enterKey(function () {
+        SubmitLogin() ;
+    })
 }
 
 function BindMainEventHandlers(){
@@ -153,5 +174,7 @@ function BindMainEventHandlers(){
        $("#MirrorManager").bind('click', function( event ){
         location.href='ltsp://MirrorManager';
     });
+
+    
 
 }

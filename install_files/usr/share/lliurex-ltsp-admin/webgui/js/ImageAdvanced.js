@@ -2,6 +2,7 @@
 var lastid=0; // To save the last image id
 //var clientData=new Object();
 var metaPkgData = new Object();
+var chrootpath="";
 
 var DesktopApps= {"Apps": [
         {"id": "synaptic",
@@ -10,7 +11,7 @@ var DesktopApps= {"Apps": [
         {"id": "terminal",
         "icon": "styles/images/gnome-terminal.png",
          "text": "Terminal"},
-                 {"id": "gedit",
+        {"id": "texteditor",
         "icon": "styles/images/accessories-text-editor.png",
          "text": "Edit File"},
         {"id": "xfce",
@@ -42,8 +43,9 @@ function ShowConsole(args) {
 }
 
 function ExecuteApp(cb) {
-    //alert("Execute "+cb.id);
-    location.href='ltsp://ExecuteInChroot/'+cb.id;
+    newlocation='ltsp://ExecuteInChroot/'+cb.id+'/'+encodeURIComponent(chrootpath);
+    //alert("Execute:"+newlocation);
+    location.href=newlocation;
 }
 
 /*function handleChange(cb) {
@@ -107,8 +109,11 @@ $(document).ready(function() {
         }
     return false;
     }*/
-    
+
+    //alert(window.location.search.substring(1).split('?')[0])
     var meta=getUrlVar('meta'); // name
+    chrootpath=getUrlVar('chroot');
+
     switch (meta) {
         case "client":
             $("#ImageDesktop").addClass("Desktop");

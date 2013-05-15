@@ -34,6 +34,7 @@ height:100%;
 }
 
 .shellContainer{
+    visibility: hidden;
     background:#000000;
     color:#ffffff;
     float: left;
