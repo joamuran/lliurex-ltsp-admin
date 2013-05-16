@@ -417,8 +417,10 @@ class LliureXLTSPAdmin:
             command="synaptic"
         elif args[3]=='texteditor':
             command="x-editor"
-        else:
-            return -1
+        elif args[3]=='launch_session':
+            command="start_session"
+        else: #Otherwise it's a "run_command" option, so, command is this.
+            command=args[3]
 
         chroot=urllib.url2pathname(args[4])
         print "Executing "+command+" on "+chroot

@@ -33,6 +33,13 @@ height:100%;
     padding: 4px;
 }
 
+.ApplyiconContainer{
+    border-radius: 5px;
+    float: left;
+    width: 136px;
+    padding: 4px;
+}
+
 .shellContainer{
     visibility: hidden;
     background:#000000;
@@ -59,6 +66,11 @@ height:100%;
     cursor: pointer;
     }
     
+.ApplyiconContainer:hover{
+    background: rgba(200,200,250,0.7);
+    border:solid thin #d5d5ff;
+    cursor: pointer;
+    }
 
 .iconImage{
     float: left;
@@ -77,7 +89,48 @@ height:100%;
     
 }
 
+#WaitingWindow{
+    display: none;
+    position: absolute; 
+    background-color: #000000;
+    /*z-index: 1;*/
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
 
+#WaitingMessage{
+    text-align: center;
+    margin-top: 100px;
+    margin-left: 150px;
+    margin-right: 150px;
+    
+    text-shadow: 0px 0px 10px #ffffff;
+    color: #ffffff;
+
+    opacity: 1 !important;
+    font-size: 1.5em;
+}
+
+#CloseButton{
+    font-size: 1.2em;
+    color: #ffffff;
+    width: 100px;
+    opacity: 1 !important;
+    background-color: #4dafff;
+    height: 35px;
+    margin: 40px 10px 10px 180px;
+    border: solid thin #2f92f5;
+    border-radius: 2px;
+    font-family: ubuntu;
+    padding: 5px 10px 0px 10px;
+}
+
+}
+#CloseButton:hover{
+    cursor:pointer !important;
+    background-color: #2f92f5 !important;
+}
 
 /*
 .InstallCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}

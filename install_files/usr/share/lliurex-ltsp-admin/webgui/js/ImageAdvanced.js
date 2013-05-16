@@ -14,6 +14,12 @@ var DesktopApps= {"Apps": [
         {"id": "texteditor",
         "icon": "styles/images/accessories-text-editor.png",
          "text": "Edit File"},
+        {"id": "run_command",
+        "icon": "styles/images/run_command.png",
+         "text": "Run Command"},
+        {"id": "launch_session",
+        "icon": "styles/images/session.png",
+         "text": "Start Session"},
         {"id": "xfce",
         "icon": "styles/images/llx-xfcelogo.png",
          "text": "Install LliureX Light Desktop"}]}
@@ -27,7 +33,7 @@ function DisplayDesktop() {
                     <div class='iconImage'><img src='"+DesktopApps.Apps[i].icon+"'/></div> \
                     <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
         }
-            AppsList=AppsList+"<div class='iconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
+            AppsList=AppsList+"<div class='ApplyiconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
                     <div class='iconImage'><img src='styles/images/lliurex-installer.png'/></div> \
                     <div class='iconText'>"+gettext('Apply to Image')+"</div> </div>";
         $("#ImageDesktop").append(AppsList);
@@ -43,9 +49,19 @@ function ShowConsole(args) {
 }
 
 function ExecuteApp(cb) {
-    newlocation='ltsp://ExecuteInChroot/'+cb.id+'/'+encodeURIComponent(chrootpath);
-    //alert("Execute:"+newlocation);
-    location.href=newlocation;
+    
+    if (cb.id=="run_command") {
+        command=prompt(gettext('Run command:'), 'xterm');
+    } else command=cb.id;
+    $('#WaitingWindow').css('display', 'block');
+
+    setTimeout(function() 
+        {
+                newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
+                //alert("Execute:"+newlocation);
+                location.href=newlocation;
+        }, 0.5);
+
 }
 
 /*function handleChange(cb) {
@@ -91,6 +107,13 @@ function ShowDetails(name){
 }
 
 */
+
+/*function BindEventHandlers(){
+    alert("123");
+
+   
+    }*/
+
 $(document).ready(function() {
     
     /*function getUrlVar(uv) {
@@ -128,8 +151,10 @@ $(document).ready(function() {
     
     DisplayDesktop();
 
-    // Bind events with actions
-    //BindEventHandlers();
+    $("#CloseButton").bind('click', function( event ){
+        $('#WaitingWindow').css('display', 'none');
+    })
+
 });
 
 // Event Dispatchers
