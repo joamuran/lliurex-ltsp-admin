@@ -43,9 +43,7 @@ function DisplayDesktop() {
 function ShowConsole(args) {
     shellMsg="<p>"+unescape(args)+"</p>";
     $("#shell").append(shellMsg);
-    //alert();
-    
-    
+    //alert();    
 }
 
 function ExecuteApp(cb) {
@@ -53,7 +51,11 @@ function ExecuteApp(cb) {
     if (cb.id=="run_command") {
         command=prompt(gettext('Run command:'), 'xterm');
     } else command=cb.id;
-    $('#WaitingWindow').css('display', 'block');
+
+    if (cb.id=="launch_session") {
+        $('#WaitingWindow').css('display', 'block');
+    }
+    
 
     setTimeout(function() 
         {

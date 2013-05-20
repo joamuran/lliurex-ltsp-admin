@@ -422,17 +422,47 @@ class LliureXLTSPAdmin:
         else: #Otherwise it's a "run_command" option, so, command is this.
             command=args[3]
 
+        # Gettint Chroot
+
         chroot=urllib.url2pathname(args[4])
         print "Executing "+command+" on "+chroot
 
+        # Configure Server LTSP connection
         server = ServerProxy("https://"+self.srv_ip+":9779")
         connection_user = (self.username,self.password)
-        
         my_ip_for_server=self.get_my_ip_for_server()
-        #print my_ip_for_server
-        server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server)
+        print my_ip_for_server
+
+        # Set up X11 Environment for Chroot, Connection to n4d in local
+        display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+        screen="800x600"
+        XServer=ServerProxy("https://localhost:9779")
         
-        return 0
+        # LOCAL X11 Server for remote CHROOT
+
+        try:
+            # PRepare X11 Xephyr environment
+            XServer.prepare_X11_applications_on_chroot(connection_user, "LTSPX11Environment", display, screen)
+            
+            # Run APP into REMOTE Server            
+            server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display)
+            
+            # Delete XServer: When Finished, delete XServer 
+            #print "Killing Window: "+str(metacityPID)
+            print ("Connection:"+str(connection_user))
+            #XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", XepId)
+            
+            #print "Metacity:"+str(metacityPID)
+            #print "Metacity PID:"+str(metacityPID['pid'])
+
+            XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", display)
+            #XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", str(XepId['pid']))
+            #print (a)
+
+        except Exception as e:
+            print ("Exception in XServer...:"+str(e))
+            return None
+        return None
 
 
         #server.run_command_on_chroot(connection_user,'chroot')
@@ -459,7 +489,10 @@ class LliureXLTSPAdmin:
         #            break
         #        print line;
         #        browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
-                
+             
+
+
+   
     def get_my_ip_for_server(self):
         import lliurex.net
 
