@@ -6,6 +6,8 @@ import sys
 import urllib
 import locale
 from xmlrpclib import *
+from ltsp_X11_environment import *
+from myltsplib import *
 
 
 import gobject
@@ -410,6 +412,8 @@ class LliureXLTSPAdmin:
      
     def onExecuteInChroot(self, args):
         import urllib
+        #import subprocess
+
         #sys.stdout = open('/tmp/stdout.txt', 'a')
         if args[3]=='terminal':
             command="terminal"
@@ -419,6 +423,10 @@ class LliureXLTSPAdmin:
             command="x-editor"
         elif args[3]=='launch_session':
             command="start_session"
+        elif args[3]=='apply':
+            print ("Update image "+urllib.url2pathname(args[4]))
+            return 0
+            pass
         else: #Otherwise it's a "run_command" option, so, command is this.
             command=args[3]
 
@@ -434,31 +442,45 @@ class LliureXLTSPAdmin:
         print my_ip_for_server
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
-        display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+        display=":47" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
         screen="800x600"
-        XServer=ServerProxy("https://localhost:9779")
-        
+
+
+        # XServer es una connexio a les x locals, no una connexio n4d!!
+        XServer=LTSPX11Environment(display, screen)
+
         # LOCAL X11 Server for remote CHROOT
 
         try:
             # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot(connection_user, "LTSPX11Environment", display, screen)
+            XServer.prepare_X11_applications_on_chroot()
+            
+            if (command=="start_session"):
+                print "#####################"
+                ret=server.prepare_chroot_for_session(connection_user, "LtspChroot",chroot)
+                print str(ret)
+                print "#####################"
+                
+                #XServer.prepare_chroot_for_session()
             
             # Run APP into REMOTE Server            
-            server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display)
-            
-            # Delete XServer: When Finished, delete XServer 
-            #print "Killing Window: "+str(metacityPID)
-            print ("Connection:"+str(connection_user))
-            #XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", XepId)
-            
-            #print "Metacity:"+str(metacityPID)
-            #print "Metacity PID:"+str(metacityPID['pid'])
+            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display)
+            #print ("OUTPUT: "+str(output['msg']))
+            if (str(output['msg'])=='127'):
+                print ("command not found")
+                browser.execute_script("alert('Command "+command+" not found!')")
 
-            XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", display)
-            #XServer.remove_X11_applications_on_chroot(connection_user, "LTSPX11Environment", str(XepId['pid']))
-            #print (a)
+                #print "ERROR: COMMAND NOT FOUND"
+            # Delete XServer: When Finished, delete XServer
+            print "UMOUNT CHROOT"
+            XServer.remove_X11_applications_on_chroot()
 
+            print "UMOUNT HOME"
+            if (command=="start_session"):
+                server.remove_session(connection_user, "LtspChroot", chroot)
+
+                #XServer.remove_session()
+            
         except Exception as e:
             print ("Exception in XServer...:"+str(e))
             return None

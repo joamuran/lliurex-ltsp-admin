@@ -34,7 +34,7 @@ function DisplayDesktop() {
                     <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
         }
             AppsList=AppsList+"<div class='ApplyiconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
-                    <div class='iconImage'><img src='styles/images/lliurex-installer.png'/></div> \
+                    <div class='iconImageApply'><img src='styles/images/lliurex-installer.png'/></div> \
                     <div class='iconText'>"+gettext('Apply to Image')+"</div> </div>";
         $("#ImageDesktop").append(AppsList);
 }

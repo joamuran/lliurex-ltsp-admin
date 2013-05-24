@@ -78,6 +78,9 @@ height:100%;
     /*padding: 4px;*/
     /*height: 70px;*/
 }
+.iconImageApply{
+    float: left;
+}
 
 .iconText{
     text-shadow: 0px 0px 2px #000000; 
