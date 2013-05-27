@@ -401,9 +401,9 @@ class LTSPX11Environment:
 			# Check if Xephir is running on :display. If so, remove it
 			self.RemoveXephyrProcess(self.display)
 			# Display on display
-			print "Display..."
+			print ("Display...")
 			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display])
-			print "on?"
+			print ("on?")
 			#pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,"-br", "2>", "/dev/null", self.display])
 			subprocess.Popen(["metacity", "--display",self.display])
 			# pause to wait metacity launches
@@ -442,27 +442,22 @@ class LTSPX11Environment:
 		try:
 
 			# Mounting /home on chroot
-			print "Let's mount home"
+			print ("Let's mount home")
 			ret=subprocess.check_output(["mount","--bind","/home/",chroot_dir+"/home/"])
-			print "Check it!"
+			print ("Check it!")
 			#ret=subprocess.check_output(["mount","-o","bind","/home",chroot_dir+"/home"])
 
-					#print "stage 1:"+str(ret)
 					# God takes we confessed
 					
 					#ret=subprocess.check_output(["mv", chroot_dir+"/var/run/dbus", chroot_dir+"/var/run/dbus.bak"])
 					#ret=subprocess.check_output(["rm", "-rf", chroot_dir+"/var/run/dbus"])
-					#print "stage 2"+str(ret)
 					#ret=subprocess.check_output(["ln", "-s", "/var/run/dbus", chroot_dir+"/var/run/dbus"])
 					#ret=subprocess.check_output(["mount","-o","bind","/var/run/dbus",chroot_dir+"/var/run/dbus"])
 
-					#print "stage 3"+str(ret)
 					#ret=subprocess.check_output(["rm", "-rf", chroot_dir+"/var/lib/dbus/machine-id"])
-					#print "stage 4"+str(ret)
 					#ret=subprocess.check_output(["ln", "-s", "/var/lib/dbus/machine-id", chroot_dir+"/var/lib/dbus/machine-id"])
 					#ret=subprocess.check_output(["mount","-o","bind","/var/lib/dbus/machine-id",chroot_dir+"/var/lib/dbus/machine-id"])
 
-					#print "stage 5"+str(ret)
 
 
 

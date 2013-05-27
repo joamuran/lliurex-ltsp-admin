@@ -76,10 +76,10 @@ class LliureXLTSPAdmin:
             ######################################
             
             
-            print "***"
-            print self.jsonclients
+            print ("***")
+            print (self.jsonclients)
         except Exception:
-            print Exception
+            print (Exception)
             self.ConnectionStatus='off'
             pass
         
@@ -92,10 +92,10 @@ class LliureXLTSPAdmin:
         server = ServerProxy("https://"+self.srv_ip+":9779")
         
         log_prepared=server.exist_log_file("", "LliurexMirror");
-        print "Log_Prepared=*"+log_prepared[0:4]
+        print ("Log_Prepared=*"+log_prepared[0:4])
         
         if (log_prepared[0:4]!='True'):
-            print "[LliureX-LTSP-Admin] Mirror File Does not Exists. Waiting..."
+            print ("[LliureX-LTSP-Admin] Mirror File Does not Exists. Waiting...")
             return True
         
         # When Log is prepared, read it
@@ -103,7 +103,7 @@ class LliureXLTSPAdmin:
         
         loglines=server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)
         self.initline=self.initline+len(loglines['file'])
-        print loglines
+        print (loglines)
         
         if len(loglines['file'])>0:
             length=len(str(loglines['file']))
@@ -111,13 +111,13 @@ class LliureXLTSPAdmin:
             browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
         
         status=server.get_status("", "LliurexMirror")
-        print "MIRROR STATUS: "+status[11:20]
+        print ("MIRROR STATUS: "+status[11:20])
         if (status[11:20]!='available'):
-            print "is NOT available"
+            print ("is NOT available")
             return True
         else:
             browser.execute_script("alert('Mirror has been updated');")
-            print "is available (Finished work!)"
+            print ("is available (Finished work!)")
             return False
 
 
@@ -126,13 +126,13 @@ class LliureXLTSPAdmin:
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
 
-        print "Updating Mirror"
+        print ("Updating Mirror")
         connection_user = (self.username,self.password)
-        print "Connection user: "+str(connection_user)
+        print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.n4dupdate(connection_user,"LliurexMirror")
-        print "End Mirror"
+        print ("End Mirror")
         
         return False
         
@@ -147,16 +147,16 @@ class LliureXLTSPAdmin:
         
         try:
             connection_user = (self.username,self.password)
-            #print "Connection user: "+str(connection_user)
+            #print ("Connection user: "+str(connection_user))
             # n4d connection to server
             # Delete Mirror Log
             self.server.prepare_log(connection_user,"LliurexMirror")
             
-            print "Setting timer log"
+            print ("Setting timer log")
             gobject.timeout_add(500, self.readlog)
-            print "Set timer log"
+            print ("Set timer log")
             
-            print "Setting timer mirror"
+            print ("Setting timer mirror")
         
             #self.n4updatemirror()
             t = threading.Thread(target=self.n4updatemirror) 
@@ -165,7 +165,7 @@ class LliureXLTSPAdmin:
             
             #self.n4updatemirror()
             #gobject.timeout_add(100, n4dupdatemirror)
-            print "Set timer mirror"
+            print ("Set timer mirror")
             
         except Exception as e:
             print str(e)
@@ -178,7 +178,7 @@ class LliureXLTSPAdmin:
     #def UpdateMirrorBackground(self):
     #    import time
     #    for i in range(1,5):
-    #        print i
+    #        print (i)
     #        #browser.execute_script("add_text_to_output('"+str(i)+"')")
     #        time.sleep(1)
     #        
@@ -205,7 +205,7 @@ class LliureXLTSPAdmin:
                         
         #file = os.path.abspath('webgui/login.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
-        #print uri
+        #print (uri)
         #browser.open_url(uri)
         # END WIP HERE...
         
@@ -250,22 +250,22 @@ class LliureXLTSPAdmin:
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
             # Authentication        
             groups=self.server.validate_user(self.username,self.password)
-            print groups
+            print (groups)
         
             if (('adm' in groups[1])or('admins' in groups[1])or('teachers' in groups[1])):
-                print "User Validated"  
+                print ("User Validated")
             
                 self.connection_user = (self.username,self.password)
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
                 
                 #status
                 exec("status="+self.server.get_status("","LliurexMirror"))
-                #print ":::::::::::"+status
+                #print (":::::::::::"+status)
                 self.mirror_installed=status['status']
                 ######################
                 ##self.mirror_installed='unavailable'
-                print self.mirror_installed
-                #print ":::::::::::"+status
+                print (self.mirror_installed)
+                #print (":::::::::::"+status)
                 
                 if self.mirror_installed=='available':
                     
@@ -302,8 +302,8 @@ class LliureXLTSPAdmin:
             #connection_user = (self.username,self.password)
             #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
         except Exception:
-            print "Exception:"
-            print Exception
+            print ("Exception:")
+            print (Exception)
             file = os.path.abspath('webgui/ServerError.html')
             uri = 'file://' + urllib.pathname2url(file)
             browser.open_url(uri)            
@@ -333,8 +333,8 @@ class LliureXLTSPAdmin:
         json_obj=json.loads(json_data)
         ###########        
         #dic=self.server.get_json_images("","LtspChroot")
-        #print dic["status"]
-        #print json.dumps(dic["images"])
+        #print (dic["status"])
+        #print (json.dumps(dic["images"]))
         ##############
         self.imagelist=json_obj;
 
@@ -342,12 +342,12 @@ class LliureXLTSPAdmin:
         #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
         
         uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
-        print uri
+        print (uri)
         browser.open_url(uri)
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
-        print '&amp;srv_ip='+self.srv_ip
+        print ('&amp;srv_ip='+self.srv_ip)
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
         
@@ -360,8 +360,8 @@ class LliureXLTSPAdmin:
     def onImageAdvanced(self, args):
         file = os.path.abspath('webgui/ImageAdvanced.html')
         id=args[3]
-        print "ARGS: "+str(args)
-        #print "IMAGELIST: "+str(self.getChrootFromImageList(id))
+        print ("ARGS: "+str(args))
+        #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
         uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))
         browser.open_url(uri)
 
@@ -375,9 +375,9 @@ class LliureXLTSPAdmin:
         return None
 
     def ClientSaveConfig(self, args):
-        #print urllib.unquote(args[3])
+        #print (urllib.unquote(args[3]))
         self.jsonclients=urllib.unquote(args[3])
-        print self.jsonclients
+        print (self.jsonclients)
         user = "joamuran" ##
         password = "lliurex" ###        
         connection_user = (user,password)
@@ -400,8 +400,8 @@ class LliureXLTSPAdmin:
         except Exception:
             pass
             
-        #print mac
-        #print hostname
+        #print (mac)
+        #print (hostname)
         
         if hostname==None:
             hostname="client-no-registrat"
@@ -433,13 +433,13 @@ class LliureXLTSPAdmin:
         # Gettint Chroot
 
         chroot=urllib.url2pathname(args[4])
-        print "Executing "+command+" on "+chroot
+        print ("Executing "+command+" on "+chroot)
 
         # Configure Server LTSP connection
         server = ServerProxy("https://"+self.srv_ip+":9779")
         connection_user = (self.username,self.password)
         my_ip_for_server=self.get_my_ip_for_server()
-        print my_ip_for_server
+        print (my_ip_for_server)
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
         display=":47" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
@@ -456,10 +456,10 @@ class LliureXLTSPAdmin:
             XServer.prepare_X11_applications_on_chroot()
             
             if (command=="start_session"):
-                print "#####################"
+                print ("#####################")
                 ret=server.prepare_chroot_for_session(connection_user, "LtspChroot",chroot)
-                print str(ret)
-                print "#####################"
+                print (str(ret))
+                print ("#####################")
                 
                 #XServer.prepare_chroot_for_session()
             
@@ -470,12 +470,12 @@ class LliureXLTSPAdmin:
                 print ("command not found")
                 browser.execute_script("alert('Command "+command+" not found!')")
 
-                #print "ERROR: COMMAND NOT FOUND"
+                #print ("ERROR: COMMAND NOT FOUND")
             # Delete XServer: When Finished, delete XServer
-            print "UMOUNT CHROOT"
+            print ("UMOUNT CHROOT")
             XServer.remove_X11_applications_on_chroot()
 
-            print "UMOUNT HOME"
+            print ("UMOUNT HOME")
             if (command=="start_session"):
                 server.remove_session(connection_user, "LtspChroot", chroot)
 
@@ -490,7 +490,7 @@ class LliureXLTSPAdmin:
         #server.run_command_on_chroot(connection_user,'chroot')
         #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
         #log_prepared=server.("", "LliurexMirror");
-        #print "Log_Prepared=*"+log_prepared[0:4]
+        #print ("Log_Prepared=*"+log_prepared[0:4])
      
         
         #if args[3]!="xfce":
@@ -499,7 +499,7 @@ class LliureXLTSPAdmin:
         #    while 1:
         #        line = p.readline()
         #        if not line: break
-        #        print line
+        #        print (line)
         #else:
         #    from subprocess import Popen, PIPE
         #    
@@ -509,7 +509,7 @@ class LliureXLTSPAdmin:
         #        line = p.stdout.readline()
         #        if not line:
         #            break
-        #        print line;
+        #        print (line);
         #        browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
              
 
@@ -548,7 +548,7 @@ if __name__ == "__main__":
         pass
     else:
         file = os.path.abspath('webgui/login.html')
-        print "CONECTION:"+ltspadmin.ConnectionStatus
+        print ("CONECTION:"+ltspadmin.ConnectionStatus)
         pass
     
     browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
@@ -558,10 +558,10 @@ if __name__ == "__main__":
     uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
    
     ## print ("Goint to "+uri)
-    print uri
+    print (uri)
     browser.open_url(uri)
    
-    print ">>"+browser.lang
+    print (">>"+browser.lang)
 
      #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
     Gtk.main()
