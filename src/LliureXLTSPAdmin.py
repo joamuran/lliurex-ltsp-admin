@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from navigator import *
+from Browser import *
 import os
 import sys
 import urllib
