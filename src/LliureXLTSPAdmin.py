@@ -6,7 +6,7 @@ import sys
 import urllib
 import locale
 from xmlrpclib import *
-from ltsp_X11_environment import *
+#from ltsp_X11_environment import *
 from myltsplib import *
 
 

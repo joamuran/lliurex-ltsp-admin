@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 8),  python-all (>= 2.6.6-3), python3-all, python-s
 Standards-Version: 3.9.3
 
 Package: lliurex-ltsp-admin
-Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}, ${python3:Depends}, python-ltsplib, xserver-xephyr
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}, ${python3:Depends}, python-ltsplib, xserver-xephyr, python-webkit, gir1.2-webkit-3.0 
 Architecture: any
 Description: LliureX LTSP GUI Administration tool.
  This package provides a fair GUI to manage LTSP
