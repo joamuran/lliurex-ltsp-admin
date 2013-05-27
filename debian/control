@@ -3,12 +3,12 @@ Section: misc
 Priority: optional
 Maintainer: Equip LliureX <lliurex@gva.es>
 Uploaders: Luis Antonio Garcia Gisbert <garcia_luigis@gva.es>, Angel Berlanas Vicente <lliurex_devel2@edu.gva.es>, Javier Garcia Escribano <garcia_javesc@gva.es>, Raul Rodrigo Segura <lliurex_devel3@edu.gva.es>, Alfons Lloret Sananton <lliurex_devel5@edu.gva.es>, Enrique Medina Gremaldos <lliurex_devel4@edu.gva.es>, David Montalva Furio <dmontalf@gmail.com>, Hector Garcia Huerta <lliurex_devel1@edu.gva.es>, Jose Alfredo Murcia Andres <joamuran@gmail.com>, Jose Carlos Garcia <garcia_josmon@gva.es>
-Build-Depends: debhelper (>= 8),  python-all (>= 2.6.6-3), python3-all, python-sphinx (>= 1.0.7+dfsg), python3-all-dev
+Build-Depends: debhelper (>= 8.0.0), python-support, python-central, python
 Standards-Version: 3.9.3
 
 Package: lliurex-ltsp-admin
-Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}, ${python3:Depends}, python-ltsplib, xserver-xephyr, python-webkit, gir1.2-webkit-3.0 
-Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-support (>= 0.90), python-ltsplib, xserver-xephyr, python-webkit, gir1.2-webkit-3.0 
+Architecture: all
 Description: LliureX LTSP GUI Administration tool.
  This package provides a fair GUI to manage LTSP
  images into an LliureX LTSP Environment.
