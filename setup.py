@@ -16,7 +16,7 @@ setup(  name            = "lliurex-ltsp-admin",
 	license		= "GPLv3",
 	platforms		= ['posix'],
 	package_dir      = {'': 'src'},
-	packages	=	find_packages(),
+	#packages	=	find_packages(),
 	py_modules         = ['LliureXLTSPAdmin', 'Browser']
 	)
 
