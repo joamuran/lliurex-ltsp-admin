@@ -202,7 +202,7 @@ class LliureXLTSPAdmin:
         #self.ConnectionStatus='on'        
         
                         
-        #file = os.path.realpath('webgui/login.html')
+        #file = os.path.abspath('webgui/login.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
         #print (uri)
         #browser.open_url(uri)
@@ -303,7 +303,7 @@ class LliureXLTSPAdmin:
         except Exception:
             print ("Exception:")
             print (Exception)
-            file = os.path.realpath('webgui/ServerError.html')
+            file = os.path.abspath('webgui/ServerError.html')
             uri = 'file://' + urllib.pathname2url(file)
             browser.open_url(uri)            
             pass
@@ -315,7 +315,7 @@ class LliureXLTSPAdmin:
         
 
     def onMirrorManager(self, args):
-        file = os.path.realpath('webgui/MirrorManager.html')
+        file = os.path.abspath('webgui/MirrorManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
         browser.open_url(uri)
         #browser.execute_script("alert('tralari');")
@@ -337,7 +337,7 @@ class LliureXLTSPAdmin:
         ##############
         self.imagelist=json_obj;
 
-        file = os.path.realpath('webgui/ImageManager.html')
+        file = os.path.abspath('webgui/ImageManager.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
         
         uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
@@ -345,19 +345,19 @@ class LliureXLTSPAdmin:
         browser.open_url(uri)
 
     def onClientManager(self, args):   
-        file = os.path.realpath('webgui/ClientManager.html')
+        file = os.path.abspath('webgui/ClientManager.html')
         print ('&amp;srv_ip='+self.srv_ip)
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
         
     def onSoftwareManager(self, args):
         ## TO DELETE!!!!!!
-        file = os.path.realpath('webgui/SoftwareManager.html')
+        file = os.path.abspath('webgui/SoftwareManager.html')
         #uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonimagesoft+'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
         
     def onImageAdvanced(self, args):
-        file = os.path.realpath('webgui/ImageAdvanced.html')
+        file = os.path.abspath('webgui/ImageAdvanced.html')
         id=args[3]
         print ("ARGS: "+str(args))
         #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
@@ -382,7 +382,7 @@ class LliureXLTSPAdmin:
         connection_user = (user,password)
         self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients)
         
-        file = os.path.realpath('webgui/ClientManager.html')
+        file = os.path.abspath('webgui/ClientManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients++'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
     
@@ -543,10 +543,10 @@ if __name__ == "__main__":
     browser = Browser(language=ltspadmin.language)
    
     if ltspadmin.ConnectionStatus=='off':
-        file = os.path.realpath('webgui/LocalServerError.html')
+        file = os.path.abspath('webgui/LocalServerError.html')
         pass
     else:
-        file = os.path.realpath('webgui/login.html')
+        file = os.path.abspath('webgui/login.html')
         print ("CONECTION:"+ltspadmin.ConnectionStatus)
         pass
     
