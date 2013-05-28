@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-from Browser import *
+from net.Lliurex.LliureXLTSPAdmin.Browser import *
 import os
 import sys
 import urllib
 import locale
 from xmlrpclib import *
 #from ltsp_X11_environment import *
-from myltsplib import *
-
+from net.Lliurex.LliureXLTSPAdmin.myltsplib import *
 
 import gobject
 
