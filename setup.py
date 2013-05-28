@@ -18,7 +18,7 @@ setup(  name            = "lliurex-ltsp-admin",
 	package_dir      = {'': 'src'},
 	packages	=	['net.Lliurex.LliureXLTSPAdmin'],
 	#package_data={'net.Lliurex.LliureXLTSPAdmin': ['webgui/*.*']},
-	data_files=['webgui/*.*']
+	data_files=['net/Lliurex/LliureXLTSPAdmin/webgui/*.*']
 	#py_modules         = ['LliureXLTSPAdmin', 'Browser']
 	)
 
