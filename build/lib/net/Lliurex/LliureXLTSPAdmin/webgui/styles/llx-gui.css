@@ -1,0 +1,160 @@
+
+/* Dialogs */
+
+#MessageArea {
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+#dialogWindow{
+    float: left;
+    text-align:justify;
+    text-justify:inter-word;
+    padding-bottom: 30px;
+    border-radius: 2px;
+    /*border: thin solid;*/
+    position: relative;
+    left: 50px;
+    top: 200px;
+    width: 700px;
+    /*height: 200px;*/
+    /*background: #ffffff;
+    color: #000000;*/
+    
+    color: #ffffff;
+    border-radius: 5px;
+    border: 1 px solid #e1e1de;
+    background: #adada2; /* Old browsers */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#adada2), color-stop(100%,#e1e1de)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #adada2 0%,#e1e1de 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom,  #adada2 0%,#e1e1de 100%); /* W3C */
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
+    
+    /*background: #ffd65e; /* Old browsers * /
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ * /
+    background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ * /
+    background: linear-gradient(to bottom,  #ffd65e 0%,#febf04 100%); /* W3C * /
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
+    
+    font-size: 0.9em;
+    box-shadow: 5px 5px 10px #333333;
+    /*cursor:pointer;*/
+
+}
+#dialogHeader{
+    padding: 3px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-shadow: 2px 2px #000000;
+    /*color: rgb(255,255,255);
+    border-bottom: thin solid #000000;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    background: #992299;*/
+}
+#dialogImg{
+    display: block;
+    width: 100px;
+    padding: 5px;
+    float: left;
+    clear: left;
+}
+
+#dialogContent{
+    color: #000000;
+    display: block;
+    height: auto;
+    padding: 10px;
+}
+
+.info{
+    font-size: 0.8em;
+    text-align: center;
+    color: #333333;
+}
+
+
+.Title{
+    font-weight: bold;
+    font-size: 1.2em;
+    padding-bottom: 30px;
+}
+
+
+.dialogListButtons{
+    float: left;
+    clear: both;
+    width: 100%;
+    padding-top: 15px;
+    /*margin: 0px -20px 0px 20px;*/
+    border-top: 1px solid #696969;
+}
+
+.dialogButton{
+    float: left;
+    color: #232323;
+    border: solid 1px #696969;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ */
+    
+    /*background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
+    border-radius: 10px;
+    padding: 2px 10px 2px 25px;
+    margin: 10px 5px 5px 5px;
+    cursor:pointer;
+    
+    box-shadow: 1px 1px 2px #232323;
+}
+
+.dialogButton:hover{
+    color: #696969;
+    border: solid 1px #696969;
+    cursor:pointer;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ */
+    
+}
+
+.dialogButton:active{
+    color: #232323;
+    border: solid 1px #232323;
+    cursor:pointer;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#696969)); /* Chrome,Safari4+ */
+    
+}
+
+input{
+    color: #232323;
+    border: solid 1px #232323;
+    border-radius: 5px;
+}
+
+select{
+ -webkit-appearance: button;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -webkit-user-select: none;
+  background-image: url(../images/select-arrow.png), 
+    -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+  background-position: center right;
+  background-repeat: no-repeat;
+  border: 1px solid #AAA;
+  color: #555;
+  font-size: inherit;
+  margin: 0;
+  overflow: hidden;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;}
+
+/*.myselect{
+    color: #232323;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d7d7d7), color-stop(100%,#b9b9b9)); /* Chrome,Safari4+ * /
+    border: solid 1px #232323;
+    border-radius: 10px;
+}*/

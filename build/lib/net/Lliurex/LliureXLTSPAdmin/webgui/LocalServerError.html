@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Error</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/ui.css">
+        
+    <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
+    <!-- load dictonaries before i18n library -->
+    <script type="text/javascript" src="./i18n/es_ES.js"></script>
+    <script type="text/javascript" src="./i18n/qcv_ES.js"></script>
+    <script type="text/javascript" src="./lib/llx-i18n.js"></script>
+    <!-- Ending locales -->
+    <script type="text/javascript" src="./lib/llx_utils.js"></script>
+    
+    <style>
+      img.center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto
+        }
+        .ErrorTitle{
+          margin-top: 30px;
+          text-align:center;
+          font-size: 1em;
+          font-weight: bold;
+          color: rgb(150,150,150);
+          text-shadow: rgb(100,100,100);
+        }
+        
+        .ErrorDescription{
+          color: rgb(150,150,150);
+          text-align: justify !important;
+          text-shadow: rgb(100,100,100);
+          font-size: 0.9em;
+          margin: 30px 100px 10px 100px !important;
+          
+        }
+        
+        .Back{background-image: url('styles/images/backwhite.png');  background-repeat: no-repeat;background-position: left center;}
+       
+        
+    </style>
+    
+    <script type="text/javascript">
+    
+    $(document).ready(function() {    
+      // Display Main Window
+      $("#MainContainer").css("display", "block");
+    $("#ErrorTitle").append(gettext("LTSP N4D Local Server Error"));
+    $("#ErrorDescription").append(gettext("Could not connect to localhost n4d service!."));
+    $("#BackButton").append(gettext("Back"));
+    });
+    </script>
+    
+  </head>
+  <body>
+    
+  <div id="AppContainer">
+  <!-- Main Container of the App -->
+    <div id="MainContainer" class="Container">
+      <div id="top"></div>
+      <div id="InitialWindow">
+        <!--div class="Title">Error</div-->
+        
+        <div style="margin-top: 100px;">
+          <img class="center" src="images/server-error.png">
+        </div>
+        <div id="ErrorMessage">
+          <div class="ErrorTitle" id="ErrorTitle"></div>
+          <div class="ErrorDescription" id="ErrorDescription"></div>
+          <div class='Button Back' id="BackButton" onclick="location.href='ltsp://reconnectN4D/';"></div>
+
+        </div>
+      
+    </div>
+
+    
+  </body>
+</html>

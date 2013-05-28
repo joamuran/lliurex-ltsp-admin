@@ -1,0 +1,105 @@
+/* LOGIN CONTAINTER */
+
+
+#ClientContent{margin-top: 20px;}
+
+.ClientConfig{
+    max-height:120px;
+    }
+.ClientDetails{
+    padding: 0px 0px 25px 0px;
+    font-size: 0.8em;
+    height: 100px;
+    display: none;
+    
+    /*border: #000000 solid thin;
+    border-radius: 10px 0px 10px 10px;*/
+    
+}
+.ClientLine{
+    float: left;
+    clear: both;
+    display: block;
+}
+
+.ClientLineInfo{
+    float: left;
+    clear: both;
+    display: none;
+    color: #f55707;
+    padding-top: 0px;
+    margin-top:-10px;
+    margin-left:360px;
+}
+
+.ClientRow{
+    text-shadow: 0px 1px 1px #333333;
+    width: 100%;
+    /*border: #000000 solid thin;
+    border-radius: 10px 10px 0px 0px;*/
+    background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
+    /*background: -webkit-linear-gradient(top, #11419b 0%,#1a5fcd 50%,#060f4b 51%,#06247d 100%);*/
+    /*border-top: solid thin #2f92f5;
+    border-bottom: solid thin #2f92f5;*/
+    color: #ffffff;
+    float: left;
+    clear: left;
+    padding: 1px 5px 1px 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-top:1px;
+    /*box-shadow: 0px 3px 3px #333333;*/
+}
+
+.ClientRowArrow{
+    /*width: 20px;*/
+    /*padding: 0px 0px 0px 25px;*/
+    display: compact;
+    float: left;
+    }
+.ClientRowArrow{cursor: pointer; }
+.NewClientRow{
+    text-shadow: 0px 1px 1px #333333; 
+    width: 100%;
+    color: #ffffff;
+    float: left;
+    clear: both;
+    padding: 1px 5px 1px 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-top:1px;
+    background: -webkit-linear-gradient(top, #7aaf0f 0%,#add737 100%);
+    border-top: solid thin #7aaf0f;
+    border-bottom: solid thin #7aaf0f;
+    
+    }
+.NewClientRow:hover{cursor: pointer;}
+
+.ClientItem{ float: left; margin: 10px 5px 10px 5px; display: block;}
+.ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
+/*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
+
+.ButtonDeleteRight{
+    float: right; margin: 0px 20px 0px 0px !important; padding: 0px 10px 0px 25px !important; z-index: 1;
+    background-image: url('images/deleteclient.png');  background-repeat: no-repeat;background-position: left center;}
+.ButtonDeleteRight:hover{cursor: pointer;}
+
+.NewClient{background-image: url('images/addclient.png');  background-repeat: no-repeat;background-position: left center;}
+.SaveChanges{background-image: url('images/applychangeswhite.png');  background-repeat: no-repeat;background-position: left center;}
+
+/*
+.ButtonDeleteRight{
+    text-shadow: 0px 1px 1px #000000; 
+    width: 50px;
+    background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
+    border-top: solid thin #2f92f5;
+    border-bottom: solid thin #2f92f5;
+    color: #ffffff;
+    clear: right;
+    font-size: 0.9em;
+    font-weight: 700;
+    float: right; margin: 1px 20px 0px 0px !important; padding: 5px 15px 7px 50px !important; z-index: 1;
+    
+    
+    }
+*/
