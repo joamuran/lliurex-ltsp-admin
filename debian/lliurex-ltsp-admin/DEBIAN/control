@@ -1,0 +1,11 @@
+Package: lliurex-ltsp-admin
+Version: 0.1
+Architecture: all
+Maintainer: Equip LliureX <lliurex@gva.es>
+Installed-Size: 1910
+Depends: python, python-support (>= 0.90), python-ltsplib, xserver-xephyr, python-webkit, gir1.2-webkit-3.0
+Section: misc
+Priority: optional
+Description: LliureX LTSP GUI Administration tool.
+ This package provides a fair GUI to manage LTSP
+ images into an LliureX LTSP Environment.
