@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: lliurex-ltsp-admin
+Version: 0.1
+Summary: GUI to manage LliureX LTSP Solution
+Home-page: https://github.com/joamuran/lliurex-ltsp-admin
+Author: Jose A. Murcia
+Author-email: joamuran@gmail.com
+License: GPLv3
+Description: UNKNOWN
+Platform: posix

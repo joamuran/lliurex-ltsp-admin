@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mirror Setup</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles/ui.css">
+    <link rel="stylesheet" href="styles/MirrorManager.css">
+    <link rel="stylesheet" href="styles/top.css">
+              
+    <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
+    <!-- load dictonaries before i18n library -->
+    <script type="text/javascript" src="./i18n/es_ES.js"></script>
+    <script type="text/javascript" src="./i18n/qcv_ES.js"></script>
+    <script type="text/javascript" src="./lib/llx-i18n.js"></script>
+    <!-- Ending locales -->
+    <script type="text/javascript" src="./js/data.js"></script>
+    <script type="text/javascript" src="./js/MirrorManager.js"></script>
+    <script type="text/javascript" src="./lib/llx_utils.js"></script>
+    <script type="text/javascript" src="./js/top.js"></script>
+    
+    
+  </head>
+  <body>
+    
+  <div id="AppContainer">
+    <!-- Main Container of the App -->
+    <div id="top">
+      <div class="MiniButtonList" id="MiniButtonList"></div>
+    </div>
+    
+    <div id="MirrorStatus" class="MirrorStatus">
+      <div class="MirrorStatusHeader" id="MirrorStatusHeader">Mirror Status</div>
+      <div class="MirrorStatusRow" id="StatusRow"></div>
+      <div class="MirrorStatusRow" id="DataRow"> </div>
+      <div class="MirrorLastRow" id="LogRow"> </div>
+      
+    </div>
+    <div id="MirrorButton"></div><div id="MirrorBtText"></div>
+    
+    
+    <div id="OutputContainer" class="MirrorStatus">
+      <div id="HeaderOutput" class="MirrorStatusHeader"></div>
+      <div id="Output" class="CommandOutput"></div>
+    </div>
+     <div id="bottom"></div>
+  </div>
+  
+
+  
+  
+ 
+   
+  </body>
+</html>
