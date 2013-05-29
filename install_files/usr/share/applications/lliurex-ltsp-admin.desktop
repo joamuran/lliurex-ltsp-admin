@@ -13,4 +13,4 @@ Terminal=false
 Icon=/usr/share/icons/X-ltsp.png
 Type=Application
 GenericName=LtspClientInfo
-Categories=LliureX-Administration;
+Categories=Settings, LliureX-Administration;
