@@ -59,6 +59,8 @@ class LliureXLTSPAdmin:
             # Connecto to n4s-server to get SRV_IP
             self.localserver=ServerProxy("https://localhost:9779")
             self.srv_ip=self.localserver.get_variable("", 'VariablesManager', 'SRV_IP')
+            if (type(self.srv_ip=='NoneType')):
+                self.srv_ip='127.0.0.1'           
             print ("srv_ip:"+self.srv_ip)
             # Now connect to n4s server on SRV_IP
                        
@@ -542,9 +544,9 @@ if __name__ == "__main__":
     # set working directory
 
     # production
-    os.chdir('/usr/share/lliurex-ltsp-admin')
+    #os.chdir('/usr/share/lliurex-ltsp-admin')
     # Github
-    #os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+    os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
 
     # Create an App instance
     ltspadmin = LliureXLTSPAdmin()
