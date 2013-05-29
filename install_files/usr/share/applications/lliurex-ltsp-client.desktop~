@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=LliureX LTSP Client Info
+Name[es]=Información del cliente LTSP de LliureX
+Name[qcv]=Informació del client LTSP de LliureX
+Comment=Gets info about LTSP client and sends it to Server
+Comment[es]=recoge información sobre el cliente LTSP para enviarla al servidor
+Comment[qcv]=Agafa informació sobre el client LTSP per enviar-la al servidor
+Exec=python /usr/share/lliurex-ltsp-client/lliurex-ltsp-client-info.py
+Terminal=false
+Icon=/usr/share/icons/X-ltsp.png
+Type=Application
+GenericName=LtspClientInfo
+Categories=LliureX-Administration;

@@ -539,7 +539,17 @@ class LliureXLTSPAdmin:
     
     
 if __name__ == "__main__":
-    ltspadmin = LliureXLTSPAdmin() 
+    # set working directory
+
+    # production
+    os.chdir('/usr/share/lliurex-ltsp-admin')
+    # Github
+    #os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+
+    # Create an App instance
+    ltspadmin = LliureXLTSPAdmin()
+    
+    # create Browser
     browser = Browser(language=ltspadmin.language)
    
     if ltspadmin.ConnectionStatus=='off':
