@@ -62,7 +62,7 @@ function ExecuteApp(cb) {
                 newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
                 //alert("Execute:"+newlocation);
                 location.href=newlocation;
-        }, 0.5);
+        }, 1);
 
 }
 

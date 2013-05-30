@@ -7,7 +7,7 @@ import urllib
 import locale
 from xmlrpclib import *
 #from ltsp_X11_environment import *
-from myltsplib import *
+from LTSPX11Environment import *
 
 import gobject
 
@@ -443,7 +443,7 @@ class LliureXLTSPAdmin:
         print (my_ip_for_server)
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
-        display=":47" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+        display=":48" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
         screen="800x600"
 
 
