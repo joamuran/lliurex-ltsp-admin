@@ -4,21 +4,21 @@ function DisplayLoginWindow(){
     loginform="<div class='FormTitle'>"+gettext("User Authentication")+"</div>\
         <div class='FormSmalText'>"+gettext("This application requires user authentication and admin privileges.")+"</div>\
         <div class='FormText'>"+gettext("User")+"</div>\
-        <div><input class='FormInput' type='text' id='username'/></div>\
+        <div><input class='FormInput' tabindex='1' type='text' id='username'/></div>\
         <div class='FormText'>"+gettext("Password")+"</div>\
-        <div><input class='FormInput' type='password' id='userpass'/></div>\
+        <div><input class='FormInput' type='password' id='userpass' tabindex='2'/></div>\
         \
                 \
         <div class='ServerBoxContainer'><div id='ServerBox' class='ServerBox'> \
         <div class='FormText'>"+gettext("Server")+"</div>\
-        <input class='FormInput' type='text' id='remoteserver' style='width:350px;' value='"+srvip+"'/></div>\
+        <input class='FormInput' tabindex='4' type='text' id='remoteserver' style='width:350px;' value='"+srvip+"'/></div>\
         </div> \
-        <div class='ServerTabContainer'><div onclick='handleServerTab()' class='ServerTab'>Advanced</div></div> \
+        <div class='ServerTabContainer'><div onclick='handleServerTab()' class='ServerTab' tabindex='3' id='AdvTab'>Advanced</div></div> \
         </div> \
         \
         <div id='ErrorLoginMessage' class='ErrorLoginMessage'></div>\
         <div id='ErrorLoginImage' class='ErrorLoginMessage'></div>\
-        <div tabindex='0' class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
+        <div tabindex='5' class='Button Login' id='LoginButton'>"+gettext("Login")+"</div>";
     
     appdescription=gettext("Lliurex LTSP és una solució de clients lleugers per a LliureX basada en LTSP. Des d'aquest mateix gestor podreu: \
           <ul>\
@@ -34,6 +34,16 @@ function DisplayLoginWindow(){
     $("#AppDescriptionText").append(appdescription);
     
     $("#LoginContainer").css("display", "block");
+  
+    $("#AdvTab").keydown(function (e) {
+        if ((e.which=='13'||e.which=='32'||e.which=='40')&&($("#ServerBox").css("display")!="block")) {
+                handleServerTab();
+        }
+    else if ((e.which=='13'||e.which=='32'||e.which=='38')&&($("#ServerBox").css("display")=="block")) {
+                handleServerTab();
+        }
+    
+    });
 }
 
 
@@ -87,9 +97,9 @@ function loginSuccess(mirror_installed){
     var mirrorData={"installed": "true", "date": "10/10/2012"}
     
     if (mirror_installed=="available"){
-        buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
-          <div class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
-          <div class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
+        buttons="<div tabindex='3' class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
+          <div tabindex='2' class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
@@ -97,7 +107,7 @@ function loginSuccess(mirror_installed){
     else{
         buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Clients")+"</div> \
           <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
-          <div class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
         }
@@ -107,8 +117,6 @@ function loginSuccess(mirror_installed){
     
     $("#LoginForm").css("display", "none");
     $("#InitialWindow").css("display", "block");
-    
-    
 }
 
 function loginFail(username){
@@ -119,7 +127,6 @@ function loginFail(username){
 
 // Event Handlers
 // Handle events on page to python
-
 
 
 // JQUERY PLUGIN TO DETECT "ENTER" KEY
@@ -162,8 +169,7 @@ function BindLoginEventHandlers(){
 
 function BindMainEventHandlers(){
    
-   
-     $("#ClientManager").bind('click', function( event ){
+    $("#ClientManager").bind('click', function( event ){
         location.href='ltsp://ClientManager';
     });
      
@@ -172,6 +178,18 @@ function BindMainEventHandlers(){
     });
       
        $("#MirrorManager").bind('click', function( event ){
+        location.href='ltsp://MirrorManager';
+    });
+
+    $("#ClientManager").enterKey(function () {
+        location.href='ltsp://ClientManager';
+    });
+     
+      $("#ImageManager").enterKey(function () {
+        location.href='ltsp://ImageManager';
+    });
+      
+       $("#MirrorManager").enterKey(function () {
         location.href='ltsp://MirrorManager';
     });
 

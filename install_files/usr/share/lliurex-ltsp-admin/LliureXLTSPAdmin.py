@@ -260,7 +260,10 @@ class LliureXLTSPAdmin:
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
                 
                 #status
-                exec("status="+self.server.get_status("","LliurexMirror"))
+                try:
+                    exec("status="+self.server.get_status("","LliurexMirror"))
+                except Exception:
+                    status={'status':'uninstalled','msg':'LliureX Mirror is not installed'}
                 #print (":::::::::::"+status)
                 self.mirror_installed=status['status']
                 ######################
@@ -284,10 +287,12 @@ class LliureXLTSPAdmin:
                         self.date=datestatus['date']
                     else:
                         self.date=""
-                    
-                else:
+                
+                elif self.mirrot_installed=='uninstalled':
                     self.abstract="Mirror Not Installed"
-                    self.date=""
+                else: # i.e. Busy
+                    self.abstract="LliureX Mirror is Working"
+                    #self.date=""
                 
                 # Launch browser    
                 browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
