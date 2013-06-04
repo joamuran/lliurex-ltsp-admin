@@ -30,10 +30,10 @@ function DisplayImageWindow(){
                     <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
-                        <div class='ButtonSel Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
-                        <div class='Button Update "+Updateable+"' id='update:"+i+"'>"+gettext("Update")+"</div>\
+                        <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
+                        <div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
-                        <div class='Button DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> "+UpdatedImage+"\
@@ -52,10 +52,10 @@ function DisplayImageWindow(){
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
-                        <div class='Button Install' id='install:"+i+"'>"+gettext("Install")+"</div>\
-                        <div class='ButtonSel Update' id='update:"+i+"'>"+gettext("Update")+"</div>\
+                        <div class='Button Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
+                        <div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
-                        <div class='ButtonSel DeleteSel' id='delete:"+i+"'>"+gettext("Delete")+"</div>\
+                        <div class='ButtonSel DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'>"+ErrorLine+" \
@@ -82,9 +82,11 @@ function DisplayImageWindow(){
         switch (command) {
             case "install":
                 console.log("You pressed on install ");
+                location.href='ltsp://CreateNewClient/'+imageid;
                 break;
             case "update":
                 console.log("You pressed on update ");
+                location.href='ltsp://UpdateImageClient/'+imageid;
                 break;
             case "adv":
                 console.log("You pressed on Advanced ");
@@ -92,6 +94,15 @@ function DisplayImageWindow(){
                 break;
             case "delete":
                 console.log("You pressed on delete ");
+                // WARNING!!!!
+                if (confirm('Are you sure you want to delete this image?')) { 
+                    if (confirm('It will delete this image completely... really?')) {
+                        if (confirm('This is your last opportunity... Sure?')) {
+                            location.href='ltsp://DeleteClient/'+imageid;
+                        }
+                    }
+                }
+                
                 break;
                 
         }

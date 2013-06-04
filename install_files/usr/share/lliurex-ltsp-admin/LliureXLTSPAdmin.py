@@ -49,9 +49,10 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ExecuteInChroot")] = 'onExecuteInChroot';
     binding[("ltsp", "reconnectN4D")] = 'onreconnectN4D';
     binding[("ltsp", "UpdateMirrorCommand")] = 'onUpdateMirrorCommand';
-    
-
-    
+    binding[("ltsp", "CreateNewClient")] = 'onCreateNewClient';
+    binding[("ltsp", "UpdateImageClient")] = 'onUpdateImageClient';
+    binding[("ltsp", "DeleteClient")] = 'onDeleteClient';
+        
     def __init__(self):
         ''' Init LTSP Admin and connects to N4D '''
         
@@ -85,24 +86,24 @@ class LliureXLTSPAdmin:
             pass
         
         
-    def readlog(self):
+    def readlog(self, n4dclass, logname):
         import os.path
         import time
         
         # Is log prepared?
         server = ServerProxy("https://"+self.srv_ip+":9779")
         
-        log_prepared=server.exist_log_file("", "LliurexMirror");
+        log_prepared=server.exist_log_file("", n4dclass);
         print ("Log_Prepared=*"+log_prepared[0:4])
         
         if (log_prepared[0:4]!='True'):
-            print ("[LliureX-LTSP-Admin] Mirror File Does not Exists. Waiting...")
+            print ("[LliureX-LTSP-Admin] Log File "+logname+" does not exists. Waiting...")
             return True
         
         # When Log is prepared, read it
-        print ("[LliureX-LTSP-Admin] Mirror File Exists. Reading...")
+        print ("[LliureX-LTSP-Admin] Log File "+logname+" File Exists. Reading...")
         
-        loglines=server.read_n4dr_log("", "N4dRemoteLog", "mirror", self.initline, self.numlines)
+        loglines=server.read_n4dr_log("", "N4dRemoteLog", logname, self.initline, self.numlines)
         self.initline=self.initline+len(loglines['file'])
         print (loglines)
         
@@ -111,13 +112,13 @@ class LliureXLTSPAdmin:
             parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>") 
             browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
         
-        status=server.get_status("", "LliurexMirror")
-        print ("MIRROR STATUS: "+status[11:20])
+        status=server.get_status("", n4dclass)
+        print ("SERVER CLASS STATUS: "+status[11:20])
         if (status[11:20]!='available'):
             print ("is NOT available")
             return True
         else:
-            browser.execute_script("alert('Mirror has been updated');")
+            browser.execute_script("alert('Operation has finished');")
             print ("is available (Finished work!)")
             return False
 
@@ -154,7 +155,7 @@ class LliureXLTSPAdmin:
             self.server.prepare_log(connection_user,"LliurexMirror")
             
             print ("Setting timer log")
-            gobject.timeout_add(500, self.readlog)
+            gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
             print ("Set timer log")
             
             print ("Setting timer mirror")
@@ -364,6 +365,9 @@ class LliureXLTSPAdmin:
         browser.open_url(uri)
         
     def onImageAdvanced(self, args):
+        '''
+        Opens The Advanced Window for a concrete id
+        '''
         file = os.path.abspath('webgui/ImageAdvanced.html')
         id=args[3]
         print ("ARGS: "+str(args))
@@ -374,6 +378,9 @@ class LliureXLTSPAdmin:
 
 
     def getChrootFromImageList(self, id):
+        '''
+        Returns the chroot directory corresponding to the image with a concrete id
+        '''
         for element in self.imagelist['images']:
             if element['id']==id:
                 return element['squashfs_dir']
@@ -415,7 +422,101 @@ class LliureXLTSPAdmin:
         browser.execute_script("setMac('"+mac+"','"+hostname+"')")
         
     
-     
+    ## OPERATIONS WITH CHROOT
+
+    def updateImage(self, image):
+        print "Updating: "+image
+        connection_user = (self.username,self.password)
+        ##print ("Connection user: "+str(connection_user))
+        ## n4d connection to server
+        ## Delete Mirror Log
+        print ("Returns: ")
+        print self.server._prepare_log("","LtspChroot")
+        print self.server._exist_log_file("","LtspChroot")
+
+        # TODO: CALL N4D CHROOT TO APPLY CHANGES TO IMAGE!!
+        
+
+        #self.server.prepare_log(connection_user,"LtspChroot")
+        #
+        #print ("Setting timer log")
+        #gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
+        #print ("Set timer log")
+        #   
+        #print ("Setting timer mirror")
+        #
+        ##self.n4updatemirror()
+        #t = threading.Thread(target=self.n4updatemirror) 
+        #t.daemon=True
+        #t.start()
+        return True
+    
+    def installXFCEonClient(self, image):
+        print ("Install XFCE over "+image)
+        
+        print ("Image is: "+urllib.unquote(image))
+
+        print ("Returns: ")
+        print self.server._prepare_log("","LtspChroot")
+        print self.server._exist_log_file("","LtspChroot")
+        # TODO: CALL N4D CHROOT TO INSTALL XFCE!!        
+
+        return True
+
+
+    def onCreateNewClient(self, args):
+
+        print "Create Image."
+        print args
+        print "End Create Image."
+
+        # Getting chroot
+        id=args[3]
+        
+        print ("Image is: "+str(self.getChrootFromImageList(id)))
+
+        print ("Returns: ")
+        print self.server._prepare_log("","LtspImage")
+        print self.server._exist_log_file("","LtspImage")
+        # TODO: CALL N4D CHROOT TO CREATE A NEW CLIENT
+
+        return True
+
+
+
+    def onUpdateImageClient(self, args):
+        print "Updating Image."
+        print args
+        print "End Updating Image."
+
+        # Getting chroot
+        id=args[3]
+        print ("Image is: "+str(self.getChrootFromImageList(id)))
+        print ("Returns: ")
+        print self.server._prepare_log("","LtspImage")
+        print self.server._exist_log_file("","LtspImage")
+        # TODO: CALL N4D CHROOT TO UPDATE SOFTWARE IN A CLIENT!!        
+
+
+
+    def onDeleteClient(self, args):
+        print "Deleting Image."
+        print args
+        print "End Deleting Image."
+
+        # Getting chroot
+        id=args[3]
+        #print ("ARGS: "+str(args))
+        print ("Image is: "+str(self.getChrootFromImageList(id)))
+        
+        print ("Returns: ")
+        print self.server._prepare_log("","LtspImage")
+        print self.server._exist_log_file("","LtspImage")
+        # TODO: CALL N4D CHROOT TO DELETA A CLIENT!!        
+        
+
+
+ 
     def onExecuteInChroot(self, args):
         import urllib
         #import subprocess
@@ -430,7 +531,11 @@ class LliureXLTSPAdmin:
         elif args[3]=='launch_session':
             command="start_session"
         elif args[3]=='apply':
-            print ("Update image "+urllib.url2pathname(args[4]))
+            # Apply changes to image!
+            self.updateImage(urllib.url2pathname(args[4]));
+        elif args[3]=='xfce':
+            self.installXFCEonClient(urllib.url2pathname(args[4]));
+
             return 0
             pass
         else: #Otherwise it's a "run_command" option, so, command is this.
@@ -519,7 +624,7 @@ class LliureXLTSPAdmin:
         #        browser.execute_script("ShowConsole('"+urllib.pathname2url(line)+"')");
              
 
-
+    ## END OPERATIONS ON CHROOT
    
     def get_my_ip_for_server(self):
         import lliurex.net
