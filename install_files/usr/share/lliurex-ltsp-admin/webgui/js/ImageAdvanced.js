@@ -4,6 +4,8 @@ var lastid=0; // To save the last image id
 var metaPkgData = new Object();
 var chrootpath="";
 
+var status="available";
+
 var DesktopApps= {"Apps": [
         {"id": "synaptic",
         "icon": "styles/images/synaptic.png",
@@ -27,6 +29,9 @@ var DesktopApps= {"Apps": [
 
 
 function DisplayDesktop() {
+    /*
+    Display icons in desktop
+    */
         var AppsList="";
         for (var i=0;i<DesktopApps.Apps.length;i++){
             AppsList=AppsList+"<div class='iconContainer' onclick='ExecuteApp(this);' id='"+DesktopApps.Apps[i].id+"'> \
@@ -40,28 +45,35 @@ function DisplayDesktop() {
 }
 
 
-function ShowConsole(args) {
+function ShowConsole(args) { /*unused?*/
     shellMsg="<p>"+unescape(args)+"</p>";
     $("#shell").append(shellMsg);
     //alert();    
 }
 
 function ExecuteApp(cb) {
+    if(status=='available') {
+        if (cb.id=="run_command") {
+            command=prompt(gettext('Run command:'), 'xterm');
+        } else command=cb.id;
     
-    if (cb.id=="run_command") {
-        command=prompt(gettext('Run command:'), 'xterm');
-    } else command=cb.id;
-
-    if (cb.id=="launch_session") {
-        $('#WaitingWindow').css('display', 'block');
+        if (cb.id=="launch_session") {
+            $('#WaitingWindow').css('display', 'block');
+        }
     }
     
 
     setTimeout(function() 
         {
+            if (command=='apply') {
+                newlocation='ltsp://ApplyChangesToImage/'+command+'/'+encodeURIComponent(chrootpath);
+                location.href=newlocation;
+                }
+            else{
                 newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
                 //alert("Execute:"+newlocation);
                 location.href=newlocation;
+            }
         }, 1);
 
 }
@@ -116,6 +128,26 @@ function ShowDetails(name){
    
     }*/
 
+
+function setStatus(newstatus){
+    status=newstatus;
+}
+
+function add_text_to_output(text) {
+    //$("#shell").hide();
+    $("#shellbox").show();
+    //alert(text)
+    $("#shell").append("<p>"+decodeURIComponent(text)+"</p>");
+
+    $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
+
+    /*console.log("<p>"+decodeURIComponent(text)+"</p>");*/
+    /*alert(decodeURIComponent(text));*/
+    
+    //$("#shell").show();
+     return true;
+}
+
 $(document).ready(function() {
     
     /*function getUrlVar(uv) {
@@ -153,17 +185,30 @@ $(document).ready(function() {
     
     DisplayDesktop();
 
+    // Hide Console
+    $("#shellbox").hide();
+
+
+
     $("#CloseButton").bind('click', function( event ){
         $('#WaitingWindow').css('display', 'none');
     })
+
+
+    $("#CloseButtonShell").bind('click', function( event ){
+        if (status=='available') {
+            $('#shellbox').css('display', 'none');
+            //$('#WaitingWindow').css('display', 'none');
+        }
+        
+    })
+
+
 
 });
 
 // Event Dispatchers
 // Functions called from python
 
-
 // Event Handlers
 // Handle events on page to python
-
-

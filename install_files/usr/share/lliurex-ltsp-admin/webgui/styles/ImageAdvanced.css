@@ -40,8 +40,33 @@ height:100%;
     padding: 4px;
 }
 
+.shellWindowContainer{
+    border-radius: 3px;
+    border: solid thin #000000;
+    background: -webkit-linear-gradient(top,  #adada2 0%,#e1e1de 100%); 
+    padding: 3px;
+    padding-bottom: 30px;
+    border-radius: 2px;
+    position: fixed;
+    left: 100px;
+    top: 200px;
+    width: 600px;
+    height: 320px;
+    float:left;
+    padding: 2px;
+}
+.shellTopContainer{
+    border-radius: 3px;
+    height:20px;
+    width: 599px;
+    margin: 0px;
+    border-radius: 3px 3px 0 0;
+    background-image:url('images/btntop.png'), -webkit-linear-gradient(top, #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
+    background-repeat: no-repeat;    
+}
+
 .shellContainer{
-    visibility: hidden;
+    /*visibility: hidden;*/
     background:#000000;
     color:#ffffff;
     float: left;
@@ -49,16 +74,17 @@ height:100%;
     font-size: 0.8em;
     text-align:justify;
     text-justify:inter-word;
-    padding-bottom: 30px;
-    border-radius: 2px;
-    position: fixed;
-    left: 100px;
-    top: 200px;
-    width: 600px;
     overflow: auto;
-    float:left;
-    
+    width: 599px;
+    margin: 0px;
+    height: 273px;
+    border-radius: 0 0 3px 3px;   
 }
+
+.shellBottomContainer{
+    text-align: center;
+}
+
 
 .iconContainer:hover{
     background: rgba(200,200,250,0.7);
@@ -92,7 +118,7 @@ height:100%;
     
 }
 
-#WaitingWindow{
+.WaitingWindow{
     display: none;
     position: absolute; 
     background-color: #000000;
@@ -127,7 +153,6 @@ height:100%;
     border-radius: 2px;
     font-family: ubuntu;
     padding: 5px 10px 0px 10px;
-}
 
 }
 #CloseButton:hover{
