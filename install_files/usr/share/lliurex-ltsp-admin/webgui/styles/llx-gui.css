@@ -71,6 +71,76 @@
     padding: 10px;
 }
 
+#ImageManagerContainer{
+    /*background: #ff00ff;*/
+    width: 800px;
+    height: 600px;
+}
+
+#ConfirmWindow{
+    font-weight: lighter;
+    font-family: ubuntu;    
+    float: right;
+    width:430px;
+    height: 600px;
+    /*background-color: rgba(255, 255, 255, 0.9)
+    /*background-image: url('../styles/images/caution.png');
+    background-repeat: no-repeat;*/
+}
+
+.ConfirmTitle{
+    margin: 50px 0px 30px 0px;
+    font-size: 1em;
+}
+
+.ConfirmMessage{
+    font-size: 0.9em;
+}
+
+.CofirmButton{
+    float: left;
+    margin-left: 100px;
+    width: 100px !important;
+    height: 40px !important;
+    margin: 50px 5px 5px 5px;
+    color: #ffffff;
+    border: solid thin #2f92f5; border-radius: 2px;font-size: 0,9em;
+    font-family: ubuntu;
+    padding: 60px 15px 10px 15px;
+    text-align: center;
+}
+.CofirmButton:hover{
+    opacity: 0.8;
+    cursor:pointer;
+}
+
+.BtInstall{
+    background-image: url('images/installwhite.png');
+    background-repeat: no-repeat;
+    /*background-size: 32px;*/
+    background-position: center 20px;
+    background-color: #4dafff;
+    background-color: #95e632;
+    border-color: #75e115;
+}
+.BtDelete{
+    background-image: url('images/deletewhite.png');
+    background-repeat: no-repeat;
+    /*background-size: 32px;*/
+    background-position: center 20px;
+    background-color: #4dafff;
+    background-color: #cf1111;
+    border-color: #900a0a;
+}
+.BtUpdate{
+    background-image: url('images/updatewhite.png');
+    background-repeat: no-repeat;
+    /*background-size: 32px;*/
+    background-position: center 20px;
+    background-color: #4dafff;
+}
+
+
 .info{
     font-size: 0.8em;
     text-align: center;
@@ -104,8 +174,7 @@
     border-radius: 10px;
     padding: 2px 10px 2px 25px;
     margin: 10px 5px 5px 5px;
-    cursor:pointer;
-    
+    cursor:pointer;   
     box-shadow: 1px 1px 2px #232323;
 }
 

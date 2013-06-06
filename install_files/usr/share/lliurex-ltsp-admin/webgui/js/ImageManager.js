@@ -82,26 +82,46 @@ function DisplayImageWindow(){
         switch (command) {
             case "install":
                 console.log("You pressed on install ");
-                location.href='ltsp://CreateNewClient/'+imageid;
+                
+                title="Install a new Client"
+                description="<p>"+gettext("You are going to install a new client based on ")+getDescForId(imageid)+".</p>";
+                description=description+"<p>"+gettext("LliureX LTSP will get a lot of packages from mirror, and it will be a long process. So, be patient, please.")+"</p>";
+                btText="I'll be patient, let's Install!"
+                action='ltsp://CreateNewClient/'+imageid;
+                DisplayConfirmWindow(title, description, btText, action, command)
+                //location.href='ltsp://CreateNewClient/'+imageid;
                 break;
             case "update":
                 console.log("You pressed on update ");
-                location.href='ltsp://UpdateImageClient/'+imageid;
+                title="Updating Client"
+                description="<p>"+gettext("You are going to update a client based on ")+getDescForId(imageid)+".</p>";
+                description=description+"<p>"+gettext("LliueX LTSP will update all the packages in the image and will regenerate it. It may take a while. Be patient, please.")+"</p>";
+                btText="I'll be patient, Update it!"
+                action='ltsp://UpdateImageClient/'+imageid;
+                DisplayConfirmWindow(title, description, btText, action, command)
+                //location.href='ltsp://UpdateImageClient/'+imageid;
                 break;
             case "adv":
                 console.log("You pressed on Advanced ");
                 location.href='ltsp://ImageAdvanced/'+imageid;
+
                 break;
             case "delete":
                 console.log("You pressed on delete ");
+                description="<p>"+gettext("You are going to deleta a client image based on ")+getDescForId(imageid)+".</p>";
+                description=description+"<p>"+gettext("It will destroy this image client (the .img file and the chroot folder), and clients won't be able to start with this image never more. Be carefull with this option, please.")+"</p>";
+                title="Delete a Client"
+                btText="I'm sure, delete it!"
+                action='ltsp://DeleteClient/'+imageid;
+                DisplayConfirmWindow(title, description, btText, action, command)
                 // WARNING!!!!
-                if (confirm('Are you sure you want to delete this image?')) { 
+                /*if (confirm('Are you sure you want to delete this image?')) { 
                     if (confirm('It will delete this image completely... really?')) {
                         if (confirm('This is your last opportunity... Sure?')) {
                             location.href='ltsp://DeleteClient/'+imageid;
                         }
                     }
-                }
+                }*/
                 
                 break;
                 
@@ -114,6 +134,35 @@ function DisplayImageWindow(){
         ----> PRova hover... en css...
         $("#"+this.id).css("box-shadow","0px 0px 5px #ffff00;");
      });*/
+}
+
+
+function DisplayConfirmWindow(title, message, btText, action, btclass) {
+    $("#content").css('display', 'none');
+    $("#ImageManagerContainer").css('background-image', 'url(styles/images/caution.png)');
+    $("#ImageManagerContainer").css('background-repeat', 'no-repeat');
+    $("#ConfirmWindow").css('display', 'block');
+    $("#ConfirmWindow").append("<div class='ConfirmTitle'>"+title+"</div>");
+    $("#ConfirmWindow").append("<div class='ConfirmMessage'>"+message+"</div>");
+    switch (btclass) {
+        case "install":
+           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtInstall'>"+btText+"</div>");
+            break;
+        case "update":
+           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtUpdate'>"+btText+"</div>");
+            break;
+        case "delete":
+           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtDelete'>"+btText+"</div>");
+            break;
+    }
+    
+    $("#ConfirmWindow").append(text);
+
+    $("#ConfirmButton").bind('click', function() {
+        /*location.href=action;*/
+        alert(action);
+    })
+    
 }
 
 $(document).ready(function() {
@@ -145,13 +194,33 @@ $(document).ready(function() {
     srv_ip=getUrlVar('srv_ip'); 
     //rv_ip=getUrlVar('mirror_installed'); // name
     
+    $("#ConfirmWindow").css('display', 'none');
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
-    
-    
-    
+     
     
     DisplayImageWindow();
 });
+
+function getDescForId(imageid){
+    switch (imageid) {
+        case "client":
+            return gettext("Classroom Client");
+            break;
+        case "desktop":
+            return gettext("LliureX Desktop");
+            break;
+        case "infantil":
+            return gettext("LliureX Infantil");
+            break;
+        case "pime":
+            return gettext("LliureX Pime");
+            break;
+        case "musica":
+            return gettext("LliureX Musica");
+            break;
+    }
+    return imageid;
+}
 
 function showDescription(id){
     
