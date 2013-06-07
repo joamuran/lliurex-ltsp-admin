@@ -423,6 +423,68 @@ class LliureXLTSPAdmin:
         
         return False
 
+    def n4dCreateClient(self, img_id, img_chroot):
+        import time
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+
+        print ("[n4dCreateClient] Creating client...")
+        connection_user = (self.username,self.password)
+        print ("Connection user: "+str(connection_user))
+        # n4d connection to server
+        
+        server.n4d_create_client(connection_user,"LtspImage",img_id, img_chroot)
+        print ("[n4dCreateClient] End Creating client...")
+        
+        return False
+
+    def n4dUpdateClient(self, img_id, img_chroot):
+        import time
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+
+        print ("[n4dUpdateClient] Updating client...")
+        connection_user = (self.username,self.password)
+        print ("Connection user: "+str(connection_user))
+        # n4d connection to server
+        
+        server.n4d_update_client(connection_user,"LtspImage",img_id, img_chroot)
+        print ("[n4dUpdateClient] End Updating Client client...")
+        
+        return False
+
+    def n4dDeleteClient(self, img_id, img_chroot):
+        import time
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+
+        print ("[n4dDeleteClient] Deleting client...")
+        connection_user = (self.username,self.password)
+        print ("Connection user: "+str(connection_user))
+        # n4d connection to server
+        
+        server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot)
+        print ("[n4dDeleteClient] End Deleting Client client...")
+        
+        return False
+
+
+    def InstallXFCE(self, img_id, img_chroot):
+        import time
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+
+        print ("[n4dModifyClient] Installing XFCE...")
+        connection_user = (self.username,self.password)
+        print ("Connection user: "+str(connection_user))
+        # n4d connection to server
+        
+        server.n4d_install_xfce(connection_user,"LtspImage",img_id, img_chroot)
+        print ("[n4dModifyClient] Installing XFCE...")
+        
+        return False
+
+
     def onApplyChangesToImage(self, args):
         import threading
 
@@ -506,51 +568,127 @@ class LliureXLTSPAdmin:
         return True
 
     def onCreateNewClient(self, args):
+        import threading
 
-        print "Create Image."
-        print args
-        print "End Create Image."
+        print ("Create Image. Args:")
+        print (args)
 
         # Getting chroot
         id=args[3]
         
-        print ("Image is: "+str(self.getChrootFromImageList(id)))
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
 
         print ("Returns: ")
         print self.server.prepare_log("","LtspImage")
         print self.server.exist_log_file("","LtspImage")
-        # TODO: CALL N4D CHROOT TO CREATE A NEW CLIENT
-
-        return True
+        
+        self.initline=0;
+        self.numlines=1000;
+        self.endline=0;        
+        self.count=0;
+        
+        try:
+            print ("[LliureX LTSP] Setting timer log")
+            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #print ("Set timer log")
+            
+            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        
+            t = threading.Thread(target=self.n4dCreateClient, args=(id, imgchroot,))
+            t.daemon=True
+            t.start()
+            
+        except Exception as e:
+            print str(e)
+            
 
     def onUpdateImageClient(self, args):
-        print "Updating Image."
-        print args
-        print "End Updating Image."
+        import threading
+
+        print ("Update Image. Args:")
+        print (args)
 
         # Getting chroot
         id=args[3]
-        print ("Image is: "+str(self.getChrootFromImageList(id)))
+        
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
+
         print ("Returns: ")
         print self.server.prepare_log("","LtspImage")
         print self.server.exist_log_file("","LtspImage")
-        # TODO: CALL N4D CHROOT TO UPDATE SOFTWARE IN A CLIENT!!        
+        
+        self.initline=0;
+        self.numlines=1000;
+        self.endline=0;        
+        self.count=0;
+        
+        try:
+            print ("[LliureX LTSP] Setting timer log")
+            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #print ("Set timer log")
+            
+            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        
+            t = threading.Thread(target=self.n4dUpdateClient, args=(id, imgchroot,))
+            t.daemon=True
+            t.start()
+            
+            #print ("Set timer ")
+            
+        except Exception as e:
+            print str(e)
+
 
     def onDeleteClient(self, args):
-        print "Deleting Image."
-        print args
-        print "End Deleting Image."
+        import threading
+
+        print ("Deleting Image. Args:")
+        print (args)
 
         # Getting chroot
         id=args[3]
-        #print ("ARGS: "+str(args))
-        print ("Image is: "+str(self.getChrootFromImageList(id)))
         
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        print ("Image is: "+imgchroot)
+
         print ("Returns: ")
         print self.server.prepare_log("","LtspImage")
         print self.server.exist_log_file("","LtspImage")
-        # TODO: CALL N4D CHROOT TO DELETA A CLIENT!!        
         
+        self.initline=0;
+        self.numlines=1000;
+        self.endline=0;        
+        self.count=0;
+        
+        try:
+            print ("[LliureX LTSP] Setting timer log")
+            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #print ("Set timer log")
+            
+            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        
+            t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,))
+            t.daemon=True
+            t.start()
+            
+            #print ("Set timer ")
+            
+        except Exception as e:
+            print str(e)
+
+
+
+
     def onExecuteInChroot(self, args):
         import urllib
         #import subprocess

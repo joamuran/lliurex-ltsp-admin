@@ -1,5 +1,7 @@
 
 var srv_ip="unknown"
+var status="available";
+
 
 function parseData(data) {
     return data.getDate()+"/"+data.getMonth()+"/"+data.getFullYear();
@@ -138,32 +140,63 @@ function DisplayImageWindow(){
 
 
 function DisplayConfirmWindow(title, message, btText, action, btclass) {
+    img_flavour="styles/images/llx_pack_desktop.png";
+
     $("#content").css('display', 'none');
     $("#ImageManagerContainer").css('background-image', 'url(styles/images/caution.png)');
     $("#ImageManagerContainer").css('background-repeat', 'no-repeat');
     $("#ConfirmWindow").css('display', 'block');
     $("#ConfirmWindow").append("<div class='ConfirmTitle'>"+title+"</div>");
     $("#ConfirmWindow").append("<div class='ConfirmMessage'>"+message+"</div>");
+    
+    img_flavour_div="<div class='img_flavour' style='background-image: url("+img_flavour+")'></div>";
+    //$("#ConfirmWindow").append("<div class='ConfirmTitle'>"+title+"</div>");
+    $("#ConfirmWindow").append(img_flavour_div);
+
     switch (btclass) {
         case "install":
-           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtInstall'>"+btText+"</div>");
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtInstall'>"+btText+"</div>");
             break;
         case "update":
-           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtUpdate'>"+btText+"</div>");
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtUpdate'>"+btText+"</div>");
             break;
         case "delete":
-           $("#ConfirmWindow").append("<div onclick='location.href=action' class='CofirmButton BtDelete'>"+btText+"</div>");
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtDelete'>"+btText+"</div>");
             break;
     }
     
     $("#ConfirmWindow").append(text);
 
-    $("#ConfirmButton").bind('click', function() {
-        /*location.href=action;*/
+
+    /*$("#ConfirmButton").bind('click', function() {
+        /*location.href=action;* /
         alert(action);
-    })
+    })*/
     
 }
+
+
+
+function PerformAction(action) {
+    /*
+    invoques action in ltsp
+    */
+    var status="working";
+    $("#shellbox").css('display', 'block');
+    location.href=action;
+}
+
+function add_text_to_output(text) {
+    /*
+    Add text to shell output, line by line
+    */
+    $("#shellbox").show();
+    $("#shell").append("<p>"+decodeURIComponent(text)+"</p>");
+    $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
+
+     return true;
+}
+
 
 $(document).ready(function() {
     //$("#EmergentMessage").hide();
@@ -195,7 +228,17 @@ $(document).ready(function() {
     //rv_ip=getUrlVar('mirror_installed'); // name
     
     $("#ConfirmWindow").css('display', 'none');
+    $("#shellbox").css('display', 'none');
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
+
+    $("#CloseButtonShell").bind('click', function( event ){
+        if (status=='available') {
+            $('#shellbox').css('display', 'none');
+            //$('#WaitingWindow').css('display', 'none');
+        }
+        
+    })
+
      
     
     DisplayImageWindow();

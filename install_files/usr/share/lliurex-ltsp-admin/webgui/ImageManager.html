@@ -21,12 +21,15 @@
     <script type="text/javascript" src="./js/data.js"></script>
     <script type="text/javascript" src="./lib/llx-gui.js"></script>
     <script type="text/javascript" src="./js/ImageManager.js"></script>
+    <!- just CSS for Shell -!>
+    <link rel="stylesheet" href="styles/ImageAdvanced.css">
     <script type="text/javascript" src="./js/top.js"></script>
     
   </head>
   <body>
       
     
+
     <div id="ImageManagerContainer" class="Container">
         <!-- Container of the Image Manager -->
         <div id="top"><div class="MiniButtonList" id="MiniButtonList"></div></div>
@@ -34,10 +37,16 @@
         <div id="bottom"></div>
         <div id="ConfirmWindow">
         </div>
-
     </div>
       
-    
+  <!-- Window with shell -->    
+  <div id="shellbox" class="shellWindowContainer">
+    <div id="shellheader" class="shellTopContainer"> </div>
+    <div id="shell" class="shellContainer"> </div>
+    <div id="CloseButtonShell" class="dialogButton" style="margin: 2px !important;">Close</div>
+  </div>
+
+
     <!-- Area for messages and dialogs -->
     <div id="MessageArea"></div>
     
