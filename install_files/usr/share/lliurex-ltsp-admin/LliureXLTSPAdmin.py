@@ -333,7 +333,7 @@ class LliureXLTSPAdmin:
             self.imagelist=json_obj;
             
             print ("CONTAINS:")
-            print str(self.imagelist)
+            print "****"+str(self.imagelist)+"*****"
     
             file = os.path.abspath('webgui/ImageManager.html')
             

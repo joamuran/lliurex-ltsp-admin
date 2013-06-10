@@ -1,10 +1,11 @@
 
 var srv_ip="unknown"
 var status="available";
+var ErrorMessage=new Array();
 
 
 function parseData(data) {
-    return data.getDate()+"/"+data.getMonth()+"/"+data.getFullYear();
+    return data.getDate()+"/"+(data.getMonth()+1)+"/"+data.getFullYear();
 }
 
 function DisplayImageWindow(){
@@ -44,8 +45,11 @@ function DisplayImageWindow(){
             </div>";
     }else{
         if (imageData.images[i].errorcode!=null) {
-              ErrorLine="<div style='width:100%;clear:both; float:left'><img src='images/error.png' /></div>\
-                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Error: "+imageData.images[i].errorcode+":"+imageData.images[i].errormsg+"</div>";
+              ErrorMessage[imageData.images[i].errorcode+i]=imageData.images[i].errormsg;
+              
+              ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' style='width:100%;clear:both; float:left'><img src='images/error.png' /></div>\
+                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
+              
         } else {ErrorLine=""}
         
         ItemList="<div class='ImageRow'> \
