@@ -181,7 +181,7 @@ function PerformAction(action) {
     /*
     invoques action in ltsp
     */
-    var status="working";
+    status="working";
     $("#shellbox").css('display', 'block');
     location.href=action;
 }
@@ -235,7 +235,7 @@ $(document).ready(function() {
         if (status=='available') {
             $('#shellbox').css('display', 'none');
             //$('#WaitingWindow').css('display', 'none');
-        }
+        } else alert(gettext("LliureX LTSP is working, please, wait and don't close this window!"));
         
     })
 
@@ -243,6 +243,10 @@ $(document).ready(function() {
     
     DisplayImageWindow();
 });
+
+function setStatus(newstatus){
+    status=newstatus;
+}
 
 function getDescForId(imageid){
     switch (imageid) {

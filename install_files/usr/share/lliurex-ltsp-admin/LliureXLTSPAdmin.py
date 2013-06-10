@@ -70,16 +70,6 @@ class LliureXLTSPAdmin:
             
             # n4d connection done in login
             
-            ## self.server = ServerProxy("https://"+self.srv_ip+":9779")
-            ## TODO !!!!!!!!!!!!!!!!
-            #user = "joamuran"
-            #password = "lliurex"
-            #connection_user = (user,password)
-            #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
-            ######################################
-            
-            
-            print ("***")
             print (self.jsonclients)
         except Exception:
             print (Exception)
@@ -118,14 +108,22 @@ class LliureXLTSPAdmin:
             print ("STATUS: ")
             print status
             print ("SERVER CLASS STATUS: "+status[11:20])
-            if (status[11:20]!='available'):
-                print ("is NOT available")
+
+                               # working 18
+            #if (status[11:20]!='available'):
+            if ((status[11:18]=='working')or(status[11:15]=='busy')):
+                print ("is WORKING")
                 return True
-            else:
+            elif (status[11:20]=='available'):
                 browser.execute_script("setStatus('available');")
                 browser.execute_script("alert('Operation has finished');")
                 print ("is available (Finished work!)")
                 return False
+            else: # status!=working and !=available ->> error!
+                browser.execute_script("setStatus('available');")
+                browser.execute_script("alert('It has produced an error in operation!');")
+                print ("Finished work with errors. Status: "+str(status))
+                
         #code
         except Exception as e:
             print ("Exception reading log. Message: "+str(e))
@@ -320,24 +318,31 @@ class LliureXLTSPAdmin:
         import simplejson as json
         #from pprint import pprint
         
-        ##########
+        '''
+        TO USE WITH FILE...
         fd=open('webgui/data.json')
         json_data=fd.read();
         fd.close()
         json_obj=json.loads(json_data)
-        ###########        
-        #dic=self.server.get_json_images("","LtspChroot")
-        #print (dic["status"])
-        #print (json.dumps(dic["images"]))
-        ##############
-        self.imagelist=json_obj;
+        print "TYPE: "+str(type(json_obj))'''
 
-        file = os.path.abspath('webgui/ImageManager.html')
-        #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(dic["images"])+'&amp;mirror_installed='+self.mirror_installed
+        try:
         
-        uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
-        print (uri)
-        browser.open_url(uri)
+            json_obj=self.server.get_json_images("","LtspChroot")
+            print "TYPE: "+str(type(json_obj))
+            self.imagelist=json_obj;
+            
+            print ("CONTAINS:")
+            print str(self.imagelist)
+    
+            file = os.path.abspath('webgui/ImageManager.html')
+            
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
+            
+            print (uri)
+            browser.open_url(uri)
+        except Exception as e:
+            print ("[LTSP Exception]"+str(e))
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
@@ -406,9 +411,12 @@ class LliureXLTSPAdmin:
             
         browser.execute_script("setMac('"+mac+"','"+hostname+"')")
 
-    ## OPERATIONS WITH CHROOT
+    ## OPERATIONS WITH CHROOT via N4D
         
     def n4dGenerateImg(self, img_chroot):
+        '''
+        Regenerates img file from a chroot via n4d
+        '''
         import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -424,6 +432,9 @@ class LliureXLTSPAdmin:
         return False
 
     def n4dCreateClient(self, img_id, img_chroot):
+        '''
+        Creates a new chroot for img_id into img_chroot, and an img file
+        '''
         import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -439,6 +450,9 @@ class LliureXLTSPAdmin:
         return False
 
     def n4dUpdateClient(self, img_id, img_chroot):
+        '''
+        Performs an lliurex-upgrade by n4d into a chroot
+        '''
         import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -454,6 +468,10 @@ class LliureXLTSPAdmin:
         return False
 
     def n4dDeleteClient(self, img_id, img_chroot):
+        '''
+        Deletes img and chroot for a client
+        '''
+
         import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -469,7 +487,10 @@ class LliureXLTSPAdmin:
         return False
 
 
-    def InstallXFCE(self, img_id, img_chroot):
+    def n4dInstallXFCE(self, img_id, img_chroot):
+        '''
+        Installs XFCE into chroot through N4D
+        '''
         import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -484,8 +505,13 @@ class LliureXLTSPAdmin:
         
         return False
 
+    ## Operations with chroot (main, uses n4d functions specified up)
 
     def onApplyChangesToImage(self, args):
+        '''
+        Regenerates img file from a chroot via n4d, calls n4dGenerateImg
+        '''
+        
         import threading
 
         #print ("Apply Changes.")
@@ -528,7 +554,8 @@ class LliureXLTSPAdmin:
             print str(e)
             
 
-
+    '''
+    DEPRECATED:
     def updateImage(self, image):
         print "********Updating: "+image
         connection_user = (self.username,self.password)
@@ -554,20 +581,56 @@ class LliureXLTSPAdmin:
         #t.daemon=True
         #t.start()
         return True
+    '''
     
-    def installXFCEonClient(self, image):
-        print ("Install XFCE over "+image)
+    def installXFCEonClient(self, args):
+        '''
+        Installx XFCE into chroot. Uses n4dInstall XFCE
+        '''
+      
+        import threading
+
+        print ("Installing XFCE:")
+        print (args)
+
+        # Getting chroot
+        id=args[3]
         
-        print ("Image is: "+urllib.unquote(image))
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
 
         print ("Returns: ")
-        print self.server.prepare_log("","LtspChroot")
-        print self.server.exist_log_file("","LtspChroot")
-        # TODO: CALL N4D CHROOT TO INSTALL XFCE!!        
+        print self.server.prepare_log("","LtspImage")
+        print self.server.exist_log_file("","LtspImage")
+        
+        self.initline=0;
+        self.numlines=1000;
+        self.endline=0;        
+        self.count=0;
+        
+        try:
+            print ("[LliureX LTSP] Setting timer log")
+            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #print ("Set timer log")
+            
+            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        
+            t = threading.Thread(target=self.n4dInstallXFCE, args=(id, imgchroot,))
+            t.daemon=True
+            t.start()
+            
+        except Exception as e:
+            print str(e)
+            
 
-        return True
 
     def onCreateNewClient(self, args):
+        '''
+        Creates a new chroot and img file. Uses n4dCreateClient.
+        '''
         import threading
 
         print ("Create Image. Args:")
@@ -607,6 +670,9 @@ class LliureXLTSPAdmin:
             
 
     def onUpdateImageClient(self, args):
+        '''
+        Performs a lliurex-upgrade into client. Uses n4dUpdateClient.
+        '''
         import threading
 
         print ("Update Image. Args:")
@@ -648,6 +714,9 @@ class LliureXLTSPAdmin:
 
 
     def onDeleteClient(self, args):
+        '''
+        Delete img file and chroot. Uses n4dDeleteClient.
+        '''
         import threading
 
         print ("Deleting Image. Args:")
@@ -686,10 +755,13 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print str(e)
 
-
+    # End Main functions to perform predefined actions in chroot
 
 
     def onExecuteInChroot(self, args):
+        '''
+        Executes some specific functions into chroot. After them, we shoud to regenerate img file.
+        '''
         import urllib
         #import subprocess
         command=""
