@@ -33,7 +33,8 @@ function DisplayDesktop() {
     Display icons in desktop
     */
         var AppsList="";
-        for (var i=0;i<DesktopApps.Apps.length;i++){
+        for (var i=0;i<DesktopApps.Apps.length;i++)
+            if (DesktopApps.Apps[i].id!="xfce" || xfce_installed!='True') {
             AppsList=AppsList+"<div class='iconContainer' onclick='ExecuteApp(this);' id='"+DesktopApps.Apps[i].id+"'> \
                     <div class='iconImage'><img src='"+DesktopApps.Apps[i].icon+"'/></div> \
                     <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
@@ -170,6 +171,7 @@ $(document).ready(function() {
     //alert(window.location.search.substring(1).split('?')[0])
     var meta=getUrlVar('meta'); // name
     chrootpath=getUrlVar('chroot');
+    xfce_installed=getUrlVar('xdesktop');
 
     switch (meta) {
         case "client":

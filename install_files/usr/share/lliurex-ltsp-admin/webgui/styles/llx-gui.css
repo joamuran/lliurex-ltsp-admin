@@ -157,6 +157,16 @@
 
 }
 
+.imgerror{
+    width:100%;
+    clear:both;
+float:left
+}
+
+.imgerror:hover{
+    cursor:pointer;
+}
+
 .info{
     font-size: 0.8em;
     text-align: center;

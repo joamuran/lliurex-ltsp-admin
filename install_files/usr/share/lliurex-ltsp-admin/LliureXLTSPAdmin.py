@@ -161,7 +161,8 @@ class LliureXLTSPAdmin:
             self.server.prepare_log(connection_user,"LliurexMirror")
             
             print ("Setting timer log")
-            gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
+            #gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
+            gobject.timeout_add(50, self.readlog,"LliurexMirror", "mirror")
             print ("Set timer log")
             
             print ("Setting timer mirror")
@@ -364,7 +365,7 @@ class LliureXLTSPAdmin:
         id=args[3]
         print ("ARGS: "+str(args))
         #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
-        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))
+        uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))+'&amp;xdesktop='+str(self.HasClientXFCEInstalled(id))
         browser.open_url(uri)
 
     def getChrootFromImageList(self, id):
@@ -376,6 +377,23 @@ class LliureXLTSPAdmin:
                 return element['squashfs_dir']
 
         return None
+
+    def HasClientXFCEInstalled(self, id):
+        '''
+        Returns true if client has installed XFCE
+        '''
+        print "get xfce client from image list..."
+        for element in self.imagelist['images']:
+            if element['id']==id:
+                if (str(element['lliurex_version']).find("xdesktop")!=-1):
+                    return True
+                else:
+                    return False
+            
+            #if element['id']==id:
+            #    return element['squashfs_dir']
+
+        return False
 
     def ClientSaveConfig(self, args):
         #print (urllib.unquote(args[3]))
@@ -539,7 +557,8 @@ class LliureXLTSPAdmin:
             
             print ("Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
             print ("Set timer log")
             
             print ("Setting timer n4dGenerateImg")
@@ -613,7 +632,8 @@ class LliureXLTSPAdmin:
         try:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -656,7 +676,8 @@ class LliureXLTSPAdmin:
         try:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -698,7 +719,8 @@ class LliureXLTSPAdmin:
         try:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -741,7 +763,8 @@ class LliureXLTSPAdmin:
         try:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")

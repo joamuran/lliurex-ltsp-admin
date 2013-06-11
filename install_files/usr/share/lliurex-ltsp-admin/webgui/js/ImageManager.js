@@ -47,7 +47,7 @@ function DisplayImageWindow(){
         if (imageData.images[i].errorcode!=null) {
               ErrorMessage[imageData.images[i].errorcode+i]=imageData.images[i].errormsg;
               
-              ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' style='width:100%;clear:both; float:left'><img src='images/error.png' /></div>\
+              ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' class='imgerror'><img src='images/error.png' /></div>\
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
               
         } else {ErrorLine=""}
@@ -159,17 +159,20 @@ function DisplayConfirmWindow(title, message, btText, action, btclass) {
 
     switch (btclass) {
         case "install":
-           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtInstall'>"+btText+"</div>");
+            msg=gettext("Creating new client image...")
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action, msg)' class='CofirmButton BtInstall'>"+btText+"</div>");
             break;
         case "update":
-           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtUpdate'>"+btText+"</div>");
+            msg=gettext("Updating packages in client image...")            
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action, msg)' class='CofirmButton BtUpdate'>"+btText+"</div>");
             break;
         case "delete":
-           $("#ConfirmWindow").append("<div onclick='PerformAction(action)' class='CofirmButton BtDelete'>"+btText+"</div>");
+            msg=gettext("Removing client image...")
+           $("#ConfirmWindow").append("<div onclick='PerformAction(action, msg)' class='CofirmButton BtDelete'>"+btText+"</div>");
             break;
     }
     
-    $("#ConfirmWindow").append(text);
+    //$("#ConfirmWindow").append(text);
 
 
     /*$("#ConfirmButton").bind('click', function() {
@@ -181,11 +184,13 @@ function DisplayConfirmWindow(title, message, btText, action, btclass) {
 
 
 
-function PerformAction(action) {
+function PerformAction(action, Message) {
     /*
     invoques action in ltsp
     */
+    if (Message === undefined) Message = "Working...";
     status="working";
+    $("#shellheader").append("<span>"+Message+"</span>");
     $("#shellbox").css('display', 'block');
     location.href=action;
 }
@@ -194,8 +199,20 @@ function add_text_to_output(text) {
     /*
     Add text to shell output, line by line
     */
+//[llxptspmsg] Stage 2 of 2. Regenerating client
+
+    htmltext=decodeURIComponent(text);
+
+    lines=htmltext.split('<br />');
+    for (i=0;i<lines.length;i++) {
+            if (lines[i].substr(0,12)=="[llxptspmsg]"){
+                $("#shellheader").empty();
+                $("#shellheader").append("<span>"+lines[i].substr(12)+"</span>");
+            }
+    }
+
     $("#shellbox").show();
-    $("#shell").append("<p>"+decodeURIComponent(text)+"</p>");
+    $("#shell").append("<p>"+htmltext+"</p>");
     $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
 
      return true;
