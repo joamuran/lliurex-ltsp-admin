@@ -162,7 +162,7 @@ class LliureXLTSPAdmin:
             
             print ("Setting timer log")
             #gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
-            gobject.timeout_add(50, self.readlog,"LliurexMirror", "mirror")
+            gobject.timeout_add(300, self.readlog,"LliurexMirror", "mirror")
             print ("Set timer log")
             
             print ("Setting timer mirror")
@@ -253,7 +253,6 @@ class LliureXLTSPAdmin:
             
                 self.connection_user = (self.username,self.password)
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
-                
                 #status
                 try:
                     exec("status="+self.server.get_status("","LliurexMirror"))
@@ -265,7 +264,6 @@ class LliureXLTSPAdmin:
                 ##self.mirror_installed='unavailable'
                 print (self.mirror_installed)
                 #print (":::::::::::"+status)
-                
                 if self.mirror_installed=='available':
                     
                     # Abstract
@@ -302,9 +300,9 @@ class LliureXLTSPAdmin:
             
             #connection_user = (self.username,self.password)
             #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
-        except Exception:
+        except Exception as e:
             print ("Exception:")
-            print (Exception)
+            print (e)
             file = os.path.abspath('webgui/ServerError.html')
             uri = 'file://' + urllib.pathname2url(file)
             browser.open_url(uri)            
@@ -569,7 +567,7 @@ class LliureXLTSPAdmin:
             print ("Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
             #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(300, self.readlog,"LtspImage", "lstpimages")
             print ("Set timer log")
             
             print ("Setting timer n4dGenerateImg")
@@ -644,7 +642,7 @@ class LliureXLTSPAdmin:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
             #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(300, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -688,7 +686,7 @@ class LliureXLTSPAdmin:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
             #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(300, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -731,7 +729,7 @@ class LliureXLTSPAdmin:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
             #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(300, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
@@ -777,7 +775,7 @@ class LliureXLTSPAdmin:
             print ("[LliureX LTSP] Setting timer log")
             # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
             #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(50, self.readlog,"LtspImage", "lstpimages")
+            gobject.timeout_add(300, self.readlog,"LtspImage", "lstpimages")
             #print ("Set timer log")
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")

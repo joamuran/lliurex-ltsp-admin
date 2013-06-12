@@ -13,7 +13,9 @@ class Browser:
         self.window.connect("destroy",Gtk.main_quit)
         self.splitter = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
         self.window.add(self.splitter)
+        self.window.set_icon_from_file("/usr/share/icons/X-ltsp-admin.png")
         self.lang=language
+        
 
         #create the WebView
         self.view = WebKit.WebView()
