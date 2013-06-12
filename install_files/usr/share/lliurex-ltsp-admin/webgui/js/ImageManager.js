@@ -46,11 +46,34 @@ function DisplayImageWindow(){
     }else{
         if (imageData.images[i].errorcode!=null) {
               ErrorMessage[imageData.images[i].errorcode+i]=imageData.images[i].errormsg;
-              
-              ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' class='imgerror'><img src='images/error.png' /></div>\
+              errorDescription='Error';
+            ErrorLine="<div onclick='MyAlert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"],errorDescription)' class='imgerror'><img src='images/error.png' /></div>\
+            <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
+
+              /*ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' class='imgerror'><img src='images/error.png' /></div>\
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
-              
-        } else {ErrorLine=""}
+              */
+
+        ItemList="<div class='ImageRow'> \
+                <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
+                <div class='ImageDetail'> \
+                    <div class='ImageName'>"+imageData.images[i].name+"</div>\
+                    <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
+                    <div class='ButtonList'> \
+                        <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
+                        <div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                    </div>\
+                </div>\
+                <div class='ImageStatus'>"+ErrorLine+" \
+                </div> \
+            </div>";
+
+
+        } else {
+
+        ErrorLine=""
         
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
@@ -67,7 +90,7 @@ function DisplayImageWindow(){
                 <div class='ImageStatus'>"+ErrorLine+" \
                 </div> \
             </div>";
-    }
+    }}
     $("#content").append(ItemList);
     
     /*$("#desc"+i).bind('click', function() {
@@ -183,7 +206,6 @@ function DisplayConfirmWindow(title, message, btText, action, btclass) {
 }
 
 
-
 function PerformAction(action, Message) {
     /*
     invoques action in ltsp
@@ -256,7 +278,7 @@ $(document).ready(function() {
         if (status=='available') {
             $('#shellbox').css('display', 'none');
             //$('#WaitingWindow').css('display', 'none');
-        } else alert(gettext("LliureX LTSP is working, please, wait and don't close this window!"));
+        } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
         
     })
 

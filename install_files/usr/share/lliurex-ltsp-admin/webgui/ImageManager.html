@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="styles/ui.css">
     <link rel="stylesheet" href="styles/llx-gui.css">
     <link rel="stylesheet" href="styles/top.css">
-
-      
-        
+    <link type="text/css" href="styles/overcast/jquery-ui-1.8.24.custom.css" rel="stylesheet" />
+  
     <script type="text/javascript" src="./lib/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="./lib/jquery.json-2.4.js"></script>
+    <script type="text/javascript" src="./lib/jquery-ui-1.8.24.custom.min.js"></script>
+
 
     <!-- load dictonaries before i18n library -->
     <script type="text/javascript" src="./i18n/es_ES.js"></script>
@@ -18,8 +19,8 @@
     <script type="text/javascript" src="./lib/llx-i18n.js"></script>
     <!-- Ending locales -->
     <script type="text/javascript" src="./lib/llx_utils.js"></script>
-    <script type="text/javascript" src="./js/data.js"></script>
     <script type="text/javascript" src="./lib/llx-gui.js"></script>
+    <script type="text/javascript" src="./js/data.js"></script>
     <script type="text/javascript" src="./js/ImageManager.js"></script>
     <!- just CSS for Shell -!>
     <link rel="stylesheet" href="styles/ImageAdvanced.css">
@@ -27,9 +28,8 @@
     
   </head>
   <body>
-      
-    
-
+  
+  
     <div id="ImageManagerContainer" class="Container">
         <!-- Container of the Image Manager -->
         <div id="top"><div class="MiniButtonList" id="MiniButtonList"></div></div>
@@ -38,7 +38,7 @@
         <div id="ConfirmWindow">
         </div>
     </div>
-      
+
   <!-- Window with shell -->    
   <div id="shellbox" class="shellWindowContainer">
     <div id="shellheader" class="shellTopContainer"> </div>
@@ -49,6 +49,7 @@
 
     <!-- Area for messages and dialogs -->
     <div id="MessageArea"></div>
+    <div id="dialog" title=""></div>
     
   </body>
 </html>

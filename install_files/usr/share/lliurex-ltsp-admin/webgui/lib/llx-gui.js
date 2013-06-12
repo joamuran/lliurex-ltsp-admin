@@ -1,4 +1,49 @@
 
+
+
+$(function(){
+    // Dialog
+    $('#dialog').dialog({
+	autoOpen: false,
+	width: 500,
+	buttons: {
+		/*"Ok": function() {
+			$(this).dialog("close");
+		},*/
+		"Cancel": function() {
+			$(this).dialog("close");
+		}
+	},
+        /*modal: true,*/
+        closeOnEscape: false
+});
+
+    // Dialog Link
+    $('#dialog_link').click(function(){
+            $('#dialog').dialog('open');
+    	return false;
+    });
+    
+    //hover states on the static widgets
+        $('#dialog_link, ul#icons li').hover(
+    	function() { $(this).addClass('ui-state-hover'); },
+            function() { $(this).removeClass('ui-state-hover'); }
+        );
+    });
+    
+function MyAlert(text, title) {
+    $('#dialog').empty();
+    $('#dialog').append("<p>"+text+"</p>");
+    $('#dialog').dialog('open');
+    $("#dialog" ).dialog( "option", "title", title );
+    /*$( "#dialog" ).dialog( "option", "modal", true );*/
+    return false;
+}
+
+// END JQUERY DIALOG
+
+
+
 function ShowDialog(title, text, image, buttons, tip, callback){
     /*title=imageData.images[id].name;
     text=imageData.images[id].desc;

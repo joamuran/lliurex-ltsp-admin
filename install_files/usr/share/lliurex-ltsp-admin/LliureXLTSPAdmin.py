@@ -366,6 +366,7 @@ class LliureXLTSPAdmin:
         print ("ARGS: "+str(args))
         #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
         uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))+'&amp;xdesktop='+str(self.HasClientXFCEInstalled(id))
+        print "tralari"
         browser.open_url(uri)
 
     def getChrootFromImageList(self, id):
@@ -375,6 +376,16 @@ class LliureXLTSPAdmin:
         for element in self.imagelist['images']:
             if element['id']==id:
                 return element['squashfs_dir']
+
+        return None
+
+    def getImagenameFromImageList(self, id):
+        '''
+        Returns the chroot directory corresponding to the image with a concrete id
+        '''
+        for element in self.imagelist['images']:
+            if element['id']==id:
+                return element['image_file']
 
         return None
 
@@ -480,12 +491,12 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4d_update_client(connection_user,"LtspImage",img_id, img_chroot)
+        server.n4d_update_client(connection_user,"LtspImage",img_id, img_chroot, connection_user)
         print ("[n4dUpdateClient] End Updating Client client...")
         
         return False
 
-    def n4dDeleteClient(self, img_id, img_chroot):
+    def n4dDeleteClient(self, img_id, img_chroot, img_file):
         '''
         Deletes img and chroot for a client
         '''
@@ -499,7 +510,7 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot)
+        server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
         print ("[n4dDeleteClient] End Deleting Client client...")
         
         return False
@@ -518,7 +529,7 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4d_install_xfce(connection_user,"LtspImage",img_id, img_chroot)
+        server.n4d_install_xfce(connection_user,"LtspImage",img_id, img_chroot, connection_user)
         print ("[n4dModifyClient] Installing XFCE...")
         
         return False
@@ -749,6 +760,8 @@ class LliureXLTSPAdmin:
         
         # Getting chroot
         imgchroot=str(self.getChrootFromImageList(id))
+        img_client=str(self.getImagenameFromImageList(id))
+
         print ("Image is: "+imgchroot)
 
         print ("Returns: ")
@@ -769,7 +782,7 @@ class LliureXLTSPAdmin:
             
             print ("[LliureX LTSP] Setting timer for n4d Create Client")
         
-            t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,))
+            t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,img_client,))
             t.daemon=True
             t.start()
             
