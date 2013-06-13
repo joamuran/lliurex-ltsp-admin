@@ -1,8 +1,8 @@
 lliurex-ltsp-admin (0.9) precise; urgency=low
 
-  * Functionality suported: Managing mirror, images and clients. Detecting bugs for first version.
+  * Pre Release Candidate.
 
- -- joamuran <joamuran@Toshi>  Thu, 13 Jun 2013 21:34:07 +0200
+ -- joamuran <joamuran@gmail.com>  Thu, 13 Jun 2013 21:34:07 +0200
 
 lliurex-ltsp-admin (0.1) precise; urgency=low
 

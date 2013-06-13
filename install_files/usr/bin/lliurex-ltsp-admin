@@ -1,1 +1,2 @@
+#!/bin/sh
 python /usr/share/lliurex-ltsp-admin/LliureXLTSPAdmin.py
