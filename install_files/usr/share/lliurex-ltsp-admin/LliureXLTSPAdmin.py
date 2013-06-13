@@ -139,7 +139,7 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4dupdate(connection_user,"LliurexMirror")
+        server.n4dupdate(connection_user,"LliurexMirrorNonGtk")
         print ("End Mirror")
         
         return False
@@ -158,11 +158,11 @@ class LliureXLTSPAdmin:
             #print ("Connection user: "+str(connection_user))
             # n4d connection to server
             # Delete Mirror Log
-            self.server.prepare_log(connection_user,"LliurexMirror")
+            self.server.prepare_log(connection_user,"LliurexMirrorNonGtk")
             
             print ("Setting timer log")
-            #gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
-            gobject.timeout_add(300, self.readlog,"LliurexMirror", "mirror")
+            #gobject.timeout_add(500, self.readlog,"LliurexMirrorNonGtk", "mirror")
+            gobject.timeout_add(300, self.readlog,"LliurexMirrorNonGtk", "mirror")
             print ("Set timer log")
             
             print ("Setting timer mirror")
@@ -255,7 +255,7 @@ class LliureXLTSPAdmin:
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
                 #status
                 try:
-                    exec("status="+self.server.get_status("","LliurexMirror"))
+                    exec("status="+self.server.get_status("","LliurexMirrorNonGtk"))
                 except Exception:
                     status={'status':'uninstalled','msg':'LliureX Mirror is not installed'}
                 #print (":::::::::::"+status)
@@ -275,13 +275,13 @@ class LliureXLTSPAdmin:
                         pass
         
                     # Date
-                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirror"))
+                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))
                     if datestatus['status']:
                         self.date=datestatus['date']
                     else:
                         self.date=""
                 
-                elif self.mirrot_installed=='uninstalled':
+                elif self.mirror_installed=='uninstalled':
                     self.abstract="Mirror Not Installed"
                 else: # i.e. Busy
                     self.abstract="LliureX Mirror is Working"
@@ -599,7 +599,7 @@ class LliureXLTSPAdmin:
         #self.server.prepare_log(connection_user,"LtspChroot")
         #
         #print ("Setting timer log")
-        #gobject.timeout_add(500, self.readlog,"LliurexMirror", "mirror")
+        #gobject.timeout_add(500, self.readlog,"LliurexMirrorNonGtk", "mirror")
         #print ("Set timer log")
         #   
         #print ("Setting timer mirror")
@@ -878,7 +878,7 @@ class LliureXLTSPAdmin:
 
         #server.run_command_on_chroot(connection_user,'chroot')
         #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
-        #log_prepared=server.("", "LliurexMirror");
+        #log_prepared=server.("", "LliurexMirrorNonGtk");
         #print ("Log_Prepared=*"+log_prepared[0:4])
      
         
@@ -932,9 +932,9 @@ if __name__ == "__main__":
     # set working directory
 
     # production
-    #os.chdir('/usr/share/lliurex-ltsp-admin')
+    os.chdir('/usr/share/lliurex-ltsp-admin')
     # Github
-    os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+    ##os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
 
     # Create an App instance
     ltspadmin = LliureXLTSPAdmin()

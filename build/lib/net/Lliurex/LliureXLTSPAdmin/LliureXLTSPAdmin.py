@@ -90,7 +90,7 @@ class LliureXLTSPAdmin:
         # Is log prepared?
         server = ServerProxy("https://"+self.srv_ip+":9779")
         
-        log_prepared=server.exist_log_file("", "LliurexMirror");
+        log_prepared=server.exist_log_file("", "LliurexMirrorNonGtk");
         print ("Log_Prepared=*"+log_prepared[0:4])
         
         if (log_prepared[0:4]!='True'):
@@ -109,7 +109,7 @@ class LliureXLTSPAdmin:
             parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>") 
             browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
         
-        status=server.get_status("", "LliurexMirror")
+        status=server.get_status("", "LliurexMirrorNonGtk")
         print ("MIRROR STATUS: "+status[11:20])
         if (status[11:20]!='available'):
             print ("is NOT available")
@@ -130,7 +130,7 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4dupdate(connection_user,"LliurexMirror")
+        server.n4dupdate(connection_user,"LliurexMirrorNonGtk")
         print ("End Mirror")
         
         return False
@@ -149,7 +149,7 @@ class LliureXLTSPAdmin:
             #print ("Connection user: "+str(connection_user))
             # n4d connection to server
             # Delete Mirror Log
-            self.server.prepare_log(connection_user,"LliurexMirror")
+            self.server.prepare_log(connection_user,"LliurexMirrorNonGtk")
             
             print ("Setting timer log")
             gobject.timeout_add(500, self.readlog)
@@ -258,7 +258,7 @@ class LliureXLTSPAdmin:
                 self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
                 
                 #status
-                exec("status="+self.server.get_status("","LliurexMirror"))
+                exec("status="+self.server.get_status("","LliurexMirrorNonGtk"))
                 #print (":::::::::::"+status)
                 self.mirror_installed=status['status']
                 ######################
@@ -277,7 +277,7 @@ class LliureXLTSPAdmin:
                         pass
         
                     # Date
-                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirror"))
+                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))
                     if datestatus['status']:
                         self.date=datestatus['date']
                     else:
@@ -488,7 +488,7 @@ class LliureXLTSPAdmin:
 
         #server.run_command_on_chroot(connection_user,'chroot')
         #self.jsonclients=self.server.get_ltsp_conf(connection_user,'LtspClientConfig')
-        #log_prepared=server.("", "LliurexMirror");
+        #log_prepared=server.("", "LliurexMirrorNonGtk");
         #print ("Log_Prepared=*"+log_prepared[0:4])
      
         
