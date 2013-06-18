@@ -932,9 +932,9 @@ if __name__ == "__main__":
     # set working directory
 
     # production
-    os.chdir('/usr/share/lliurex-ltsp-admin')
+    #os.chdir('/usr/share/lliurex-ltsp-admin')
     # Github
-    ##os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+    os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
 
     # Create an App instance
     ltspadmin = LliureXLTSPAdmin()

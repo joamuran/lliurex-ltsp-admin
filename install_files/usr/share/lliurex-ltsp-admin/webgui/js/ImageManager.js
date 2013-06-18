@@ -46,7 +46,9 @@ function DisplayImageWindow(){
     }else{
         if (imageData.images[i].errorcode!=null) {
               ErrorMessage[imageData.images[i].errorcode+i]=imageData.images[i].errormsg;
-              errorDescription='Error';
+
+        if (imageData.images[i].errortype=="ERROR") {        
+            errorDescription='Error';
             ErrorLine="<div onclick='MyAlert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"],errorDescription)' class='imgerror'><img src='images/error.png' /></div>\
             <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
 
@@ -54,7 +56,7 @@ function DisplayImageWindow(){
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
               */
 
-        ItemList="<div class='ImageRow'> \
+            ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
@@ -69,6 +71,33 @@ function DisplayImageWindow(){
                 <div class='ImageStatus'>"+ErrorLine+" \
                 </div> \
             </div>";
+        } else{
+        // IT IS A WARNING
+            errorDescription='Warning';
+            Updateable="Updateable"
+            ErrorLine="<div onclick='MyAlert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"],errorDescription)' class='imgerror'><img src='images/warning.png' /></div>\
+            <div style='width:100%;clear:both; float:left; color: #aaaa11'>Warning. Click for details.</div>";
+
+              /*ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' class='imgerror'><img src='images/error.png' /></div>\
+                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
+              */
+
+            ItemList="<div class='ImageRow'> \
+                <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
+                <div class='ImageDetail'> \
+                    <div class='ImageName'>"+imageData.images[i].name+"</div>\
+                    <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
+                    <div class='ButtonList'> \
+                        <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
+                        <div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                    </div>\
+                </div>\
+                <div class='ImageStatus'>"+ErrorLine+" \
+                </div> \
+            </div>";
+            }
 
 
         } else {
