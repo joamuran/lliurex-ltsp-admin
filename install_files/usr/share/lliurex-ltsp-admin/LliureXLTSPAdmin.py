@@ -560,13 +560,19 @@ class LliureXLTSPAdmin:
 
         import threading
 
-        browser.execute_script("add_text_to_output('Going to regenerate img...')");
-
-
+        
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
+        ret_value=str(urllib.unquote(args[5]))
         #print "id="+id
         print ("Image is: "+imgchroot)
+        
+        #print ("RET="+str(urllib.unquote(args[5])))
+        
+        if (ret_value=='cancel'):
+            return False;
+        
+        browser.execute_script("add_text_to_output('Going to regenerate img...')");
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
         # Check if exists enough space on disk

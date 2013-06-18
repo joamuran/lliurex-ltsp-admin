@@ -158,7 +158,7 @@ function AskWhatToDoIfNotEnoughSpace(file, space) {
               (space*3)/1000000+" GB. There are only XX Mb on disk."),
              gettext("Not enough space"),
             function(ret){
-                newlocation='ltsp://ApplyChangesToImage/apply/'+encodeURIComponent(chrootpath);
+                newlocation='ltsp://ApplyChangesToImage/apply/'+encodeURIComponent(chrootpath)+'/'+ret;
                 location.href=newlocation;
             });
 
