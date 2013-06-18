@@ -3,19 +3,18 @@
 
 $(function(){
     // Dialog
-    $('#dialog').dialog({
+    $('#dialog-modal').dialog({
 	autoOpen: false,
 	width: 500,
-	buttons: {
+	/*buttons: {
 		/*"Ok": function() {
 			$(this).dialog("close");
-		},*/
+		},* /
 		"Cancel": function() {
 			$(this).dialog("close");
 		}
-	},
-        /*modal: true,*/
-        closeOnEscape: false
+	},*/
+        //closeOnEscape: false
 });
 
     // Dialog Link
@@ -31,16 +30,42 @@ $(function(){
         );
     });
     
+
 function MyAlert(text, title) {
-    $('#dialog').empty();
-    $('#dialog').append("<p>"+text+"</p>");
-    $('#dialog').dialog('open');
-    $("#dialog" ).dialog( "option", "title", title );
+    $('#dialog-modal').empty();
+    $('#dialog-modal').append("<p>"+text+"</p>");
+    $('#dialog-modal').dialog('open');
+    $('#dialog-modal').dialog( "option", "title", title );
+    $( "#dialog-modal" ).dialog( "option", "modal", true );
+    return false;
+}
+
+function MyConfirm(text, title, callback) {
+    $('#dialog-modal').empty();
+    $('#dialog-modal').append("<span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>");
+    $('#dialog-modal').append("<p>"+text+"</p>");
+    $('#dialog-modal').dialog('open');
+    $('#dialog-modal').dialog( "option", "title", title );
+    /*$('#dialog-modal').dialog( "option", "modal", true );*/
+    $('#dialog-modal').dialog( "option", "buttons",
+        {Ok: function() {
+            callback("ok");
+            $( this ).dialog( "close" );
+            
+        },
+        Cancel: function() {
+            callback("cancel");
+            $( this ).dialog( "close" );
+            
+        }
+     }
+    )
+
     /*$( "#dialog" ).dialog( "option", "modal", true );*/
     return false;
 }
 
-// END JQUERY DIALOG
+// END JQUERY DIALOGs
 
 
 

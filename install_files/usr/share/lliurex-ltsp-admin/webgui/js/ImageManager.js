@@ -150,10 +150,12 @@ function DisplayImageWindow(){
                 //location.href='ltsp://CreateNewClient/'+imageid;
                 break;
             case "update":
+
+
                 console.log("You pressed on update ");
                 title="Updating Client"
                 description="<p>"+gettext("You are going to update a client based on ")+getDescForId(imageid)+".</p>";
-                description=description+"<p>"+gettext("LliueX LTSP will update all the packages in the image and will regenerate it. It may take a while. Be patient, please.")+"</p>";
+                description=description+"<p>"+gettext("LliureX LTSP will update all the packages in the image and will regenerate it. It may take a while. Be patient, please.")+"</p>";
                 btText="I'll be patient, Update it!"
                 action='ltsp://UpdateImageClient/'+imageid;
                 DisplayConfirmWindow(title, description, btText, action, command)

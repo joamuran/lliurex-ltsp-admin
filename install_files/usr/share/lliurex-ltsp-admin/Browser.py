@@ -44,7 +44,8 @@ class Browser:
         self.view.open(url+"?lang="+self.lang)
         
     def execute_script(self, script):
-        self.view.execute_script(script)
+        return (self.view.execute_script(script))
+        
         
     
     def connectEvents(self, event, action):

@@ -67,7 +67,7 @@ function ExecuteApp(cb) {
     setTimeout(function() 
         {
             if (command=='apply') {
-                newlocation='ltsp://ApplyChangesToImage/'+command+'/'+encodeURIComponent(chrootpath);
+                newlocation='ltsp://ApplyChangesToImageWithCheck/'+command+'/'+encodeURIComponent(chrootpath);
                 location.href=newlocation;
                 }
             else{
@@ -147,6 +147,28 @@ function add_text_to_output(text) {
     
     //$("#shell").show();
      return true;
+}
+
+function AskWhatToDoIfNotEnoughSpace(file, space) {
+    //alert("123123123")
+    //return true;
+    
+    MyConfirm(gettext("There is no enough free space on disk! The image "+
+              file+" takes "+(space)/1000000+ "GB, so there is need "+
+              (space*3)/1000000+" GB. There are only XX Mb on disk."),
+             gettext("Not enough space"),
+            function(ret){
+                newlocation='ltsp://ApplyChangesToImage/apply/'+encodeURIComponent(chrootpath);
+                location.href=newlocation;
+            });
+
+    
+    //wait a moment
+
+    //while (ret==undefined) {
+        // waiting...
+    //}
+    
 }
 
 $(document).ready(function() {

@@ -52,6 +52,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "CreateNewClient")] = 'onCreateNewClient';
     binding[("ltsp", "UpdateImageClient")] = 'onUpdateImageClient';
     binding[("ltsp", "DeleteClient")] = 'onDeleteClient';
+    binding[("ltsp", "ApplyChangesToImageWithCheck")] = 'onApplyChangesToImageWithCheck';
     binding[("ltsp", "ApplyChangesToImage")] = 'onApplyChangesToImage';
 
     def __init__(self):
@@ -534,22 +535,44 @@ class LliureXLTSPAdmin:
 
     ## Operations with chroot (main, uses n4d functions specified up)
 
-    def onApplyChangesToImage(self, args):
+    def onApplyChangesToImageWithCheck(self, args):
         '''
         Regenerates img file from a chroot via n4d, calls n4dGenerateImg
-        '''
+        '''        
+        # Getting chroot
+        imgchroot=str(urllib.unquote(args[4]))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
         
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        # Check if exists enough space on disk
+        connection_user = (self.username,self.password)
+        spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
+        
+        if (spacefree['status']==False):
+            browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+"')")            
+        else:
+            self.onApplyChangesToImage(args);
+
+        
+
+    def onApplyChangesToImage(self, args):
+
         import threading
 
-        #print ("Apply Changes.")
-        #print (args)
-        #print ("End Updating Image.")
+        browser.execute_script("add_text_to_output('Going to regenerate img...')");
+
 
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
         #print "id="+id
         print ("Image is: "+imgchroot)
-
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        # Check if exists enough space on disk
+        connection_user = (self.username,self.password)
+        
+        
         # Prepare log
         print ("Returns: ")
         print (self.server.prepare_log("","LtspImage"))
