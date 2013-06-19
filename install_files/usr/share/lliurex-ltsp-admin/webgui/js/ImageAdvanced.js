@@ -61,6 +61,18 @@ function ExecuteApp(cb) {
         if (cb.id=="launch_session") {
             $('#WaitingWindow').css('display', 'block');
         }
+
+        if (cb.id=="apply") {
+            myWindow=window.open('','','width=200,height=100');
+            
+            //myWindow.document.write("<p>This is 'myWindow'</p>");
+            alert("3")
+            //myWindow.focus();
+            alert("4")
+        }
+
+ 
+
     }
     
 
@@ -149,13 +161,13 @@ function add_text_to_output(text) {
      return true;
 }
 
-function AskWhatToDoIfNotEnoughSpace(file, space) {
+function AskWhatToDoIfNotEnoughSpace(file, space, used) {
     //alert("123123123")
     //return true;
     
     MyConfirm(gettext("There is no enough free space on disk! The image "+
-              file+" takes "+(space)/1000000+ "GB, so there is need "+
-              (space*3)/1000000+" GB. There are only XX Mb on disk."),
+              file+" takes "+(used)/1000000+ "GB, so there is need "+
+              (used*3)/1000000+" GB. There are only "+space+" Mb on disk."),
              gettext("Not enough space"),
             function(ret){
                 newlocation='ltsp://ApplyChangesToImage/apply/'+encodeURIComponent(chrootpath)+'/'+ret;

@@ -538,7 +538,10 @@ class LliureXLTSPAdmin:
     def onApplyChangesToImageWithCheck(self, args):
         '''
         Regenerates img file from a chroot via n4d, calls n4dGenerateImg
-        '''        
+        '''
+        import threading
+        import time        
+
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
         #print "id="+id
@@ -547,15 +550,31 @@ class LliureXLTSPAdmin:
         server = ServerProxy("https://"+self.srv_ip+":9779")
         # Check if exists enough space on disk
         connection_user = (self.username,self.password)
-        spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
+
+        #Launch "Wait" window in other thread...
+        #t = threading.Thread(target=self.ShowWaitWindow, args=("Calculating free and needed space",)) 
+        #t.daemon=True
+        #t.start()
+
+
+        
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        
+        #self.ShowWaitWindow("Calculating free and needed space")
+
+        #spacefree="{'status':False, 'free':'20000000', 'used': str(total_size)}";
+        '''spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
+
+        print "**************************************"
+        print str(spacefree)
         
         if (spacefree['status']==False):
-            browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+"')")            
+            browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+","+spacefree['used']+"')")
         else:
             self.onApplyChangesToImage(args);
+        '''
 
-        
-
+    
     def onApplyChangesToImage(self, args):
 
         import threading
@@ -932,6 +951,46 @@ class LliureXLTSPAdmin:
              
 
     ## END OPERATIONS ON CHROOT
+
+    def ShowWaitWindow(self, msg):
+        '''
+        Shows a new window with the "wait..." message
+        '''
+    
+
+        waitwindow = Gtk.Window()
+        waitwindow.set_size_request(300,150)
+        waitsplitter = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
+        waitwindow.add(waitsplitter)
+        waitwindow.set_icon_from_file("/usr/share/icons/X-ltsp-admin.png")
+        #waitlang=language
+        
+
+        #create the WebView
+        waitview = WebKit.WebView()
+        #waitview.get_settings().set_property("enable-developer-extras",True)
+        #self.inspector = self.view.get_inspector()
+        #self.inspector.connect("inspect-web-view",self.activate_inspector, self.splitter)
+
+        waitsw = Gtk.ScrolledWindow() 
+        waitsw.add(waitview) 
+        waitsplitter.add1(waitsw)
+
+        waitwindow.show_all()
+
+        waitwindow.set_title("LliureX LTSP")
+        # abre la pagina
+        file = os.path.abspath('webgui/waiting.html')
+        url = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
+   
+        waitview.open(url)
+    
+        return False
+
+        
+   
+    
+
    
     def get_my_ip_for_server(self):
         import lliurex.net

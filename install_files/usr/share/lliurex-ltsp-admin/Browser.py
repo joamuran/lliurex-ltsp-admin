@@ -19,6 +19,7 @@ class Browser:
 
         #create the WebView
         self.view = WebKit.WebView()
+        
         self.view.get_settings().set_property("enable-developer-extras",True)
         self.inspector = self.view.get_inspector()
         self.inspector.connect("inspect-web-view",self.activate_inspector, self.splitter)
