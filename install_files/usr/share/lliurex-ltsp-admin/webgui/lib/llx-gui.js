@@ -48,7 +48,7 @@ function MyConfirm(text, title, callback) {
     $('#dialog-modal').dialog( "option", "title", title );
     /*$('#dialog-modal').dialog( "option", "modal", true );*/
     $('#dialog-modal').dialog( "option", "buttons",
-        {Ok: function() {
+        {Continue: function() {
             callback("ok");
             $( this ).dialog( "close" );
             

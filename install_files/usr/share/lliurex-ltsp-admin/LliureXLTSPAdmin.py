@@ -98,12 +98,25 @@ class LliureXLTSPAdmin:
             
             loglines=server.read_n4dr_log("", "N4dRemoteLog", logname, self.initline, self.numlines)
             self.initline=self.initline+len(loglines['file'])
-            print (loglines)
+            print "**<<"+str(loglines)+">>**"
             
-            if len(loglines['file'])>0:
-                length=len(str(loglines['file']))
-                parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>") 
-                browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
+            if len(loglines['file'])==0:
+                #length=len(str(loglines['file']))
+                lastline=server.read_n4dr_log_lastline("", "N4dRemoteLog", logname)
+                print ":::"+str(lastline)+":::"
+                parsed_string=str(lastline['file'])
+                #parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>")
+                #browser.execute_script("add_last_line_to_output('"+parsed_string+"')")
+
+                browser.execute_script("add_last_line_to_output('"+urllib.quote(parsed_string, '')+"')")
+                #browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
+            else:
+                if len(loglines['file'])>0:
+                    length=len(str(loglines['file']))
+                    parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>")
+                    browser.execute_script("add_text_to_output('"+urllib.quote(parsed_string, '')+"')")
+                #else:
+            
                     
             status=server.get_status("", n4dclass)
             print ("STATUS: ")
@@ -551,28 +564,19 @@ class LliureXLTSPAdmin:
         # Check if exists enough space on disk
         connection_user = (self.username,self.password)
 
-        #Launch "Wait" window in other thread...
-        #t = threading.Thread(target=self.ShowWaitWindow, args=("Calculating free and needed space",)) 
-        #t.daemon=True
-        #t.start()
-
-
-        
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        
+       
         #self.ShowWaitWindow("Calculating free and needed space")
 
-        #spacefree="{'status':False, 'free':'20000000', 'used': str(total_size)}";
-        '''spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
+        #spacefree="{'status':True, 'free':'20000000', 'used': str(total_size)}";
+        spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
 
-        print "**************************************"
         print str(spacefree)
         
         if (spacefree['status']==False):
-            browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+","+spacefree['used']+"')")
+            browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+"','"+spacefree['used']+"')")
         else:
-            self.onApplyChangesToImage(args);
-        '''
+            self.onApplyChangesToImage(args)
+        
 
     
     def onApplyChangesToImage(self, args):
@@ -582,14 +586,13 @@ class LliureXLTSPAdmin:
         
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
-        ret_value=str(urllib.unquote(args[5]))
-        #print "id="+id
         print ("Image is: "+imgchroot)
-        
-        #print ("RET="+str(urllib.unquote(args[5])))
-        
-        if (ret_value=='cancel'):
-            return False;
+
+        if(len(args)>5):
+            ret_value=str(urllib.unquote(args[5]))
+            #print "id="+id
+            if (ret_value=='cancel'):
+                return False;
         
         browser.execute_script("add_text_to_output('Going to regenerate img...')");
         

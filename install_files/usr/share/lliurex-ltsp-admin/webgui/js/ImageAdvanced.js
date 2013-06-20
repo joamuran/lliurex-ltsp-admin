@@ -59,16 +59,16 @@ function ExecuteApp(cb) {
         } else command=cb.id;
     
         if (cb.id=="launch_session") {
+            $('#WaitingText').empty();
+            $('#WaitingText').append(gettext("Wait until Session Start. It coult take a while. Please, be patient."));
             $('#WaitingWindow').css('display', 'block');
         }
 
         if (cb.id=="apply") {
-            myWindow=window.open('','','width=200,height=100');
+            $('#WaitingText').empty();
+            $('#WaitingText').append(gettext("Calculating free space. Please Wait."));
+            $('#WaitingWindow').css('display', 'block');
             
-            //myWindow.document.write("<p>This is 'myWindow'</p>");
-            alert("3")
-            //myWindow.focus();
-            alert("4")
         }
 
  
@@ -149,38 +149,42 @@ function setStatus(newstatus){
 function add_text_to_output(text) {
     //$("#shell").hide();
     $("#shellbox").show();
+    $('#WaitingWindow').css('display', 'none');    
     //alert(text)
     $("#shell").append("<p>"+decodeURIComponent(text)+"</p>");
 
     $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
 
-    /*console.log("<p>"+decodeURIComponent(text)+"</p>");*/
-    /*alert(decodeURIComponent(text));*/
     
-    //$("#shell").show();
+
      return true;
+}
+function add_last_line_to_output(text) {
+     $("#shellbox").show();
+     $('#lastline').remove();
+     percent=decodeURIComponent(text);
+     progress="["
+     for (i=0;i<parseInt(percent);i++) {
+        progress=progress+"=";
+     }
+     progress=progress+"]  " + percent +"%";
+     $("#shell").append("<p id='lastline'>"+progress+"</p>");
+
 }
 
 function AskWhatToDoIfNotEnoughSpace(file, space, used) {
-    //alert("123123123")
-    //return true;
     
     MyConfirm(gettext("There is no enough free space on disk! The image "+
-              file+" takes "+(used)/1000000+ "GB, so there is need "+
-              (used*3)/1000000+" GB. There are only "+space+" Mb on disk."),
+              file+" takes "+Math.round((used)/10000000)/100+ "GB, so there is need "+
+              Math.round((used*3)/10000000)/100+" GB. There are only "+Math.round(space/10000000)/100+" Gb on disk."),
              gettext("Not enough space"),
             function(ret){
                 newlocation='ltsp://ApplyChangesToImage/apply/'+encodeURIComponent(chrootpath)+'/'+ret;
                 location.href=newlocation;
             });
 
-    
-    //wait a moment
-
-    //while (ret==undefined) {
-        // waiting...
-    //}
-    
+    $('#WaitingWindow').css('display', 'none');    
+ 
 }
 
 $(document).ready(function() {
