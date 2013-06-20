@@ -56,6 +56,21 @@ function add_text_to_output(text) {
      return true;
 }
 
+function add_last_line_to_output(text) {
+   if (text!="") {
+     $("#shellbox").show();
+     $('#lastline').remove();
+     percent=decodeURIComponent(text);
+     progress="["
+     for (i=0;i<parseInt(percent);i++) {
+        progress=progress+"=";
+     }
+     progress=progress+"]  " + percent +"%";
+     $("#OutputCommand").append("<p id='lastline'>"+progress+"</p>");
+     $("#OutputCommand").animate({scrollTop: $("#OutputCommand")[0].scrollHeight});
+    }
+
+}
 
 function BindMirrorEventHandlers() {
     $("#UpdateMirror").bind('click', function( event ){

@@ -104,6 +104,8 @@ class LliureXLTSPAdmin:
                 #length=len(str(loglines['file']))
                 lastline=server.read_n4dr_log_lastline("", "N4dRemoteLog", logname)
                 print ":::"+str(lastline)+":::"
+                if (str(lastline['status'])==False):
+                    pass
                 parsed_string=str(lastline['file'])
                 #parsed_string=(str(loglines['file'])[2:length]).replace('\\n','<br />').replace('\', \'', '').replace('\', \"', '').replace('\", \"', '').replace('\']','').replace('\\t','').replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("\t","<span style='display:inline; white-space:pre;'>    </span>").replace("[ LliureX Mirror ]","<span style='color:#0000ff;'>[ LliureX Mirror ]</span>")
                 #browser.execute_script("add_last_line_to_output('"+parsed_string+"')")

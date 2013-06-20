@@ -272,6 +272,22 @@ function add_text_to_output(text) {
 }
 
 
+function add_last_line_to_output(text) {
+ if (text!="") {
+     $("#shellbox").show();
+     $('#lastline').remove();
+     percent=decodeURIComponent(text);
+     progress="["
+     for (i=0;i<parseInt(percent);i++) {
+        progress=progress+"=";
+     }
+     progress=progress+"]  " + percent +"%";
+     $("#shell").append("<p id='lastline'>"+progress+"</p>");
+     $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
+   }
+}
+
+
 $(document).ready(function() {
     //$("#EmergentMessage").hide();
     

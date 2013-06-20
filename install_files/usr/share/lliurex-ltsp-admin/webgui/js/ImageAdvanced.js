@@ -152,14 +152,18 @@ function add_text_to_output(text) {
     $('#WaitingWindow').css('display', 'none');    
     //alert(text)
     $("#shell").append("<p>"+decodeURIComponent(text)+"</p>");
-
+    
     $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
 
     
 
      return true;
 }
+
+
 function add_last_line_to_output(text) {
+   if (text!="") {
+        
      $("#shellbox").show();
      $('#lastline').remove();
      percent=decodeURIComponent(text);
@@ -169,6 +173,8 @@ function add_last_line_to_output(text) {
      }
      progress=progress+"]  " + percent +"%";
      $("#shell").append("<p id='lastline'>"+progress+"</p>");
+     $("#shell").animate({scrollTop: $("#shell")[0].scrollHeight});
+   }
 
 }
 
