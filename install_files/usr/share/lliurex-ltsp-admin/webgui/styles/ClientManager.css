@@ -1,4 +1,35 @@
-/* LOGIN CONTAINTER */
+
+
+
+
+
+
+#ClassroomConfig{
+    background-color: #ececec;
+    /*border: solid thin #333333;*/
+    width: 725px;
+    margin-left: 25px;
+    height: 100px;
+    
+}
+
+
+
+.ClassConfigTitle{
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    /*font-weight: bold;*/
+    
+}
+
+.ClassroomItem{
+    float: left; margin: 5px 5px 5px 5px; display: block;
+    font-family: ubuntu;
+    font-size: 0.8em !important;
+}
+
+
+/* Client Config*/
 
 
 #ClientContent{margin-top: 20px;}
@@ -59,7 +90,7 @@
     }
 .ClientRowArrow{cursor: pointer; }
 .NewClientRow{
-    text-shadow: 0px 1px 1px #333333; 
+    text-shadow: 0px 1px 1px #333333;
     width: 100%;
     color: #ffffff;
     float: left;
@@ -75,7 +106,7 @@
     }
 .NewClientRow:hover{cursor: pointer;}
 
-.ClientItem{ float: left; margin: 10px 5px 10px 5px; display: block;}
+.ClientItem{ float: left; margin: 10px 5px 10px 5px; display: block; }
 .ClientItemCheckBox{ float: left;  margin: 0px 5px 0px 5px; padding-bottom: 15px;}
 /*.ClientItemBlocked{ float: left; margin: 10px 5px 10px 5px; }*/
 

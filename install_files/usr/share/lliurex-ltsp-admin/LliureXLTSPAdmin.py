@@ -420,17 +420,18 @@ class LliureXLTSPAdmin:
 
         return False
 
-    def ClientSaveConfig(self, args):
+    def ClientSaveConfig(self, args):   
+        print ">>>>>>>>>>>>>>>>"+str(args);
         #print (urllib.unquote(args[3]))
         self.jsonclients=urllib.unquote(args[3])
         print (self.jsonclients)
-        user = "joamuran" ##
-        password = "lliurex" ###        
-        connection_user = (user,password)
+        connection_user = (self.username,self.password)
+        print "************Type Class: "+args[4]
+        print "************Type Session: "+args[5]
         self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients)
         
         file = os.path.abspath('webgui/ClientManager.html')
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients++'&amp;mirror_installed='+self.mirror_installed
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
     
     def GetMacFromN4d(self, args):

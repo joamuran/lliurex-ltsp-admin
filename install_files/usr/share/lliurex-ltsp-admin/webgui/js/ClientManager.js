@@ -3,9 +3,33 @@ var lastid=0; // To save the last image id
 var clientData=new Object();
 
 
+function DisplayClassroomConfig(){
+    //ClassroomConfig
+ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"</div>\
+<div class='ClassroomItem'>"+gettext("Use this classroom cliens as:")+"</div>\
+        <div>\
+       <select class='ClassroomItem' name='ClassroomType' id='ClassroomType'> \
+          <option value='thin' selected>"+gettext("Thin Client Classroom")+"</option> \
+          <option value='fat'>"+gettext("Fat-Thin Client Classroom")+"</option> \
+        </select></div> \
+        <div class='ClassroomItem' style='float:left; clear:both;'>Default session to use:</div>\
+        <div>\
+       <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
+          <option value='gnome' selected>"+gettext("Classic Desktop (Gnome-Classic)")+"</option> \
+          <option value='xfce'>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
+        </select></div>";
+
+    $("#ClassroomConfig").append(ItemClass);
+
+}
+
+
 function DisplayClients(){
     // Display all clients, with possibility to expand its properties
     
+    itemtitle="<div class='ClassConfigTitle' style='margin-left:25px;' >"+gettext("Client Configuration")+"</div>";
+    $("#ClientContent").append(itemtitle);
+
     for (var i=0;i<clientData.clients.length;i++){
         
         // Our clients will be identified by their MAC withou # (strid)
@@ -99,10 +123,13 @@ function SaveChanges(){
     var newClientList=new Object();
     newClientList.clients=new Array();
     
+    ClassroomSession= $("[name='ClassroomSession']").val();
+    ClassroomType= $("[name='ClassroomType']").val();
+
+    
      $(".ClientDetails").each(function (index) {
         
         var newclientData = new Object();
-        
         
         var mac=$(this).attr('id').substring(13);
         newclientData.mac=mac.substring(0,2)+":"+mac.substring(2,4)+":"+mac.substring(4,6)+":"+
@@ -128,12 +155,9 @@ function SaveChanges(){
         newClientList.clients[newClientList.clients.length]=newclientData;
      })
 
+          
      
-     
-     
-     
-
-    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList));
+    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList))+"/"+ClassroomType+"/"+ClassroomSession;
 
     
     
@@ -479,6 +503,7 @@ $(document).ready(function() {
         
     srv_ip=getUrlVar('srv_ip');     
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
+    DisplayClassroomConfig();
     DisplayClients();
 
     // Bind events with actions

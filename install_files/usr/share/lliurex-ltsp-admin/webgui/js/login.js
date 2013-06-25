@@ -66,7 +66,7 @@ $(document).ready(function() {
 
     /*if (mirrorData["installed"]=="true"){
         alert(mirror_installed)
-        buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
+        buttons="<div class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
           <div class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
           <div class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
@@ -74,7 +74,7 @@ $(document).ready(function() {
         $("#ButtonList").append(buttons);
     }
     else{
-        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
+        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
           <div class='BigButton ButtonImages unavailable' id='ImageManager'>"+gettext("Manage Images")+"</div> \
           <div class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();
@@ -97,7 +97,7 @@ function loginSuccess(mirror_installed){
     var mirrorData={"installed": "true", "date": "10/10/2012"}
     
     if (mirror_installed=="available"){
-        buttons="<div tabindex='3' class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Clients")+"</div> \
+        buttons="<div tabindex='3' class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
           <div tabindex='2' class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
           <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
@@ -105,7 +105,7 @@ function loginSuccess(mirror_installed){
         $("#ButtonList").append(buttons);
     }
     else{
-        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Clients")+"</div> \
+        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
           <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
           <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();

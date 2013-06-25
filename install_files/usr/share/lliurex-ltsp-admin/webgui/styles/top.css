@@ -1,10 +1,10 @@
 /* TOP MENU */
 
 .MiniButtonContainer{
-    clear: both;
-    float: right;
+    /*clear: both;*/
+    float: left;
     color: #000000;
-    margin: 5px 5px 5px 5px;
+    margin: 5px 1px 0px 1px;
     font-family: ubuntu;
     font-size: 1.1em;
 }
@@ -13,15 +13,16 @@
 }*/
 
 .MiniButton{
-    float: right;
+    float: left;
     /*width: 16px !important;
     height: 16px !important;*/
-    width: 16px;
+    width: 120px;
     height: 16px;
     background-color: #4dafff;
     color: #ffffff;
-    margin: -3px 0px 0px 5px;
-    border: solid thin #2f92f5; border-radius: 2px;font-size: 1.2em;
+    /*margin: -3px 0px 0px 5px;*/
+    
+    border: solid thin #2f92f5; border-radius: 5px 5px 0px 0px;font-size: 1.2em;
     text-align: center;
     }
     
@@ -30,25 +31,30 @@
     cursor:pointer; background-color: #2f92f5;
     }
 
-.MiniButtonList{clear: both; float: right; width: 100%; font-size: 9px; }
+.MiniButtonList{
+    float: left; width: 100%; font-size: 9px; ; margin-top: 90px;
+    border-bottom: solid thin #333333;
+    box-shadow: 1px 1px 3px #cccccc;
+}
 
 
 
 .ButtonMirror{
-    background-image: url('images/bigmirrorwhite.png');
-    background-repeat: no-repeat;background-position: center;
+  /*  background-image: url('images/bigmirrorwhite.png');
+    background-repeat: no-repeat;background-position: left top;* /
     background-color: #95e632;
-    border-color: #75e115;}
-.ButtonMirror:hover{background-color: #75e115;}
+    border-color: #75e115;*/}
+.ButtonMirror:hover{/*background-color: #75e115;*/}
 .ButtonImages{
-    background-image: url('images/bigimagewhite.png');
-    background-repeat: no-repeat;background-position: center;}
+    /*background-image: url('images/bigimagewhite.png');
+    background-repeat: no-repeat;background-position: left top;*/}
 .ButtonClients{
-    background-image: url('images/bigclientswhite.png');
+    /*background-image: url('images/bigclientswhite.png');
+    background-repeat: no-repeat;background-position: left top;* /
     background-color: #f9c013;
-    border-color: #eaa00b;
-    background-repeat: no-repeat;background-position: center;}
-.ButtonClients:hover{background-color: #eaa00b;}
+    border-color: #eaa00b;*/
+    }
+.ButtonClients:hover{/*background-color: #eaa00b;*/}
 
 .unavailable{background-color: #cccccc !important; border-color: #aaaaaa !important;}
 .unavailable:hover{background-color: #aaaaaa !important; cursor: default;}

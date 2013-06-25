@@ -12,7 +12,7 @@ if (!language_list){
 
 var es_ES = {
     'User Authentication':'Autenticación de usuarios',
-    'Manage Clients': 'Gestión de Clientes',
+    'Manage Classroom': 'Gestión del aula',
     'Manage Images': 'Gestiona las imágenes',
     'Update Mirror': 'Actualiza el mirror',
     'New Client': 'Cliente nuevo',

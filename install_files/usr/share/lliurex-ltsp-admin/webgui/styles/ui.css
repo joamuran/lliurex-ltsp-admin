@@ -23,7 +23,7 @@ body
 #top{
     
     position: relative;
-    height: 100px;
+    height: 130px;
     background-image: url('images/top2.png');
     background-position: 50% 0%;
     background-repeat: no-repeat;
