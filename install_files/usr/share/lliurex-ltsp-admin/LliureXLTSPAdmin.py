@@ -33,6 +33,8 @@ class LliureXLTSPAdmin:
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
+    classroom_session=""
+    classroom_type=""
     #jsonclients='{"clients":[{"mac":"11:22:33:44:55:66","type": "thin","name":"PC01","desc":"ordinador 1","session":"gnome","monitor":"auto","autologin":"checked","username":"lliurex"},{"mac":"11:aa:bb:cc:55:66","type": "thin", "name":"PC02","desc":"ordinador 2","session":"gnome","monitor":"auto","autologin":"","username":"alu02"},{"mac":"11:22:33:aa:bb:cc","type": "fat","name":"PC03","desc":"ordinador 3","session":"lubuntu","monitor":"auto","autologin":"checked","username":"profe03"}]}'
     #jsonimagesoft='{"meta":[{"name": "infantil", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"gimp", "version":"2.8", "installed":"yes"},{"name":"gcompris", "version":"3.2", "installed":"no"}] }, {"name": "desktop", "lliurex_version": "cdd, desktop, edu, lliurex, 13.06.0.138","last_update": "10/01/12","chroot":"/opt/ltsp/infantil","imagepath":"/opt/ltsp/images","metapackage":"cdd-edu-gdesktop-infantil", "packages":[{"name":"gedit", "version":"1.1", "installed":"no"},{"name":"inkscape", "version":"2.8", "installed":"yes"},{"name":"mono", "version":"3.2", "installed":"no"}] }]}'
    
@@ -248,9 +250,7 @@ class LliureXLTSPAdmin:
         #win = Browser(language=ltspadmin.language)
         #win.load_html_string('<h1>Hello Mars</h1>')
         #time.sleep(5)
-        
-        
-        
+            
         self.username=urllib.unquote(args[3])
         self.password=urllib.unquote(args[4])
         self.srv_ip=urllib.unquote(args[5])
@@ -260,7 +260,7 @@ class LliureXLTSPAdmin:
         try:
             # Connection
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
-            # Authentication        
+            # Authentication
             groups=self.server.validate_user(self.username,self.password)
             print (groups)
         
@@ -303,7 +303,7 @@ class LliureXLTSPAdmin:
                     self.abstract="LliureX Mirror is Working"
                     #self.date=""
                 
-                # Launch browser    
+                # Launch browser
                 browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
 
                     
@@ -321,9 +321,9 @@ class LliureXLTSPAdmin:
             print (e)
             file = os.path.abspath('webgui/ServerError.html')
             uri = 'file://' + urllib.pathname2url(file)
-            browser.open_url(uri)            
+            browser.open_url(uri)
             pass
-            
+        
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
         uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
@@ -362,6 +362,10 @@ class LliureXLTSPAdmin:
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
         print ('&amp;srv_ip='+self.srv_ip)
+
+        self.connection_user = (self.username,self.password)
+        self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
+
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
         
@@ -420,17 +424,20 @@ class LliureXLTSPAdmin:
 
         return False
 
-    def ClientSaveConfig(self, args):   
+    def ClientSaveConfig(self, args):
         print ">>>>>>>>>>>>>>>>"+str(args);
         #print (urllib.unquote(args[3]))
         self.jsonclients=urllib.unquote(args[3])
         print (self.jsonclients)
         connection_user = (self.username,self.password)
-        print "************Type Class: "+args[4]
-        print "************Type Session: "+args[5]
-        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients)
+        default_type=args[4]
+        default_session=args[5]
+        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients, default_type, default_session)
         
         file = os.path.abspath('webgui/ClientManager.html')
+        # Reload new config
+        self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
+
         uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed
         browser.open_url(uri)
     
@@ -1026,9 +1033,9 @@ if __name__ == "__main__":
     # set working directory
 
     # production
-    #os.chdir('/usr/share/lliurex-ltsp-admin')
+    os.chdir('/usr/share/lliurex-ltsp-admin')
     # Github
-    os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+    #os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
 
     # Create an App instance
     ltspadmin = LliureXLTSPAdmin()

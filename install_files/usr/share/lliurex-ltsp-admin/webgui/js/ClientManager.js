@@ -1,22 +1,39 @@
 
 var lastid=0; // To save the last image id
 var clientData=new Object();
+var classroomsession="gnome"
+var classroomtype="thin"
 
 
 function DisplayClassroomConfig(){
     //ClassroomConfig
+
+if (classroomsession=="gnome") {
+    selected_session_gnome="selected"; selected_session_xfce="";}
+else{
+    selected_session_gnome=""; selected_session_xfce="selected"; }
+
+if (classroomtype=="fat") {
+    selected_type_fat="selected"; selected_type_thin="";}
+else{
+    selected_type_fat=""; selected_type_thin="selected";}
+
+
+classroomsession=clientData.default_session
+classroomtype=clientData.default_type
+
 ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"</div>\
 <div class='ClassroomItem'>"+gettext("Use this classroom cliens as:")+"</div>\
         <div>\
        <select class='ClassroomItem' name='ClassroomType' id='ClassroomType'> \
-          <option value='thin' selected>"+gettext("Thin Client Classroom")+"</option> \
-          <option value='fat'>"+gettext("Fat-Thin Client Classroom")+"</option> \
+          <option value='thin' "+selected_type_thin+">"+gettext("Thin Client Classroom")+"</option> \
+          <option value='fat' "+selected_type_fat+">"+gettext("Fat-Thin Client Classroom")+"</option> \
         </select></div> \
         <div class='ClassroomItem' style='float:left; clear:both;'>Default session to use:</div>\
         <div>\
        <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
-          <option value='gnome' selected>"+gettext("Classic Desktop (Gnome-Classic)")+"</option> \
-          <option value='xfce'>"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
+          <option value='gnome' "+selected_session_gnome+">"+gettext("Classic Desktop (Gnome-Classic)")+"</option> \
+          <option value='xfce'"+selected_session_xfce+">"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
         </select></div>";
 
     $("#ClassroomConfig").append(ItemClass);
@@ -497,9 +514,13 @@ $(document).ready(function() {
     }*/
     
     var clients=getUrlVar('clientlist'); // name
-    // alert (decodeURIComponent(clients));
+
+
     //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
+
+    classroomsession=clientData.default_session
+    classroomtype=clientData.default_type
         
     srv_ip=getUrlVar('srv_ip');     
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
