@@ -291,11 +291,14 @@ class LliureXLTSPAdmin:
                         pass
         
                     # Date
-                    exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))
-                    if datestatus['status']:
-                        self.date=datestatus['date']
-                    else:
-                        self.date=""
+                    try:
+                        exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))                   
+                        if datestatus['status']:
+                            self.date=datestatus['date']
+                        else:
+                            self.date=""
+                    except Exception:
+                        self.mirror_installed='uninstalled'
                 
                 elif self.mirror_installed=='uninstalled':
                     self.abstract="Mirror Not Installed"

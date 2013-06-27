@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.13) precise; urgency=low
+
+  * Fixed mirror date bug.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Thu, 27 Jun 2013 09:55:07 +0200
+
 lliurex-ltsp-admin (0.12) precise; urgency=low
 
   * Fixed bugs and added classroom config
