@@ -329,6 +329,8 @@ class LliureXLTSPAdmin:
         
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
+        if (type(self.date)==type(None)):
+            self.date=""
         uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
         browser.open_url(uri)
 
