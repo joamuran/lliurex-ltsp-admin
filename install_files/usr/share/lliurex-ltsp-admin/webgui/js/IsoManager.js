@@ -196,7 +196,6 @@ function DisplayImageWindow(){
      });*/
 }
 
-
 function DisplayConfirmWindow(title, message, btText, action, btclass) {
     img_flavour="styles/images/llx_pack_desktop.png";
 
@@ -236,7 +235,6 @@ function DisplayConfirmWindow(title, message, btText, action, btclass) {
     
 }
 
-
 function PerformAction(action, Message) {
     /*
     invoques action in ltsp
@@ -271,7 +269,6 @@ function add_text_to_output(text) {
      return true;
 }
 
-
 function add_last_line_to_output(text) {
  if (text!="") {
      $("#shellbox").show();
@@ -287,6 +284,11 @@ function add_last_line_to_output(text) {
    }
 }
 
+function getiso() {
+    //a=$('#FileSelector').click();
+    //alert(a.val());
+    location.href='ltsp://SelectIso/';
+}
 
 $(document).ready(function() {
 
@@ -297,16 +299,14 @@ $(document).ready(function() {
     $("#helptip").append(tiptext);
 
     // Button to import image
-    
-    btiso="<div id='BtIso'>Add iso</div> \
-          <div id='textIso'>Use this button to register a new iso to install on the classroom computers.</div> \
-        </div> <div id='content'></div> \
-        <div id='bottom'></div> \
-        <div id='onfirmWindow'>";
+    btiso="<div id='BtIso' onclick='getiso()'>Add iso</div> \
+          <div id='TextIso'>Use this button to register a new iso to install on the classroom computers.</div>\
+          <input id='FileSelector' type='file' style='visibility:hidden' />";
 
-        
-    $("#helptip").append(tiptext);
 
+    $("#BtIsoContainer").append(btiso);
+
+    $("#IsoManagerContainer").css("display", "block");
 
   /*  var clients=getUrlVar('imageData'); // name
     // alert (decodeURIComponent(clients));
@@ -329,9 +329,14 @@ $(document).ready(function() {
         
     })
 
-     
+    
     
     DisplayImageWindow();*/
+
+    $("#ConfirmWindow").css('display', 'none');
+    $("#shellbox").css('display', 'none');
+    $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
+
 });
 
 function setStatus(newstatus){

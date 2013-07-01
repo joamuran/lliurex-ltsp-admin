@@ -57,6 +57,8 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "DeleteClient")] = 'onDeleteClient';
     binding[("ltsp", "ApplyChangesToImageWithCheck")] = 'onApplyChangesToImageWithCheck';
     binding[("ltsp", "ApplyChangesToImage")] = 'onApplyChangesToImage';
+    binding[("ltsp", "SelectIso")] = 'onSelectIso';
+
 
     def __init__(self):
         ''' Init LTSP Admin and connects to N4D '''
@@ -147,6 +149,37 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print ("Exception reading log. Message: "+str(e))
             return False
+
+    def onSelectIso(self, args):
+        import sys
+        import subprocess
+        import magic
+        
+        #import easygui
+        #print easygui.fileopenbox()
+
+        try:
+            filename=subprocess.check_output(["zenity","--file-selection", "--title='Select a File'"])
+            print "filename: "+str(filename)
+            #print("*"+filename[-5:-1]+"*")
+            #            print magic.Magic.file(str(filename))
+            #            print magic.from_file(str(filename))
+            
+            m = magic.open(magic.MAGIC_MIME)
+            m.load()
+            print (m.file(filename))
+
+            #if (filename[-5:-1]!=".iso"):
+            #    browser.execute_script("alert('File is not a valid.iso')");
+            
+        except Exception as e:
+            print "Exception: "+str(e)
+            #self.ltspError(str(e));
+            pass # Click on cancel
+        
+        pass
+    
+
 
     def n4updatemirror(self):
         import time
@@ -423,7 +456,6 @@ class LliureXLTSPAdmin:
         print ("ARGS: "+str(args))
         #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
         uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))+'&amp;xdesktop='+str(self.HasClientXFCEInstalled(id))
-        print "tralari"
         browser.open_url(uri)
 
     def getChrootFromImageList(self, id):
@@ -1066,6 +1098,17 @@ class LliureXLTSPAdmin:
     def update_config_images(self, imageData):
         
         pass
+
+
+    def ltspError(self, errordesc):
+        '''
+        Shows an error window instead of "Unable to open..."
+        '''
+        file = os.path.abspath('webgui/ServerError.html')
+        #uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
+        uri = 'file://' + urllib.pathname2url(file)+'?error='+urllib.pathname2url(errordesc);
+        browser.open_url(uri)
+    
     
     
 if __name__ == "__main__":
@@ -1093,17 +1136,19 @@ if __name__ == "__main__":
     browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
     
     #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
-   
+       
     uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
-   
+       
     ## print ("Goint to "+uri)
     print (uri)
     browser.open_url(uri)
-   
+       
     print (">>"+browser.lang)
-
-     #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
+    
+    #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")  
     Gtk.main()
-     #gtk.gdk.threads_init()
-     #thread.start_new_thread(gtk.main, ())
-     #browser.webview.execute_script('saluda()')    
+    #gtk.gdk.threads_init()
+    #thread.start_new_thread(gtk.main, ())
+    #browser.webview.execute_script('saluda()')    
+
+        
