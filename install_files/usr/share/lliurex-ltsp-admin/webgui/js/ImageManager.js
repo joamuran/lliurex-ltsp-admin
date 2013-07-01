@@ -307,7 +307,15 @@ $(document).ready(function() {
         }
     return false;
     }*/
-    
+
+    // Print Help tip
+
+    tiptext=gettext("From Image Manager you'll be able to create (install) thin (or far-thin) \
+            clients from the server mirror, update and manage its software. It is strongly \
+            recommended to have updated the mirror before install a new client in order to \
+            get last versions of all the software.")
+    $("#helptip").append(tiptext);
+
     var clients=getUrlVar('imageData'); // name
     // alert (decodeURIComponent(clients));
     //alert(clients)

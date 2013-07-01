@@ -43,6 +43,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "login")] = 'onLogin';
     binding[("ltsp", "MirrorManager")] = 'onMirrorManager';
     binding[("ltsp", "ImageManager")] = 'onImageManager';
+    binding[("ltsp", "IsoManager")] = 'onIsoManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
     binding[("ltsp", "SoftwareManager")] = 'onSoftwareManager';
     binding[("ltsp", "ImageAdvanced")] = 'onImageAdvanced';
@@ -326,14 +327,14 @@ class LliureXLTSPAdmin:
             uri = 'file://' + urllib.pathname2url(file)
             browser.open_url(uri)
             pass
-        
+    
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
         if (type(self.date)==type(None)):
             self.date=""
         uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
         browser.open_url(uri)
-
+    
     def onImageManager(self, args):
         import simplejson as json
         #from pprint import pprint
@@ -363,6 +364,39 @@ class LliureXLTSPAdmin:
             browser.open_url(uri)
         except Exception as e:
             print ("[LTSP Exception]"+str(e))
+
+
+
+    def onIsoManager(self, args):
+        import simplejson as json
+        #from pprint import pprint
+        
+        '''
+        TO USE WITH FILE...
+        fd=open('webgui/data.json')
+        json_data=fd.read();
+        fd.close()
+        json_obj=json.loads(json_data)
+        print "TYPE: "+str(type(json_obj))'''
+
+        try:        
+            json_obj=self.server.get_json_images("","LtspChroot")
+            print "TYPE: "+str(type(json_obj))
+            self.imagelist=json_obj;
+            
+            
+            print ("CONTAINS:")
+            print "****"+str(self.imagelist)+"*****"
+    
+            file = os.path.abspath('webgui/IsoManager.html')
+            
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps("")+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
+            
+            print (uri)
+            browser.open_url(uri)
+        except Exception as e:
+            print ("[LTSP Exception]"+str(e))
+
 
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
@@ -1038,9 +1072,9 @@ if __name__ == "__main__":
     # set working directory
 
     # production
-    os.chdir('/usr/share/lliurex-ltsp-admin')
-    # Github
-    #os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+    #os.chdir('/usr/share/lliurex-ltsp-admin')
+    #Github
+    os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
 
     # Create an App instance
     ltspadmin = LliureXLTSPAdmin()
