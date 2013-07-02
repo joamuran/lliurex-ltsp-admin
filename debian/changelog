@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.14.2) precise; urgency=low
+
+  * Fixed SetStatus bug in mirror manager.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Tue, 02 Jul 2013 13:45:51 +0200
+
 lliurex-ltsp-admin (0.14.1) precise; urgency=low
 
   * Yet, another mirror bug fixed.

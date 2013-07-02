@@ -1,3 +1,5 @@
+var status="available";
+
 
 function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
     
@@ -74,8 +76,7 @@ function add_last_line_to_output(text) {
 
 function BindMirrorEventHandlers() {
     $("#UpdateMirror").bind('click', function( event ){
-        location.href='ltsp://UpdateMirrorCommand';
-        
+        location.href='ltsp://UpdateMirrorCommand';    
     });
 
     $("#InstallMirror").bind('click', function( event ){
@@ -83,6 +84,13 @@ function BindMirrorEventHandlers() {
         location.href='ltsp://UpdateMirrorCommand';
     });
 }
+
+
+
+function setStatus(newstatus){
+    status=newstatus;
+}
+
 
 $(document).ready(function() {
     // Bind events with actions
