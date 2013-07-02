@@ -151,27 +151,37 @@ class LliureXLTSPAdmin:
             return False
 
     def onSelectIso(self, args):
-        import sys
         import subprocess
-        import magic
         
-        #import easygui
-        #print easygui.fileopenbox()
+        ###import easygui
+       ## #print easygui.fileopenbox()
 
         try:
             filename=subprocess.check_output(["zenity","--file-selection", "--title='Select a File'"])
-            print "filename: "+str(filename)
-            #print("*"+filename[-5:-1]+"*")
-            #            print magic.Magic.file(str(filename))
-            #            print magic.from_file(str(filename))
+            print filename
+            cancel=False
             
-            m = magic.open(magic.MAGIC_MIME)
-            m.load()
-            print (m.file(filename))
-
-            #if (filename[-5:-1]!=".iso"):
-            #    browser.execute_script("alert('File is not a valid.iso')");
-            
+            ftype=subprocess.check_output(["file","-b",str(filename).replace("\n","")])
+            print ftype
+            if not "ISO 9660 CD-ROM filesystem" in ftype:
+                subprocess.check_output(["zenity","--error", "--text", \
+                                                  "It is not a valid iso file", \
+                                                  "--title", "Invalid Iso"])
+                cancel=True
+            elif not "Lliurex pandora" in ftype:
+                selection=subprocess.check_output(["zenity","--question", \
+                                                  "--title", "Not LliureX ISO", \
+                                                  "--text", "It is not a valid LliureX iso file, Continue anyway?"])
+                print str(selection)
+            else:
+                selection=subprocess.check_output(["zenity","--question", \
+                                                  "--title", "LliureX ISO", \
+                                                  "--text", "This is a valid LliureX ISO. Let's Go."])
+                print str(selection)
+                
+            if not cancel:
+                print "PERFORMING ACTION!!!!!!!!!!!!!!!"
+          
         except Exception as e:
             print "Exception: "+str(e)
             #self.ltspError(str(e));
