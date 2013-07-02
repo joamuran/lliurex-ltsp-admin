@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.14.1) precise; urgency=low
+
+  * Yet, another mirror bug fixed.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Tue, 02 Jul 2013 09:27:52 +0200
+
 lliurex-ltsp-admin (0.14) precise; urgency=low
 
   * Fixed another mirror date bug.

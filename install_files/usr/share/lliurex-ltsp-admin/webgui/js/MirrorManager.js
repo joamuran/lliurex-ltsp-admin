@@ -80,7 +80,7 @@ function BindMirrorEventHandlers() {
 
     $("#InstallMirror").bind('click', function( event ){
         //location.href='ltsp://login';
-        alert("install");
+        location.href='ltsp://UpdateMirrorCommand';
     });
 }
 
