@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.15) precise; urgency=low
+
+  * Replaced n4d-remote-login in mirror update to n4d remote execution of lliurex-mirror-gui
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 03 Jul 2013 13:14:30 +0200
+
 lliurex-ltsp-admin (0.14.2) precise; urgency=low
 
   * Fixed SetStatus bug in mirror manager.
