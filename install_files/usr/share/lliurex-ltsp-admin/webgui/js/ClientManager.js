@@ -3,6 +3,7 @@ var lastid=0; // To save the last image id
 var clientData=new Object();
 var classroomsession="gnome"
 var classroomtype="thin"
+var section="ClientManager"
 
 
 function DisplayClassroomConfig(){

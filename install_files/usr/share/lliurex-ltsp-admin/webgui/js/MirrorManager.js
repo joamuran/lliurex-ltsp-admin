@@ -1,3 +1,4 @@
+var section="MirrorManager"
 var status="available";
 
 
@@ -84,8 +85,6 @@ function BindMirrorEventHandlers() {
         location.href='ltsp://UpdateMirrorCommand';
     });
 }
-
-
 
 function setStatus(newstatus){
     status=newstatus;

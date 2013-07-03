@@ -1,6 +1,6 @@
-
 var srv_ip="unknown"
 var status="available";
+var section="ImageManager"
 var ErrorMessage=new Array();
 
 

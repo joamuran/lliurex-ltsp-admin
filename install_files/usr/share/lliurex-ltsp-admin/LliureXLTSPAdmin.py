@@ -147,6 +147,8 @@ class LliureXLTSPAdmin:
             print ("Exception reading log. Message: "+str(e))
             return False
 
+
+
     def n4updatemirror(self):
         import time
         
@@ -162,6 +164,7 @@ class LliureXLTSPAdmin:
         
         return False
         
+    '''
     def onUpdateMirrorCommand(self, args):
         import threading
         
@@ -199,6 +202,36 @@ class LliureXLTSPAdmin:
             
             
         return True
+    '''
+
+
+    def onUpdateMirrorCommand(self, args):
+        import threading
+        
+        try:
+            connection_user = (self.username,self.password)
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            #self.server.prepare_log(connection_user,"LliurexMirrorNonGtk")
+            
+            # Set up X11 Environment for Chroot, Connection to n4d in local
+            display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+            screen="650x550"
+            my_ip_for_server=self.get_my_ip_for_server()
+
+            # XServer es una connexio a les x locals, no una connexio n4d!!
+            XServer=LTSPX11Environment(display, screen)
+            # PRepare X11 Xephyr environment
+            XServer.prepare_X11_applications_on_chroot()
+
+            output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display)
+            
+        except Exception as e:
+            print ("Exception in XServer...:"+str(e))
+            return None
+   
+            
+        return True
+    
            
     def onreconnectN4D(self, args):
         import subprocess
