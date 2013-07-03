@@ -1,6 +1,7 @@
 
 var srv_ip="unknown"
 var status="available";
+var section="IsoManager"
 var ErrorMessage=new Array();
 
 
@@ -292,51 +293,45 @@ function getiso() {
 
 $(document).ready(function() {
 
-    // Print Help tip
-
-    tiptext=gettext("From Network Installation you'll be able to install a full classroom through \
-        its local network. You can select an iso to install, or install directly from mirror.")
-    $("#helptip").append(tiptext);
-
-    // Button to import image
-    btiso="<div id='BtIso' onclick='getiso()'>Add iso</div> \
-          <div id='TextIso'>Use this button to register a new iso to install on the classroom computers.</div>\
-          <input id='FileSelector' type='file' style='visibility:hidden' />";
-
-
-    $("#BtIsoContainer").append(btiso);
-
-    $("#IsoManagerContainer").css("display", "block");
-
-  /*  var clients=getUrlVar('imageData'); // name
-    // alert (decodeURIComponent(clients));
-    //alert(clients)
-    imageData=$.parseJSON(decodeURIComponent(clients));
-    //alert(imageData)
-        
     srv_ip=getUrlVar('srv_ip'); 
-    //rv_ip=getUrlVar('mirror_installed'); // name
-    
-    $("#ConfirmWindow").css('display', 'none');
-    $("#shellbox").css('display', 'none');
-    $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
 
-    $("#CloseButtonShell").bind('click', function( event ){
-        if (status=='available') {
-            $('#shellbox').css('display', 'none');
-            //$('#WaitingWindow').css('display', 'none');
-        } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
+    if (srv_ip=="127.0.0.1") {
+    // We are in server, so we can continue...
         
-    })
-
+        // Print Help tip
+        tiptext=gettext("From Network Installation you'll be able to install a full classroom through \
+            its local network. You can select an iso to install, or install directly from mirror.")
+        $("#helptip").append(tiptext);
     
-    
-    DisplayImageWindow();*/
+        // Button to import image
+        btiso="<div id='BtIso' onclick='getiso()'>"+gettext("Add iso")+"</div> \
+            <div id='TextIso'>"+gettext("Use this button to register a new iso to install on the classroom computers")+".</div>\
+              <input id='FileSelector' type='file' style='visibility:hidden' />";
+        $("#BtIsoContainer").append(btiso);    
+        
+    }else{
+        text="<div style='margin-top: 100px;margin-left:50px; float:left; clear:both; width:600px; height:150px'>";
+        text+="<div style='float:left; clear:left; height: 80px; width:80px;'><img src='images/warning.png' /></div>";
+        text+="<div style='font-size: 1.1em; font-weight: bold; float:left; clear:right; margin-left: 50px; width:500px; height: 20px;'>";
+        text+=gettext("You are not in the server")+"</div>"
+        text+="<div style='float:left; clear:right; margin-left: 50px; width:500px; height: 20px;'>";
+        text+=gettext("By efficiency, you only can perform this action from the LTSP server (IP: 127.0.0.1).</div>")
+        text+="</div>"
+        $("#helptip").append(text);
+        /*$("#helptip").append(alerttitle);
+        $("#helptip").append(alerttext);*/
 
+        
+    }
+    
+    $("#IsoManagerContainer").css("display", "block");
     $("#ConfirmWindow").css('display', 'none');
     $("#shellbox").css('display', 'none');
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
 
+    //setSection("isoManager");
+    //$("#MiniIsoManager").style('background-color', '#ffffff', 'important');
+    
 });
 
 function setStatus(newstatus){

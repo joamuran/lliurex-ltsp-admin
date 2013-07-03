@@ -1,6 +1,6 @@
-
 var srv_ip="unknown"
 var status="available";
+var section="ImageManager"
 var ErrorMessage=new Array();
 
 
@@ -336,10 +336,9 @@ $(document).ready(function() {
         } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
         
     })
-
-     
-    
+   
     DisplayImageWindow();
+
 });
 
 function setStatus(newstatus){

@@ -1,3 +1,5 @@
+var section="MirrorManager"
+var status="available";
 
 function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
     
@@ -7,7 +9,7 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
         DivDate="<div class='MirrorText'>"+gettext("Last Update: ")+"</div><div class='MirrorInfo'>"+date+"</div>"
         DivStatus="<div class='MirrorText'>"+gettext("Mirror Status: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
         MirrorButton="<div><div class='BtMirror' id='UpdateMirror'><div>"+gettext("Update Mirror")+"</div></div>";
-        MirrorBtText="<div class='BtMirrorText'>"+gettext("Press on Update Mirror to udate Packages in the local mirror.")+"</div>"
+        MirrorBtText="<div class='BtMirrorText'>"+gettext("Press on Update Mirror to udate Packages in the server mirror.")+"</div>"
     } else   {
         DivDate="<div class='MirrorText'>"+gettext("Last Update: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
         DivStatus="<div class='MirrorText'>"+gettext("Mirror Status: ")+"</div><div class='MirrorInfo'>"+mirror_installed+"</div>"
@@ -25,8 +27,9 @@ function DisplayMirrorOptions(mirror_installed, mirror_abstract, date){
     $("#LogRow").append(DivAbstract);
     $("#MirrorButton").append(MirrorButton);
     $("#MirrorBtText").append(MirrorBtText);
-    $("#HeaderOutput").append(OutputText);
-    $("#Output").append(OutputCommand);
+    
+    /*$("#HeaderOutput").append(OutputText);
+    $("#Output").append(OutputCommand);*/
     
     
     }
@@ -79,9 +82,12 @@ function BindMirrorEventHandlers() {
     });
 
     $("#InstallMirror").bind('click', function( event ){
-        //location.href='ltsp://login';
-        alert("install");
+        location.href='ltsp://UpdateMirrorCommand';
     });
+}
+
+function setStatus(newstatus){
+    status=newstatus;
 }
 
 $(document).ready(function() {
@@ -106,6 +112,3 @@ $(document).ready(function() {
 
 // Event Dispatchers
 // Functions called from python
-
-
-
