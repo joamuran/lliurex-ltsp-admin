@@ -55,9 +55,24 @@ class LTSPX11Environment:
 			# Display on display
 			print ("Display...")
 			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display])
+			
+			print "a"
+			
+			# Waiting for process
+			while(pid.poll()==False):
+				print "watiting for xephyr"
+				time.sleep(0.5);
+				
+			
 			print ("on?")
 			#pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,"-br", "2>", "/dev/null", self.display])
-			subprocess.Popen(["metacity", "--display",self.display])
+			'''
+			#pidmeta=subprocess.Popen(["metacity", "--display",self.display])
+			
+			while(pidmeta.poll()==False):
+				print "watiting for metacity"
+				time.sleep(0.5);
+			'''	
 			# pause to wait metacity launches
 			#time.sleep(1) 
 			return pid
