@@ -94,6 +94,8 @@
     font-weight: lighter;
     margin: 0px 5px 5px 5px;
     padding: 0px 5px 5px 5px;
+    float: left;
+    clear: both;
     /*background: #eeeeee;
     border: #333333 thin solid;
     border-radius: 3px;*/
@@ -267,7 +269,7 @@ select{
     border-radius: 10px;
 }*/
 
-#TextIso{
+#TextIso, #TextMenus{
     font-size: 1em;
     font-family: ubuntu;
     font-weight: lighter;
@@ -279,9 +281,8 @@ select{
     width: 500px;
 }
 
-#BtIso{
+.BtNetInst{
     margin: 10px 5px 5px 5px;
-    background-image: url('images/iso.png');
     height: 48px;
     width: 60px;
     padding: 15px 5px 5px 60px;
@@ -295,8 +296,18 @@ select{
     box-shadow: 0px 0px 5px #000000;
     float:left;
     clear: left;
+    font-size: 0.9em;
 }
-#BtIso:hover{
+
+.BtIso{
+    background-image: url('images/iso.png');
+}
+.BtCreateMenus{
+    background-image: url('images/accessories-text-editor.png');
+}
+
+
+.BtIso:hover, .BtCreateMenus:hover{
     background-color: #2f92f5;
     cursor:pointer;
 }

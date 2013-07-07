@@ -56,8 +56,6 @@ class LTSPX11Environment:
 			print ("Display...")
 			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display])
 			
-			print "a"
-			
 			# Waiting for process
 			while(pid.poll()==False):
 				print "watiting for xephyr"

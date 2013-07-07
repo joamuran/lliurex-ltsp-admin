@@ -137,6 +137,9 @@ function DisplayImageWindow(){
         var command=this.id.split(":")[0];
         var imageid=this.id.split(":")[1];
         
+        $("#helptip").css("display", "none");
+
+        
         switch (command) {
             case "install":
                 console.log("You pressed on install ");

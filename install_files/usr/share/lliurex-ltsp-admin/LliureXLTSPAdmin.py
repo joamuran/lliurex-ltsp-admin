@@ -30,6 +30,8 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
+    require_version_plugins='0.1.9' # Version required of n4d plugins in server
+
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
@@ -1149,8 +1151,36 @@ class LliureXLTSPAdmin:
         uri = 'file://' + urllib.pathname2url(file)+'?error='+urllib.pathname2url(errordesc);
         browser.open_url(uri)
     
+
+# Utility
+def compareVersion(v1, v2):
+    '''
+    returns 0 if v2=v2, 1 if v1>v2 and -1 if v1<v2
+    '''
+    pos=0
+    a=v1.split(".")
+    b=v2.split(".")
     
+    lenmax=min(len(a), len(b))
+    print lenmax
     
+    for i in range(0,lenmax):
+        if(int(a[i])>int(b[i])):
+            return 1
+        elif(int(b[i])>int(a[i])):
+            return -1
+        # otherwise continue
+        
+    #if we are here, all subversions are equial
+    
+    if(len(a)==len(b)):
+        return 0     # same length and 
+    elif(len(a)>len(b)):
+        return 1
+    
+    return -1
+    
+
 if __name__ == "__main__":
     # set working directory
 
@@ -1169,6 +1199,17 @@ if __name__ == "__main__":
         file = os.path.abspath('webgui/LocalServerError.html')
         pass
     else:
+        
+        # check version
+        server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+        version=server.getVersion("", "n4dLTSPVersion");
+        print version
+        if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
+            subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
+                                     "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour."])
+            #print "required version "+ltspadmin.require_version_plugins
+        
+        
         file = os.path.abspath('webgui/login.html')
         print ("CONECTION:"+ltspadmin.ConnectionStatus)
         pass
