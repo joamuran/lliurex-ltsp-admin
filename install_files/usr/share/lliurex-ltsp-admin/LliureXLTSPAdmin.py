@@ -60,7 +60,8 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ApplyChangesToImageWithCheck")] = 'onApplyChangesToImageWithCheck';
     binding[("ltsp", "ApplyChangesToImage")] = 'onApplyChangesToImage';
     binding[("ltsp", "SelectIso")] = 'onSelectIso';
-
+    binding[("ltsp", "SetPXENetinst")] = 'onSetPXENetinst';
+    
 
     def __init__(self):
         ''' Init LTSP Admin and connects to N4D '''
@@ -151,6 +152,40 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print ("Exception reading log. Message: "+str(e))
             return False
+
+    def onSetPXENetinst(self, args):
+
+        try:
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            connection_user = (self.username,self.password)
+            if (args[3]=="available"):
+                server.set_netinstall_installable(connection_user,"n4dLTSPNetinstall")
+                subprocess.call(["zenity","--warning", "--title='Menu created'", "--text", \
+                                        "Now you can install LliureX through the local network."])
+    
+            elif (args[3]=="unavailable"):
+                server.unset_netinstall_installable(connection_user,"n4dLTSPNetinstall")
+                subprocess.call(["zenity","--warning", "--title='Menu created'", "--text", \
+                                        "Network install has been disabled"])
+            else:
+                subprocess.call(["zenity","--error", "--title='Menu creation'", "--text", \
+                                        "There has been an error during the menu creation!"])
+        
+            pass
+
+        except Exception:
+            subprocess.call(["zenity","--error", "--title='Menu creation'", "--text", \
+                                        "There has been an error during the menu creation!"])
+            pass
+            
+        
+        
+        
+
+        
+
+        pass    
+    
 
     def onSelectIso(self, args):
         import subprocess
@@ -455,17 +490,14 @@ class LliureXLTSPAdmin:
         print "TYPE: "+str(type(json_obj))'''
 
         try:        
-            #json_obj=self.server.get_json_images("","LtspChroot")
-            #print "TYPE: "+str(type(json_obj))
-            #self.imagelist=json_obj;
             
-            
-            #print ("CONTAINS:")
-            #print "****"+str(self.imagelist)+"*****"
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            netinst_installed=server.is_netinstall_installed("","n4dLTSPNetinstall");
+            netinst_available=server.is_netinstall_available("","n4dLTSPNetinstall");
     
-            file = os.path.abspath('webgui/IsoManager.html')
-            
-            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps("")+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
+            file = os.path.abspath('webgui/IsoManager.html')            
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps("")+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;netinst_installed='+str(netinst_installed)+'&amp;netinst_available='+str(netinst_available);
+    
             
             print (uri)
             browser.open_url(uri)

@@ -1,3 +1,33 @@
+lliurex-ltsp-admin (0.16) precise; urgency=low
+
+  * Added support to network installation.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Mon, 08 Jul 2013 12:07:21 +0200
+
+lliurex-ltsp-admin (0.15) precise; urgency=low
+
+  * Replaced n4d-remote-login in mirror update to n4d remote execution of lliurex-mirror-gui
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 03 Jul 2013 13:14:30 +0200
+
+lliurex-ltsp-admin (0.14.2) precise; urgency=low
+
+  * Fixed SetStatus bug in mirror manager.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Tue, 02 Jul 2013 13:45:51 +0200
+
+lliurex-ltsp-admin (0.14.1) precise; urgency=low
+
+  * Yet, another mirror bug fixed.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Tue, 02 Jul 2013 09:27:52 +0200
+
+lliurex-ltsp-admin (0.14) precise; urgency=low
+
+  * Fixed another mirror date bug.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Fri, 28 Jun 2013 13:29:30 +0200
+
 lliurex-ltsp-admin (0.13) precise; urgency=low
 
   * Fixed mirror date bug.

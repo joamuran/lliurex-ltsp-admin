@@ -57,22 +57,43 @@ function getiso() {
 $(document).ready(function() {
 
     srv_ip=getUrlVar('srv_ip');
-    
+    netinst_installed=getUrlVar('netinst_installed');
+    netinst_available=getUrlVar('netinst_available');
     
     
     /*  NETINSTALL  */
     
     titleNetinst=gettext("Network installer")
     $("#titleNetinstallManager").append(titleNetinst);
+    
     helpnetinst=gettext("With this option, you can install LliueX in multiple systems using Netinstall process (debian installer).")
     $("#helptipnetinst").append(helpnetinst);
-    netinstcontent="<input id='checkinst' style='display: block; float: left; margin-left: 50px; clear: both;' onchange='handleChange(this);' class='ClientItemCheckBox' \
-                   type='checkbox' name='allownetinst' value='enabled'>"+gettext("Allow network installation")+"</div>";
-    btinst="<div id='BtCreateMenus' class='BtNetInst BtCreateMenus' onclick='alert()'>"+gettext("Apply Changes")+"</div> \
-            <div id='TextMenus'>"+gettext("Use this button Apply changes to startup menu in clients, and allow/disable network installation.")+".</div>";
-    
-    netinstcontent+=btinst
-    $("#NetinstContainer").append(netinstcontent);
+
+    if (netinst_installed=="True") {
+        if (netinst_available=="True") checked="checked='checked'";
+            else checked="";
+        
+        netinstcontent="<input id='checkinst' style='display: block; float: left; margin-left: 50px; clear: both;' onchange='handleChange(this);' class='ClientItemCheckBox' \
+                    type='checkbox' name='allownetinst' value='enabled' "+checked+">"+gettext("Allow network installation")+"</div>";
+        /*btinst="<div id='BtCreateMenus' class='BtNetInst BtCreateMenus' onclick='alert()'>"+gettext("Apply Changes")+"</div> \
+                <div id='TextMenus'>"+gettext("Use this button Apply changes to startup menu in clients, and allow/disable network installation.")+".</div>";
+        */
+        btinst="<div id='BtCreateMenus' class='BtNetInstUnchecked'>"+gettext("Apply Changes")+"</div> \
+                <div id='TextMenus'>"+gettext("Use this button Apply changes to startup menu in clients, and allow/disable network installation.")+".</div>";
+        netinstcontent+=btinst;
+        $("#NetinstContainer").append(netinstcontent);
+
+    } else{
+        text="<div style='margin-top: 10px;margin-left:50px; float:left; clear:both; width:600px; height:150px'>";
+        text+="<div style='float:left; clear:left; height: 80px; width:80px;'><img src='images/warning.png' /></div>";
+        text+="<div style='font-size: 1.1em; font-weight: bold; float:left; clear:right; margin-left: 50px; width:500px; height: 20px;'>";
+        text+=gettext("Package LliureX NetInstall is not installed.")+"</div>"
+        text+="<div style='float:left; clear:right; margin-left: 50px; width:500px; height: 20px;'>";
+        text+=gettext("Package llx-netinst is not installed on server. Please, install it to be able to perform a Network Installation.</div>")
+        text+="</div>"
+        $("#NetinstContainer").append(text);
+
+    }
     
     /* END NETINSTALL */
     
@@ -123,6 +144,32 @@ $(document).ready(function() {
     //$("#MiniIsoManager").style('background-color', '#ffffff', 'important');
     
 });
+
+function ModifyPXEMenu(netinstall) {
+    location.href='ltsp://SetPXENetinst/'+netinstall;
+}
+
+function handleChange(cb) {
+    
+    action="";
+    $("#BtCreateMenus").off('click');
+    $("#BtCreateMenus").removeClass("BtNetInstUnchecked").addClass("BtNetInst BtCreateMenus");
+    $("#BtCreateMenus").click(function(){   
+    if (cb.checked){
+         action="available";
+        }
+    if (!cb.checked){
+        action="unavailable";
+        }
+    
+    ModifyPXEMenu(action);
+    })
+    
+    
+    
+}
+
+
 
 function setStatus(newstatus){
     status=newstatus;
