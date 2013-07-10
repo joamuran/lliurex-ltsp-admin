@@ -97,15 +97,17 @@ function loginSuccess(mirror_installed){
     var mirrorData={"installed": "true", "date": "10/10/2012"}
     
     if (mirror_installed=="available"){
-        buttons="<div tabindex='3' class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
-          <div tabindex='2' class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
+        buttons="<div tabindex='4' class='BigButton ButtonNetinst' style='margin-top:5px !important' id='NetInstall'>"+gettext("Network Install")+"</div> \
+          <div tabindex='3' class='BigButton ButtonClients' style='margin-top:5px !important' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
+          <div tabindex='2' class='BigButton ButtonImages' style='margin-top:5px !important' id='ImageManager'>"+gettext("Manage Images")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
     }
     else{
-        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
+        buttons="<div class='BigButton ButtonNetinst unavailable' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
+          <div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
           <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
           <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();
@@ -173,6 +175,11 @@ function BindMainEventHandlers(){
         location.href='ltsp://ClientManager';
     });
      
+    $("#NetInstall").bind('click', function( event ){
+        location.href='ltsp://IsoManager';
+    });
+     
+
       $("#ImageManager").bind('click', function( event ){
         location.href='ltsp://ImageManager';
     });

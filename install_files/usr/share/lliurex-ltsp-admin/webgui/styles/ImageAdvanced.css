@@ -19,11 +19,27 @@ height:100%;
 }
 
 .Desktop{
-    background-image: url('images/desktop.png');
+    padding-top: 70px;
+    background-image: url('images/llx-pandora-desktop-fullhd.png');
 }
  
 .Infantil{
-    background-image: url('images/infantil.png');
+    padding-top: 70px;
+    background-image: url('images/llx-pandora-infantil.png') ;
+}
+
+.Musica{
+    padding-top: 70px;
+    background-image: url('images/llx-pandora-musica.png');
+}
+
+.Pime{
+    background-image: url('images/llx-pandora-pime.png');
+}
+
+.Lite{
+    padding-top: 70px;
+    background-image: url('images/llx-pandora-lite.png');
 }   
 
 .iconContainer{
@@ -124,6 +140,7 @@ height:100%;
 
 .WaitingWindow{
     display: none;
+    margin-top: -70px;
     position: absolute; 
     background-color: #000000;
     /*z-index: 1;*/

@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.17) precise; urgency=low
+
+  * Fixed X session bugs. Added new resources.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 10 Jul 2013 14:02:14 +0200
+
 lliurex-ltsp-admin (0.16) precise; urgency=low
 
   * Added support to network installation.

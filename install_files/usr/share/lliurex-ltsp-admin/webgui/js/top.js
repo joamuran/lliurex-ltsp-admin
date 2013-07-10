@@ -32,14 +32,16 @@ $(document).ready(function() {
     
     
     if (section) {
-        $("#"+section).css("background-color", "#eeeeff");
-        $("#"+section).css("color", "#888888");
-        $("#"+section).css("border-color", "#ddddddee");
-        $("#"+section).css("border-bottom", "0px");
-        $("#Mini"+section).css("background-color", "#eeeeff");
-        $("#Mini"+section).css("color", "#888888");
-        $("#Mini"+section).css("border-color", "#ddddee");
-        $("#Mini"+section).css("border-bottom", "0px");
+        /*$("#"+section).css("background-color", "#eeeeff");*/
+        $("#"+section).css("background-color", "#4db2ff");
+        $("#"+section).css("color", "#f5fafa");
+        $("#"+section).css("border-color", "#89d8ff");
+        /*$("#"+section).css("border-bottom", "0px");*/
+        /*$("#Mini"+section).css("background-color", "#eeeeff");*/
+        $("#Mini"+section).css("background-color", "#4db2ff");
+        $("#Mini"+section).css("color", "#f5fafa");
+        $("#Mini"+section).css("border-color", "#89d8ff");
+        /*$("#Mini"+section).css("border-bottom", "0px");*/
     }
     
     // Bind events with actions
