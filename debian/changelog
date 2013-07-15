@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.18) precise; urgency=low
+
+  * Enhaced client management gui.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Mon, 15 Jul 2013 14:40:21 +0200
+
 lliurex-ltsp-admin (0.17) precise; urgency=low
 
   * Fixed X session bugs. Added new resources.

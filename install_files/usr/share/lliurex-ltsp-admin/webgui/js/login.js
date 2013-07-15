@@ -148,7 +148,7 @@ function SubmitLogin() {
         $('body').css('cursor', 'wait');  // Seem that does not run...
 
         $("#ErrorLoginMessage").empty();
-        $("#ErrorLoginMessage").append(gettext("<span>Validing user...</span>"));
+        $("#ErrorLoginMessage").append(gettext("<span>Validating user...</span>"));
         
         // We must establish a timeout to wait that jquery writes the validating message
         setTimeout(function() 

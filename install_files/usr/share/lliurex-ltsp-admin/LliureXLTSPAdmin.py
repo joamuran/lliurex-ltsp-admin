@@ -1216,52 +1216,57 @@ def compareVersion(v1, v2):
 if __name__ == "__main__":
     # set working directory
 
-    # production
-    os.chdir('/usr/share/lliurex-ltsp-admin')
-    #Github
-    #os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
-
-    # Create an App instance
-    ltspadmin = LliureXLTSPAdmin()
+    try:
+        # production
+        os.chdir('/usr/share/lliurex-ltsp-admin')
+        #Github
+        #os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
     
-    # create Browser
-    browser = Browser(language=ltspadmin.language)
-   
-    if ltspadmin.ConnectionStatus=='off':
-        file = os.path.abspath('webgui/LocalServerError.html')
-        pass
-    else:
+        # Create an App instance
+        ltspadmin = LliureXLTSPAdmin()
         
-        # check version
-        server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
-        version=server.getVersion("", "n4dLTSPVersion");
-        print version
-        if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
-            subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
-                                     "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour."])
-            #print "required version "+ltspadmin.require_version_plugins
+        # create Browser
+        browser = Browser(language=ltspadmin.language)
+       
+        if ltspadmin.ConnectionStatus=='off':
+            file = os.path.abspath('webgui/LocalServerError.html')
+            pass
+        else:
+            
+            # check version
+            server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+            version=server.getVersion("", "n4dLTSPVersion");
+            print version
+            if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
+                subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
+                                        "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour.", "--no-wrap"])
+                #print "required version "+ltspadmin.require_version_plugins
+            
+            
+            file = os.path.abspath('webgui/login.html')
+            print ("CONECTION:"+ltspadmin.ConnectionStatus)
+            pass
         
+        browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
         
-        file = os.path.abspath('webgui/login.html')
-        print ("CONECTION:"+ltspadmin.ConnectionStatus)
-        pass
-    
-    browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
-    
-    #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
-       
-    uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
-       
-    ## print ("Goint to "+uri)
-    print (uri)
-    browser.open_url(uri)
-       
-    print (">>"+browser.lang)
-    
-    #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")  
-    Gtk.main()
-    #gtk.gdk.threads_init()
-    #thread.start_new_thread(gtk.main, ())
-    #browser.webview.execute_script('saluda()')    
-
+        #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
+        
+        uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
+        
+        ## print ("Goint to "+uri)
+        print (uri)
+        browser.open_url(uri)
+        
+        print (">>"+browser.lang)
+        
+        #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")  
+        Gtk.main()
+        #gtk.gdk.threads_init()
+        #thread.start_new_thread(gtk.main, ())
+        #browser.webview.execute_script('saluda()')    
+    except Exception as e:
+                print str(e)
+                subprocess.call(["zenity","--error", "--title='General Error'", "--text", \
+                                        "LliureX LTSP couldn't start.\nIt's strongly caused because your server is not initializated.\nInitialize it with Zero Server Wizard, please.", "--no-wrap"])
+        
         

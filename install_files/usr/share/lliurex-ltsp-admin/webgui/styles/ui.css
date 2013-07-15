@@ -33,7 +33,7 @@ body
 }
 
 #content{
-    height: 450px;
+    height: 370px;
     /*background: #eeeeee;*/
     overflow-y: auto;
 }
