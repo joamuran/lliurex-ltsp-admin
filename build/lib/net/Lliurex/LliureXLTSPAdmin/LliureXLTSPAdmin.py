@@ -442,7 +442,7 @@ class LliureXLTSPAdmin:
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
         display=":47" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-        screen="800x600"
+        screen="800x600x16"
 
 
         # XServer es una connexio a les x locals, no una connexio n4d!!

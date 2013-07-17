@@ -106,10 +106,10 @@ function loginSuccess(mirror_installed){
         $("#ButtonList").append(buttons);
     }
     else{
-        buttons="<div class='BigButton ButtonNetinst unavailable' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
-          <div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
-          <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+        buttons="<div class='BigButton ButtonNetinst unavailable' style='margin-top:5px !important' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
+          <div class='BigButton ButtonClients unavailable' style='margin-top:5px !important' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
+          <div class='BigButton ButtonImages unavailable' style='margin-top:5px !important' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
         }

@@ -362,7 +362,7 @@ class LTSPX11Environment:
 	'''
 	
 	display=":42"
-	screen="800x600"
+	screen="800x600x16"
 
 	def __init__(self, display, screen):
 		self.display=display

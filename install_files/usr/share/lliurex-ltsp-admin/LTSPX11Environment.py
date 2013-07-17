@@ -14,7 +14,7 @@ class LTSPX11Environment:
 	'''
 	
 	display=":42"
-	screen="800x600"
+	screen="1024x768x16"
 
 	def __init__(self, display, screen):
 		self.display=display
@@ -46,7 +46,7 @@ class LTSPX11Environment:
 	
 	def prepare_X11_applications_on_chroot(self):
 		'''
-		Prepare a X11 environment to run graphical apps 
+		Prepare a X11 environment to run graphical apps remotely (not necessary in chroot)
 		'''
 		import time
 		try:
@@ -54,8 +54,8 @@ class LTSPX11Environment:
 			self.RemoveXephyrProcess(self.display)
 			# Display on display
 			print ("Display...")
-			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display])
-			
+			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display, "-dpi", "96", "-wr"])
+			#800x480x16 -dpi 96
 			# Waiting for process
 			while(pid.poll()==False):
 				print "watiting for xephyr"

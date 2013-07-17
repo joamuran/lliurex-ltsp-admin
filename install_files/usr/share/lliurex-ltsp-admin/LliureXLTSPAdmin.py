@@ -748,7 +748,35 @@ class LliureXLTSPAdmin:
             #print "id="+id
             if (ret_value=='cancel'):
                 return False;
+
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        #server.regenerate_img(connection_user,"LtspImage",img_chroot) 
+        # Prepare X11 environment
+        display=":42" 
+        screen="1024x768x16"
+        command="ltsp-update-image "+imgchroot
+        my_ip_for_server=self.get_my_ip_for_server()
+        print (my_ip_for_server)
         
+        
+        XServer=LTSPX11Environment(display, screen)
+        
+        try:
+            # PRepare X11 Xephyr environment
+            XServer.prepare_X11_applications_on_chroot()
+            # XServer es una connexio a les x locals, no una connexio n4d!!
+            XServer=LTSPX11Environment(display, screen)
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display)
+            print str(output)
+            #if (str(output['msg'])!='0'):
+            #    print ("Error")
+                #browser.execute_script("alert('Some error has been succeed')")
+        except Exception as e:
+                browser.execute_script("alert('Exception "+str(e)+"')")
+            
+    
+        '''
         browser.execute_script("add_text_to_output('Going to regenerate img...')");
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -788,7 +816,7 @@ class LliureXLTSPAdmin:
             print str(e)
             
 
-    '''
+    '' '
     DEPRECATED:
     def updateImage(self, image):
         print "********Updating: "+image
@@ -1037,8 +1065,8 @@ class LliureXLTSPAdmin:
         print (my_ip_for_server)
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
-        display=":48" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-        screen="800x600"
+        display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+        screen="1024x768x16"
 
 
         # XServer es una connexio a les x locals, no una connexio n4d!!
@@ -1218,9 +1246,9 @@ if __name__ == "__main__":
 
     try:
         # production
-        os.chdir('/usr/share/lliurex-ltsp-admin')
+        #os.chdir('/usr/share/lliurex-ltsp-admin')
         #Github
-        #os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+        os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
     
         # Create an App instance
         ltspadmin = LliureXLTSPAdmin()
