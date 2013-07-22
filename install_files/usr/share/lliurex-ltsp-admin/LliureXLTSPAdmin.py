@@ -293,7 +293,7 @@ class LliureXLTSPAdmin:
             
             # Set up X11 Environment for Chroot, Connection to n4d in local
             display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-            screen="650x550"
+            screen="1024x768"
             my_ip_for_server=self.get_my_ip_for_server()
 
             # XServer es una connexio a les x locals, no una connexio n4d!!
@@ -668,7 +668,7 @@ class LliureXLTSPAdmin:
         Deletes img and chroot for a client
         '''
 
-        import time
+        #import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
 
@@ -677,10 +677,10 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
+        result=server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
         print ("[n4dDeleteClient] End Deleting Client client...")
-        
-        return False
+        return result
+        #return False
 
 
     def n4dInstallXFCE(self, img_id, img_chroot):
@@ -738,7 +738,6 @@ class LliureXLTSPAdmin:
 
         import threading
 
-        
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
         print ("Image is: "+imgchroot)
@@ -759,20 +758,19 @@ class LliureXLTSPAdmin:
         my_ip_for_server=self.get_my_ip_for_server()
         print (my_ip_for_server)
         
-        
-        XServer=LTSPX11Environment(display, screen)
-        
         try:
-            # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot()
             # XServer es una connexio a les x locals, no una connexio n4d!!
             XServer=LTSPX11Environment(display, screen)
-            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display)
+            
+            # PRepare X11 Xephyr environment
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
             print str(output)
-            #if (str(output['msg'])!='0'):
-            #    print ("Error")
-                #browser.execute_script("alert('Some error has been succeed')")
+            
         except Exception as e:
+                print ("*********"+str(e))
                 browser.execute_script("alert('Exception "+str(e)+"')")
             
     
@@ -892,8 +890,55 @@ class LliureXLTSPAdmin:
 
     def onCreateNewClient(self, args):
         '''
-        Creates a new chroot and img file. Uses n4dCreateClient.
+        Creates a new chroot and img file.
         '''
+        import threading
+
+        print ("Create Image. Args:")
+        print (args)
+
+        # Getting chroot
+        id=args[3]
+        
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
+        print ("Create Client: "+id)
+
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+       
+        # Prepare X11 environment
+        display=":42" 
+        screen="1024x768x16"
+        command="lliurex-ltsp-create-client "+id
+        my_ip_for_server=self.get_my_ip_for_server()
+        print (my_ip_for_server)
+        
+        try:
+            # XServer es una connexio a les x locals, no una connexio n4d!!
+            XServer=LTSPX11Environment(display, screen)
+            
+            # PRepare X11 Xephyr environment
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
+            print str(output)
+            
+        except Exception as e:
+                print ("*********"+str(e))
+                browser.execute_script("alert('Exception "+str(e)+"')")
+            
+
+        
+        
+        
+        '''  DEPRECATED
+        Creates a new chroot and img file. Uses n4dCreateClient.
+        '' '
         import threading
 
         print ("Create Image. Args:")
@@ -931,7 +976,7 @@ class LliureXLTSPAdmin:
             
         except Exception as e:
             print str(e)
-            
+    ''' 
 
     def onUpdateImageClient(self, args):
         '''
@@ -982,6 +1027,7 @@ class LliureXLTSPAdmin:
         '''
         Delete img file and chroot. Uses n4dDeleteClient.
         '''
+        
         import threading
 
         print ("Deleting Image. Args:")
@@ -997,31 +1043,40 @@ class LliureXLTSPAdmin:
         print ("Image is: "+imgchroot)
 
         print ("Returns: ")
-        print self.server.prepare_log("","LtspImage")
-        print self.server.exist_log_file("","LtspImage")
         
-        self.initline=0;
-        self.numlines=1000;
-        self.endline=0;        
-        self.count=0;
+        result=self.n4dDeleteClient(id, imgchroot,img_client)
+        if(result['status']==True):
+            subprocess.call(["zenity","--info", "--title='Deleting Image'", "--text", \
+                                        "Image deleted successfully", "--no-wrap"])
+        else:
+            subprocess.call(["zenity","--error", "--title='Deleting Image'", "--text", \
+                                        str(result['msg']), "--no-wrap"])
         
-        try:
-            print ("[LliureX LTSP] Setting timer log")
-            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(2000, self.readlog,"LtspImage", "lstpimages")
-            #print ("Set timer log")
-            
-            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        #print self.server.prepare_log("","LtspImage")
+        #print self.server.exist_log_file("","LtspImage")
         
-            t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,img_client,))
-            t.daemon=True
-            t.start()
-            
-            #print ("Set timer ")
-            
-        except Exception as e:
-            print str(e)
+        #self.initline=0;
+        #self.numlines=1000;
+        #self.endline=0;        
+        #self.count=0;
+        
+        #try:
+        #    print ("[LliureX LTSP] Setting timer log")
+        #    # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+        #    #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+        #    gobject.timeout_add(2000, self.readlog,"LtspImage", "lstpimages")
+        #    #print ("Set timer log")
+        #    
+        #    print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        #
+        #    t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,img_client,))
+        #    t.daemon=True
+        #    t.start()
+        #    
+        #    #print ("Set timer ")
+        #    
+        #except Exception as e:
+        #    print str(e)
 
     # End Main functions to perform predefined actions in chroot
 
@@ -1076,7 +1131,8 @@ class LliureXLTSPAdmin:
 
         try:
             # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
             
             if (command=="start_session"):
                 print ("#####################")
@@ -1087,7 +1143,7 @@ class LliureXLTSPAdmin:
                 #XServer.prepare_chroot_for_session()
             
             # Run APP into REMOTE Server            
-            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display)
+            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display, str(Xepid.pid))
             #print ("OUTPUT: "+str(output['msg']))
             if (str(output['msg'])=='127'):
                 print ("command not found")

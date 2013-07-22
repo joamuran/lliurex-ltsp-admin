@@ -244,10 +244,10 @@ function PerformAction(action, Message) {
     /*
     invoques action in ltsp
     */
-    if (Message === undefined) Message = "Working...";
+    /*if (Message === undefined) Message = "Working...";
     status="working";
     $("#shellheader").append("<span>"+Message+"</span>");
-    $("#shellbox").css('display', 'block');
+    $("#shellbox").css('display', 'block');*/
     location.href=action;
 }
 
