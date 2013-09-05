@@ -70,7 +70,7 @@ function ExecuteApp(cb) {
 
         if (cb.id=="apply") {
             $('#WaitingText').empty();
-            $('#WaitingText').append(gettext("Calculating free space. Please Wait."));
+            $('#WaitingText').append(gettext("Checking for free space. Please Wait."));
             $('#WaitingWindow').css('display', 'block');
             
         }
