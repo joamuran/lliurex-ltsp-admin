@@ -1298,13 +1298,18 @@ def compareVersion(v1, v2):
     
 
 if __name__ == "__main__":
-    # set working directory
+    
+    import json
 
     try:
-        # production
-        #os.chdir('/usr/share/lliurex-ltsp-admin')
-        #Github
-        os.chdir('/srv/github/dev/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
+        # set working directory
+        conffile=open('/etc/lliurex-ltsp-admin/settings.json')
+        myjson=conffile.read()
+        dic=json.loads(myjson)
+        print ("Reading App from: "+dic["globalSettings"]["app_dir"])
+    
+        os.chdir(dic["globalSettings"]["app_dir"])
+
     
         # Create an App instance
         ltspadmin = LliureXLTSPAdmin()
