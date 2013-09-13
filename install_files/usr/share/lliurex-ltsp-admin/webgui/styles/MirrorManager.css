@@ -83,7 +83,7 @@
 }
 .MirrorStatusRow{
     overflow:hidden;
-    padding: 1px;
+    padding: 3px;
     box-shadow: inset 0px 0px 10px #cccccc;
     background-color: #eeeeee;
     border-left: solid thin #bbbbbb;
@@ -92,7 +92,7 @@
 }
 .MirrorLastRow{
     overflow:hidden;
-    padding: 1px;
+    padding: 3px;
     box-shadow: inset 0px 0px 10px #cccccc;
     background-color: #eeeeee;
     border-left: solid thin #bbbbbb;
@@ -128,8 +128,17 @@
 }
 
 .MirrorInfo{
-    margin-top: 5px;
+    margin: 3px 0px 0px 5px;
     font-size: 0.9em;
+    font-style: italic;
+    float: left;
+    clear: right;
+}
+
+.MirrorInfoError{
+    margin: 3px 0px 0px 5px;
+    color:#cc0000;
+    font-size: 0.8em;
     font-style: italic;
     float: left;
     clear: right;

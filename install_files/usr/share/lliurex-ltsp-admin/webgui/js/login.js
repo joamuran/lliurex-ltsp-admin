@@ -91,8 +91,13 @@ $(document).ready(function() {
 // Event Dispatchers
 // Functions called from python
 
-function loginSuccess(mirror_installed){
+function loginSuccess(mirror_installed, pool_ok){
     $('body').css('cursor', 'default');
+    if(pool_ok=="False"){
+	$("#MirrorMessage").empty();
+	$("#MirrorMessage").show();
+	$("#MirrorMessage").append(gettext("<span><stong>Warning: </strong>Mirror seems to be inconsistent, so, installations and image creation won't success. Please, refresh it from Mirror Manager.</span>"));
+     }
     
     var mirrorData={"installed": "true", "date": "10/10/2012"}
     
@@ -100,7 +105,7 @@ function loginSuccess(mirror_installed){
         buttons="<div tabindex='4' class='BigButton ButtonNetinst' style='margin-top:5px !important' id='NetInstall'>"+gettext("Network Install")+"</div> \
           <div tabindex='3' class='BigButton ButtonClients' style='margin-top:5px !important' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
           <div tabindex='2' class='BigButton ButtonImages' style='margin-top:5px !important' id='ImageManager'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'><div>"+gettext("Mirror Manager")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);

@@ -30,7 +30,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.1.9' # Version required of n4d plugins in server
+    require_version_plugins='0.2.7' # Version required of n4d plugins in server
 
     
     # Temp data that we will extract from n4d-ltsp
@@ -299,9 +299,12 @@ class LliureXLTSPAdmin:
             # XServer es una connexio a les x locals, no una connexio n4d!!
             XServer=LTSPX11Environment(display, screen)
             # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot()
-
-            output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display)
+            
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            print "1111111111111111111111"+str(my_ip_for_server)+"-"+str(display)+"-"+str(Xepid.pid)
+            output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display, Xepid.pid)
+            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             
         except Exception as e:
             print ("Exception in XServer...:"+str(e))
@@ -371,6 +374,17 @@ class LliureXLTSPAdmin:
         try:
             # Connection
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
+
+            # check version
+            server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+            version=server.getVersion("", "n4dLTSPVersion");
+            print version
+            if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
+                subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
+                                        "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour.", "--no-wrap"])
+                #print "required version "+ltspadmin.require_version_plugins
+
+
             # Authentication
             groups=self.server.validate_user(self.username,self.password)
             print (groups)
@@ -392,6 +406,13 @@ class LliureXLTSPAdmin:
                 print (self.mirror_installed)
                 #print (":::::::::::"+status)
                 if self.mirror_installed=='available':
+                    # test if mirror is sane
+                    try:
+                        exec("status_pool="+self.server.check_mirror("", "LliurexMirrorNonGtk"))
+                    except Exception:
+                        status_pool={'status':'Unavailable', 'msg':'Pool is not available'}
+                    self.pool_ok=status_pool['status']
+                    #self.pool_ok=str(self.server.check_mirror("", "LliurexMirrorNonGtk")['status']).strip();
                     
                     # Abstract
                     try:
@@ -403,7 +424,7 @@ class LliureXLTSPAdmin:
         
                     # Date
                     try:
-                        exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))                   
+                        exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))
                         if datestatus['status']:
                             self.date=datestatus['date']
                         else:
@@ -412,13 +433,17 @@ class LliureXLTSPAdmin:
                         self.mirror_installed='uninstalled'
                 
                 elif self.mirror_installed=='uninstalled':
+                    self.pool_ok="Uninstalled";            
                     self.abstract="Mirror Not Installed"
                 else: # i.e. Busy
                     self.abstract="LliureX Mirror is Working"
                     #self.date=""
                 
                 # Launch browser
-                browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
+
+                print ("loginSuccess('"+self.mirror_installed+"','"+self.pool_ok+"')")
+
+                browser.execute_script("loginSuccess('"+self.mirror_installed+"','"+self.pool_ok+"')")
 
                     
                 # END if self.mirror_installed=="available":
@@ -442,7 +467,7 @@ class LliureXLTSPAdmin:
         file = os.path.abspath('webgui/MirrorManager.html')
         if (type(self.date)==type(None)):
             self.date=""
-        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
+        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;pool_ok='+self.pool_ok+'&amp;mirror_date='+self.date
         browser.open_url(uri)
     
     def onImageManager(self, args):
@@ -1236,10 +1261,13 @@ class LliureXLTSPAdmin:
    
     def get_my_ip_for_server(self):
         import lliurex.net
-
+        import subprocess
+        
+        # If we are in the server, return localhost
         if self.srv_ip=='127.0.0.1':
             return '127.0.0.1'
 
+        # Else, let's check the ip address in the same network that server
         for interface in lliurex.net.get_devices_info():
             ip=interface['ip']
             mask=interface['netmask']
@@ -1247,8 +1275,36 @@ class LliureXLTSPAdmin:
             ipsrvnet=lliurex.net.get_network_ip(str(self.srv_ip), mask)
             if ipnet==ipsrvnet:
                 return ip
+        
+        # If arrives here (server is not in our network), let's check local interfaces to other networks and user will select it
+        output = subprocess.check_output(["ip","addr"])
+        num_ips=0
+        ip_list=[]
+        command=["zenity", "--list",  "--title=Select local IP for this server","--column=Available Local IP Adresses"]
+        for i in output.split("\n"):
+            if (("inet" in i) and not("inet6" in i)):
+                num_ips=num_ips+1
+                ip=((((" ".join(i.split())).split(" ")[1]).split("/"))[0])
+                command.append(ip)
 
-        # If arrives here (not shuld!), return localhost
+        print ip_list
+        print num_ips
+
+        print command
+        if(num_ips>0):
+            try:
+                resp=subprocess.check_output(command)
+                print ("RETURN "+resp)
+                if (resp):
+                    return resp.strip()
+                else:
+                    return '127.0.0.1'
+            except:
+                print "Exception"
+                return '127.0.0.1'
+        
+        # Not should arrive here...
+        print ("[LTSP-ADMIN] Warning: Not found local IP for remote server!")
         return '127.0.0.1'
         pass
 
@@ -1273,13 +1329,19 @@ def compareVersion(v1, v2):
     '''
     returns 0 if v2=v2, 1 if v1>v2 and -1 if v1<v2
     '''
+    if (v2=="" or v1==""):
+        return -2
+
+   
+
     pos=0
     a=v1.split(".")
     b=v2.split(".")
+
     
     lenmax=min(len(a), len(b))
     print lenmax
-    
+
     for i in range(0,lenmax):
         if(int(a[i])>int(b[i])):
             return 1
@@ -1287,7 +1349,7 @@ def compareVersion(v1, v2):
             return -1
         # otherwise continue
         
-    #if we are here, all subversions are equial
+    #if we are here, all subversions are equal
     
     if(len(a)==len(b)):
         return 0     # same length and 
@@ -1322,6 +1384,7 @@ if __name__ == "__main__":
             pass
         else:
             
+            '''            
             # check version
             server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
             version=server.getVersion("", "n4dLTSPVersion");
@@ -1330,7 +1393,7 @@ if __name__ == "__main__":
                 subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
                                         "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour.", "--no-wrap"])
                 #print "required version "+ltspadmin.require_version_plugins
-            
+            '''    
             
             file = os.path.abspath('webgui/login.html')
             print ("CONECTION:"+ltspadmin.ConnectionStatus)
