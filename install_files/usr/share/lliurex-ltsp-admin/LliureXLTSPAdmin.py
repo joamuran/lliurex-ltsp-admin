@@ -30,6 +30,8 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
+    require_version_plugins='0.2.7' # Version required of n4d plugins in server
+
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
@@ -43,6 +45,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "login")] = 'onLogin';
     binding[("ltsp", "MirrorManager")] = 'onMirrorManager';
     binding[("ltsp", "ImageManager")] = 'onImageManager';
+    binding[("ltsp", "IsoManager")] = 'onIsoManager';
     binding[("ltsp", "ClientManager")] = 'onClientManager';
     binding[("ltsp", "SoftwareManager")] = 'onSoftwareManager';
     binding[("ltsp", "ImageAdvanced")] = 'onImageAdvanced';
@@ -56,6 +59,9 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "DeleteClient")] = 'onDeleteClient';
     binding[("ltsp", "ApplyChangesToImageWithCheck")] = 'onApplyChangesToImageWithCheck';
     binding[("ltsp", "ApplyChangesToImage")] = 'onApplyChangesToImage';
+    binding[("ltsp", "SelectIso")] = 'onSelectIso';
+    binding[("ltsp", "SetPXENetinst")] = 'onSetPXENetinst';
+    
 
     def __init__(self):
         ''' Init LTSP Admin and connects to N4D '''
@@ -147,6 +153,79 @@ class LliureXLTSPAdmin:
             print ("Exception reading log. Message: "+str(e))
             return False
 
+    def onSetPXENetinst(self, args):
+
+        try:
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            connection_user = (self.username,self.password)
+            if (args[3]=="available"):
+                server.set_netinstall_installable(connection_user,"n4dLTSPNetinstall")
+                subprocess.call(["zenity","--warning", "--title='Menu created'", "--text", \
+                                        "Now you can install LliureX through the local network."])
+    
+            elif (args[3]=="unavailable"):
+                server.unset_netinstall_installable(connection_user,"n4dLTSPNetinstall")
+                subprocess.call(["zenity","--warning", "--title='Menu created'", "--text", \
+                                        "Network install has been disabled"])
+            else:
+                subprocess.call(["zenity","--error", "--title='Menu creation'", "--text", \
+                                        "There has been an error during the menu creation!"])
+        
+            pass
+
+        except Exception:
+            subprocess.call(["zenity","--error", "--title='Menu creation'", "--text", \
+                                        "There has been an error during the menu creation!"])
+            pass
+            
+        
+        
+        
+
+        
+
+        pass    
+    
+
+    def onSelectIso(self, args):
+        import subprocess
+        
+        ###import easygui
+       ## #print easygui.fileopenbox()
+
+        try:
+            filename=subprocess.check_output(["zenity","--file-selection", "--title='Select a File'"])
+            print filename
+            cancel=False
+            
+            ftype=subprocess.check_output(["file","-b",str(filename).replace("\n","")])
+            print ftype
+            if not "ISO 9660 CD-ROM filesystem" in ftype:
+                subprocess.check_output(["zenity","--error", "--text", \
+                                                  "It is not a valid iso file", \
+                                                  "--title", "Invalid Iso"])
+                cancel=True
+            elif not "Lliurex pandora" in ftype:
+                selection=subprocess.check_output(["zenity","--question", \
+                                                  "--title", "Not LliureX ISO", \
+                                                  "--text", "It is not a valid LliureX iso file, Continue anyway?"])
+                print str(selection)
+            else:
+                selection=subprocess.check_output(["zenity","--question", \
+                                                  "--title", "LliureX ISO", \
+                                                  "--text", "This is a valid LliureX ISO. Let's Go."])
+                print str(selection)
+                
+            if not cancel:
+                print "PERFORMING ACTION!!!!!!!!!!!!!!!"
+          
+        except Exception as e:
+            print "Exception: "+str(e)
+            #self.ltspError(str(e));
+            pass # Click on cancel
+        
+        pass
+    
 
 
     def n4updatemirror(self):
@@ -163,8 +242,8 @@ class LliureXLTSPAdmin:
         print ("End Mirror")
         
         return False
-        
-    '''
+    
+    '''    
     def onUpdateMirrorCommand(self, args):
         import threading
         
@@ -204,7 +283,6 @@ class LliureXLTSPAdmin:
         return True
     '''
 
-
     def onUpdateMirrorCommand(self, args):
         import threading
         
@@ -215,15 +293,18 @@ class LliureXLTSPAdmin:
             
             # Set up X11 Environment for Chroot, Connection to n4d in local
             display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-            screen="650x550"
+            screen="1024x768"
             my_ip_for_server=self.get_my_ip_for_server()
 
             # XServer es una connexio a les x locals, no una connexio n4d!!
             XServer=LTSPX11Environment(display, screen)
             # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot()
-
-            output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display)
+            
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            print "1111111111111111111111"+str(my_ip_for_server)+"-"+str(display)+"-"+str(Xepid.pid)
+            output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display, Xepid.pid)
+            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             
         except Exception as e:
             print ("Exception in XServer...:"+str(e))
@@ -232,7 +313,7 @@ class LliureXLTSPAdmin:
             
         return True
     
-           
+
     def onreconnectN4D(self, args):
         import subprocess
         import time
@@ -293,6 +374,17 @@ class LliureXLTSPAdmin:
         try:
             # Connection
             self.server = ServerProxy("https://"+self.srv_ip+":9779")
+
+            # check version
+            server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+            version=server.getVersion("", "n4dLTSPVersion");
+            print version
+            if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
+                subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
+                                        "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour.", "--no-wrap"])
+                #print "required version "+ltspadmin.require_version_plugins
+
+
             # Authentication
             groups=self.server.validate_user(self.username,self.password)
             print (groups)
@@ -314,6 +406,13 @@ class LliureXLTSPAdmin:
                 print (self.mirror_installed)
                 #print (":::::::::::"+status)
                 if self.mirror_installed=='available':
+                    # test if mirror is sane
+                    try:
+                        exec("status_pool="+self.server.check_mirror("", "LliurexMirrorNonGtk"))
+                    except Exception:
+                        status_pool={'status':'Unavailable', 'msg':'Pool is not available'}
+                    self.pool_ok=status_pool['status']
+                    #self.pool_ok=str(self.server.check_mirror("", "LliurexMirrorNonGtk")['status']).strip();
                     
                     # Abstract
                     try:
@@ -325,7 +424,7 @@ class LliureXLTSPAdmin:
         
                     # Date
                     try:
-                        exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))                   
+                        exec("datestatus="+self.server.n4d_get_unix_date("", "LliurexMirrorNonGtk"))
                         if datestatus['status']:
                             self.date=datestatus['date']
                         else:
@@ -334,13 +433,17 @@ class LliureXLTSPAdmin:
                         self.mirror_installed='uninstalled'
                 
                 elif self.mirror_installed=='uninstalled':
+                    self.pool_ok="Uninstalled";            
                     self.abstract="Mirror Not Installed"
                 else: # i.e. Busy
                     self.abstract="LliureX Mirror is Working"
                     #self.date=""
                 
                 # Launch browser
-                browser.execute_script("loginSuccess('"+self.mirror_installed+"')")
+
+                print ("loginSuccess('"+self.mirror_installed+"','"+self.pool_ok+"')")
+
+                browser.execute_script("loginSuccess('"+self.mirror_installed+"','"+self.pool_ok+"')")
 
                     
                 # END if self.mirror_installed=="available":
@@ -359,14 +462,14 @@ class LliureXLTSPAdmin:
             uri = 'file://' + urllib.pathname2url(file)
             browser.open_url(uri)
             pass
-        
+    
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
         if (type(self.date)==type(None)):
             self.date=""
-        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;mirror_date='+self.date
+        uri = 'file://' + urllib.pathname2url(file)+'?mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;mirror_abstract='+self.abstract+'&amp;pool_ok='+self.pool_ok+'&amp;mirror_date='+self.date
         browser.open_url(uri)
-
+    
     def onImageManager(self, args):
         import simplejson as json
         #from pprint import pprint
@@ -397,6 +500,36 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print ("[LTSP Exception]"+str(e))
 
+
+
+    def onIsoManager(self, args):
+        import simplejson as json
+        #from pprint import pprint
+        
+        '''
+        TO USE WITH FILE...
+        fd=open('webgui/data.json')
+        json_data=fd.read();
+        fd.close()
+        json_obj=json.loads(json_data)
+        print "TYPE: "+str(type(json_obj))'''
+
+        try:        
+            
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            netinst_installed=server.is_netinstall_installed("","n4dLTSPNetinstall");
+            netinst_available=server.is_netinstall_available("","n4dLTSPNetinstall");
+    
+            file = os.path.abspath('webgui/IsoManager.html')            
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps("")+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;netinst_installed='+str(netinst_installed)+'&amp;netinst_available='+str(netinst_available);
+    
+            
+            print (uri)
+            browser.open_url(uri)
+        except Exception as e:
+            print ("[LTSP Exception]"+str(e))
+
+
     def onClientManager(self, args):   
         file = os.path.abspath('webgui/ClientManager.html')
         print ('&amp;srv_ip='+self.srv_ip)
@@ -422,7 +555,6 @@ class LliureXLTSPAdmin:
         print ("ARGS: "+str(args))
         #print ("IMAGELIST: "+str(self.getChrootFromImageList(id)))
         uri = 'file://' + urllib.pathname2url(file)+'?meta='+urllib.unquote(id)+'&amp;mirror_installed='+self.mirror_installed+'&amp;chroot='+str(self.getChrootFromImageList(id))+'&amp;xdesktop='+str(self.HasClientXFCEInstalled(id))
-        print "tralari"
         browser.open_url(uri)
 
     def getChrootFromImageList(self, id):
@@ -561,7 +693,7 @@ class LliureXLTSPAdmin:
         Deletes img and chroot for a client
         '''
 
-        import time
+        #import time
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
 
@@ -570,10 +702,10 @@ class LliureXLTSPAdmin:
         print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
-        server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
+        result=server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
         print ("[n4dDeleteClient] End Deleting Client client...")
-        
-        return False
+        return result
+        #return False
 
 
     def n4dInstallXFCE(self, img_id, img_chroot):
@@ -631,7 +763,6 @@ class LliureXLTSPAdmin:
 
         import threading
 
-        
         # Getting chroot
         imgchroot=str(urllib.unquote(args[4]))
         print ("Image is: "+imgchroot)
@@ -641,7 +772,34 @@ class LliureXLTSPAdmin:
             #print "id="+id
             if (ret_value=='cancel'):
                 return False;
+
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        #server.regenerate_img(connection_user,"LtspImage",img_chroot) 
+        # Prepare X11 environment
+        display=":42" 
+        screen="1024x768x16"
+        command="ltsp-update-image "+imgchroot
+        my_ip_for_server=self.get_my_ip_for_server()
+        print (my_ip_for_server)
         
+        try:
+            # XServer es una connexio a les x locals, no una connexio n4d!!
+            XServer=LTSPX11Environment(display, screen)
+            
+            # PRepare X11 Xephyr environment
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
+            print str(output)
+            
+        except Exception as e:
+                print ("*********"+str(e))
+                browser.execute_script("alert('Exception "+str(e)+"')")
+            
+    
+        '''
         browser.execute_script("add_text_to_output('Going to regenerate img...')");
         
         server = ServerProxy("https://"+self.srv_ip+":9779")
@@ -681,7 +839,7 @@ class LliureXLTSPAdmin:
             print str(e)
             
 
-    '''
+    '' '
     DEPRECATED:
     def updateImage(self, image):
         print "********Updating: "+image
@@ -757,8 +915,55 @@ class LliureXLTSPAdmin:
 
     def onCreateNewClient(self, args):
         '''
-        Creates a new chroot and img file. Uses n4dCreateClient.
+        Creates a new chroot and img file.
         '''
+        import threading
+
+        print ("Create Image. Args:")
+        print (args)
+
+        # Getting chroot
+        id=args[3]
+        
+        # Getting chroot
+        imgchroot=str(self.getChrootFromImageList(id))
+        #print "id="+id
+        print ("Image is: "+imgchroot)
+        print ("Create Client: "+id)
+
+        
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+       
+        # Prepare X11 environment
+        display=":42" 
+        screen="1024x768x16"
+        command="lliurex-ltsp-create-client "+id
+        my_ip_for_server=self.get_my_ip_for_server()
+        print (my_ip_for_server)
+        
+        try:
+            # XServer es una connexio a les x locals, no una connexio n4d!!
+            XServer=LTSPX11Environment(display, screen)
+            
+            # PRepare X11 Xephyr environment
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
+            
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
+            print str(output)
+            
+        except Exception as e:
+                print ("*********"+str(e))
+                browser.execute_script("alert('Exception "+str(e)+"')")
+            
+
+        
+        
+        
+        '''  DEPRECATED
+        Creates a new chroot and img file. Uses n4dCreateClient.
+        '' '
         import threading
 
         print ("Create Image. Args:")
@@ -796,7 +1001,7 @@ class LliureXLTSPAdmin:
             
         except Exception as e:
             print str(e)
-            
+    ''' 
 
     def onUpdateImageClient(self, args):
         '''
@@ -847,6 +1052,7 @@ class LliureXLTSPAdmin:
         '''
         Delete img file and chroot. Uses n4dDeleteClient.
         '''
+        
         import threading
 
         print ("Deleting Image. Args:")
@@ -862,31 +1068,40 @@ class LliureXLTSPAdmin:
         print ("Image is: "+imgchroot)
 
         print ("Returns: ")
-        print self.server.prepare_log("","LtspImage")
-        print self.server.exist_log_file("","LtspImage")
         
-        self.initline=0;
-        self.numlines=1000;
-        self.endline=0;        
-        self.count=0;
+        result=self.n4dDeleteClient(id, imgchroot,img_client)
+        if(result['status']==True):
+            subprocess.call(["zenity","--info", "--title='Deleting Image'", "--text", \
+                                        "Image deleted successfully", "--no-wrap"])
+        else:
+            subprocess.call(["zenity","--error", "--title='Deleting Image'", "--text", \
+                                        str(result['msg']), "--no-wrap"])
         
-        try:
-            print ("[LliureX LTSP] Setting timer log")
-            # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
-            #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
-            gobject.timeout_add(2000, self.readlog,"LtspImage", "lstpimages")
-            #print ("Set timer log")
-            
-            print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        #print self.server.prepare_log("","LtspImage")
+        #print self.server.exist_log_file("","LtspImage")
         
-            t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,img_client,))
-            t.daemon=True
-            t.start()
-            
-            #print ("Set timer ")
-            
-        except Exception as e:
-            print str(e)
+        #self.initline=0;
+        #self.numlines=1000;
+        #self.endline=0;        
+        #self.count=0;
+        
+        #try:
+        #    print ("[LliureX LTSP] Setting timer log")
+        #    # for self.readlog: LtspImage is the class name that is logging and lstpimages, the log name
+        #    #gobject.timeout_add(500, self.readlog,"LtspImage", "lstpimages")
+        #    gobject.timeout_add(2000, self.readlog,"LtspImage", "lstpimages")
+        #    #print ("Set timer log")
+        #    
+        #    print ("[LliureX LTSP] Setting timer for n4d Create Client")
+        #
+        #    t = threading.Thread(target=self.n4dDeleteClient, args=(id, imgchroot,img_client,))
+        #    t.daemon=True
+        #    t.start()
+        #    
+        #    #print ("Set timer ")
+        #    
+        #except Exception as e:
+        #    print str(e)
 
     # End Main functions to perform predefined actions in chroot
 
@@ -930,8 +1145,8 @@ class LliureXLTSPAdmin:
         print (my_ip_for_server)
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
-        display=":48" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-        screen="800x600"
+        display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
+        screen="1024x768x16"
 
 
         # XServer es una connexio a les x locals, no una connexio n4d!!
@@ -941,7 +1156,8 @@ class LliureXLTSPAdmin:
 
         try:
             # PRepare X11 Xephyr environment
-            XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+            print "Xephyr PID: "+str(Xepid.pid)
             
             if (command=="start_session"):
                 print ("#####################")
@@ -952,7 +1168,7 @@ class LliureXLTSPAdmin:
                 #XServer.prepare_chroot_for_session()
             
             # Run APP into REMOTE Server            
-            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display)
+            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display, str(Xepid.pid))
             #print ("OUTPUT: "+str(output['msg']))
             if (str(output['msg'])=='127'):
                 print ("command not found")
@@ -1045,10 +1261,13 @@ class LliureXLTSPAdmin:
    
     def get_my_ip_for_server(self):
         import lliurex.net
-
+        import subprocess
+        
+        # If we are in the server, return localhost
         if self.srv_ip=='127.0.0.1':
             return '127.0.0.1'
 
+        # Else, let's check the ip address in the same network that server
         for interface in lliurex.net.get_devices_info():
             ip=interface['ip']
             mask=interface['netmask']
@@ -1056,8 +1275,36 @@ class LliureXLTSPAdmin:
             ipsrvnet=lliurex.net.get_network_ip(str(self.srv_ip), mask)
             if ipnet==ipsrvnet:
                 return ip
+        
+        # If arrives here (server is not in our network), let's check local interfaces to other networks and user will select it
+        output = subprocess.check_output(["ip","addr"])
+        num_ips=0
+        ip_list=[]
+        command=["zenity", "--list",  "--title=Select local IP for this server","--column=Available Local IP Adresses"]
+        for i in output.split("\n"):
+            if (("inet" in i) and not("inet6" in i)):
+                num_ips=num_ips+1
+                ip=((((" ".join(i.split())).split(" ")[1]).split("/"))[0])
+                command.append(ip)
 
-        # If arrives here (not shuld!), return localhost
+        print ip_list
+        print num_ips
+
+        print command
+        if(num_ips>0):
+            try:
+                resp=subprocess.check_output(command)
+                print ("RETURN "+resp)
+                if (resp):
+                    return resp.strip()
+                else:
+                    return '127.0.0.1'
+            except:
+                print "Exception"
+                return '127.0.0.1'
+        
+        # Not should arrive here...
+        print ("[LTSP-ADMIN] Warning: Not found local IP for remote server!")
         return '127.0.0.1'
         pass
 
@@ -1065,44 +1312,113 @@ class LliureXLTSPAdmin:
     def update_config_images(self, imageData):
         
         pass
+
+
+    def ltspError(self, errordesc):
+        '''
+        Shows an error window instead of "Unable to open..."
+        '''
+        file = os.path.abspath('webgui/ServerError.html')
+        #uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
+        uri = 'file://' + urllib.pathname2url(file)+'?error='+urllib.pathname2url(errordesc);
+        browser.open_url(uri)
     
+
+# Utility
+def compareVersion(v1, v2):
+    '''
+    returns 0 if v2=v2, 1 if v1>v2 and -1 if v1<v2
+    '''
+    if (v2=="" or v1==""):
+        return -2
+
+   
+
+    pos=0
+    a=v1.split(".")
+    b=v2.split(".")
+
     
+    lenmax=min(len(a), len(b))
+    print lenmax
+
+    for i in range(0,lenmax):
+        if(int(a[i])>int(b[i])):
+            return 1
+        elif(int(b[i])>int(a[i])):
+            return -1
+        # otherwise continue
+        
+    #if we are here, all subversions are equal
+    
+    if(len(a)==len(b)):
+        return 0     # same length and 
+    elif(len(a)>len(b)):
+        return 1
+    
+    return -1
+    
+
 if __name__ == "__main__":
-    # set working directory
-
-    # production
-    os.chdir('/usr/share/lliurex-ltsp-admin')
-    # Github
-    #os.chdir('/srv/github/lliurex-ltsp-admin/install_files/usr/share/lliurex-ltsp-admin')
-
-    # Create an App instance
-    ltspadmin = LliureXLTSPAdmin()
     
-    # create Browser
-    browser = Browser(language=ltspadmin.language)
-   
-    if ltspadmin.ConnectionStatus=='off':
-        file = os.path.abspath('webgui/LocalServerError.html')
-        pass
-    else:
-        file = os.path.abspath('webgui/login.html')
-        print ("CONECTION:"+ltspadmin.ConnectionStatus)
-        pass
-    
-    browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
-    
-    #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
-   
-    uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
-   
-    ## print ("Goint to "+uri)
-    print (uri)
-    browser.open_url(uri)
-   
-    print (">>"+browser.lang)
+    import json
 
-     #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")   
-    Gtk.main()
-     #gtk.gdk.threads_init()
-     #thread.start_new_thread(gtk.main, ())
-     #browser.webview.execute_script('saluda()')    
+    try:
+        # set working directory
+        conffile=open('/etc/lliurex-ltsp-admin/settings.json')
+        myjson=conffile.read()
+        dic=json.loads(myjson)
+        print ("Reading App from: "+dic["globalSettings"]["app_dir"])
+    
+        os.chdir(dic["globalSettings"]["app_dir"])
+
+    
+        # Create an App instance
+        ltspadmin = LliureXLTSPAdmin()
+        
+        # create Browser
+        browser = Browser(language=ltspadmin.language)
+       
+        if ltspadmin.ConnectionStatus=='off':
+            file = os.path.abspath('webgui/LocalServerError.html')
+            pass
+        else:
+            
+            '''            
+            # check version
+            server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+            version=server.getVersion("", "n4dLTSPVersion");
+            print version
+            if((compareVersion(version,ltspadmin.require_version_plugins)==-1)):
+                subprocess.call(["zenity","--warning", "--title='Version unmatch..'", "--text", \
+                                        "Version "+ltspadmin.require_version_plugins+" of n4d-ltsp-plugins is recommended on server.\n Version installed is "+version+"\n\nIt can cause some abnormal behaviour.", "--no-wrap"])
+                #print "required version "+ltspadmin.require_version_plugins
+            '''    
+            
+            file = os.path.abspath('webgui/login.html')
+            print ("CONECTION:"+ltspadmin.ConnectionStatus)
+            pass
+        
+        browser.connectEvents("navigation-requested", ltspadmin.on_navigation_requested)
+        
+        #uri = 'file://' + urllib.pathname2url(file)+"?lang="+ltspadmin.language
+        
+        uri = 'file://' + urllib.pathname2url(file)+'?server='+ltspadmin.srv_ip;
+        
+        ## print ("Goint to "+uri)
+        print (uri)
+        browser.open_url(uri)
+        
+        print (">>"+browser.lang)
+        
+        #browser.open_url("file:///home/joamuran/appjs/nav/n4d_appjs/data/content/index.html")  
+        Gtk.main()
+        #gtk.gdk.threads_init()
+        #thread.start_new_thread(gtk.main, ())
+        #browser.webview.execute_script('saluda()')    
+    except Exception as e:
+                print str(e)
+                subprocess.call(["zenity","--error", "--title='General Error'", "--text", \
+                                        "LliureX LTSP couldn't start.\nIt's strongly caused because your server is not initializated.\nInitialize it with Zero Server Wizard, please.", "--no-wrap"])
+        
+        

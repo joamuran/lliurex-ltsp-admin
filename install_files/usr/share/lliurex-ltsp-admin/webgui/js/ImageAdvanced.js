@@ -1,16 +1,20 @@
-
 var lastid=0; // To save the last image id
 //var clientData=new Object();
 var metaPkgData = new Object();
 var chrootpath="";
+var section="ImageAdvanced"
 
 var status="available";
+
 
 var DesktopApps= {"Apps": [
         {"id": "synaptic",
         "icon": "styles/images/synaptic.png",
          "text": "Synaptic, Package Manager"},
-        {"id": "terminal",
+        {"id": "lliurex-up",
+        "icon": "styles/images/lliurex-up.png",
+         "text": "LliureX-Up, System Updter"},
+        {"id": "gnome-terminal",
         "icon": "styles/images/gnome-terminal.png",
          "text": "Terminal"},
         {"id": "texteditor",
@@ -66,7 +70,7 @@ function ExecuteApp(cb) {
 
         if (cb.id=="apply") {
             $('#WaitingText').empty();
-            $('#WaitingText').append(gettext("Calculating free space. Please Wait."));
+            $('#WaitingText').append(gettext("Checking for free space. Please Wait."));
             $('#WaitingWindow').css('display', 'block');
             
         }

@@ -1,3 +1,33 @@
+lliurex-ltsp-admin (0.20) precise; urgency=low
+
+  * Latest changes applied, updated version
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Fri, 13 Sep 2013 13:43:41 +0200
+
+lliurex-ltsp-admin (0.19) precise; urgency=low
+
+  * Fixed GUI directory through /etc/lliurex-ltsp-admin/settings.json
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Thu, 05 Sep 2013 09:19:29 +0200
+
+lliurex-ltsp-admin (0.18) precise; urgency=low
+
+  * Enhaced client management gui.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Mon, 15 Jul 2013 14:40:21 +0200
+
+lliurex-ltsp-admin (0.17) precise; urgency=low
+
+  * Fixed X session bugs. Added new resources.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 10 Jul 2013 14:02:14 +0200
+
+lliurex-ltsp-admin (0.16) precise; urgency=low
+
+  * Added support to network installation.
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Mon, 08 Jul 2013 12:07:21 +0200
+
 lliurex-ltsp-admin (0.15) precise; urgency=low
 
   * Replaced n4d-remote-login in mirror update to n4d remote execution of lliurex-mirror-gui

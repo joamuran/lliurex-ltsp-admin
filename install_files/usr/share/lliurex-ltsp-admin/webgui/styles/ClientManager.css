@@ -32,19 +32,31 @@
 /* Client Config*/
 
 
-#ClientContent{margin-top: 20px;}
+#ClientContent{
+    height: 270px;
+    width: 750px;
+    margin-left: 10px;
+    margin-top: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+}
 
 .ClientConfig{
     max-height:120px;
     }
 .ClientDetails{
-    padding: 0px 0px 25px 0px;
+    /*padding: 0px 0px 25px 0px;*/
     font-size: 0.8em;
-    height: 100px;
+    width: 700px;
+    /*height: 150px;*/
+    float: left;
     display: none;
-    
-    /*border: #000000 solid thin;
-    border-radius: 10px 0px 10px 10px;*/
+    /*display: block;*/
+    border: #333333 solid thin;
+    border-top: hidden;
+    border-radius: 0px 0px 3px 3px;
+    background: -webkit-linear-gradient(top, #eeeeee 0%,#ffffff 100%);
     
 }
 .ClientLine{
@@ -65,13 +77,8 @@
 
 .ClientRow{
     text-shadow: 0px 1px 1px #333333;
-    width: 100%;
-    /*border: #000000 solid thin;
-    border-radius: 10px 10px 0px 0px;*/
+    width: 680px;
     background: -webkit-linear-gradient(top, #2f92f5 0%,#89d8ff 100%);
-    /*background: -webkit-linear-gradient(top, #11419b 0%,#1a5fcd 50%,#060f4b 51%,#06247d 100%);*/
-    /*border-top: solid thin #2f92f5;
-    border-bottom: solid thin #2f92f5;*/
     color: #ffffff;
     float: left;
     clear: left;
@@ -79,7 +86,8 @@
     font-size: 0.9em;
     font-weight: 600;
     margin-top:1px;
-    /*box-shadow: 0px 3px 3px #333333;*/
+    border-radius: 3px 3px 0px 0px;
+    border: thin solid #333333;
 }
 
 .ClientRowArrow{
@@ -91,7 +99,7 @@
 .ClientRowArrow{cursor: pointer; }
 .NewClientRow{
     text-shadow: 0px 1px 1px #333333;
-    width: 100%;
+    width: 680px;
     color: #ffffff;
     float: left;
     clear: both;
@@ -102,6 +110,9 @@
     background: -webkit-linear-gradient(top, #7aaf0f 0%,#add737 100%);
     border-top: solid thin #7aaf0f;
     border-bottom: solid thin #7aaf0f;
+
+    border-radius: 3px 3px 0px 0px;
+    border: thin solid #333333;
     
     }
 .NewClientRow:hover{cursor: pointer;}

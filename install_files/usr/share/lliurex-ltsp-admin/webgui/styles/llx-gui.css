@@ -88,6 +88,22 @@
     background-repeat: no-repeat;*/
 }
 
+.helptip{
+    font-family: ubuntu;
+    font-size: 0.9em;
+    font-weight: lighter;
+    margin: 0px 5px 5px 5px;
+    padding: 0px 5px 5px 5px;
+    /*float: left;*/
+    clear: both;
+    display: block;
+    /*background: #eeeeee;
+    border: #333333 thin solid;
+    border-radius: 3px;*/
+    
+
+}
+
 .ConfirmTitle{
     margin: 50px 0px 30px 0px;
     font-size: 1em;
@@ -253,3 +269,70 @@ select{
     border: solid 1px #232323;
     border-radius: 10px;
 }*/
+
+#TextIso, #TextMenus{
+    font-size: 1em;
+    font-family: ubuntu;
+    font-weight: lighter;
+    margin: 5px 5px 5px 5px;
+    padding-top: 15px;
+    color: #000000;
+    float: left;
+    clear: rifght;
+    width: 500px;
+}
+
+.BtNetInst{
+    margin: 10px 5px 5px 5px;
+    height: 48px;
+    width: 60px;
+    padding: 15px 5px 5px 60px;
+    color: #ffffff;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-color: #4dafff;
+    border: solid thin #2f92f5;
+    text-shadow: 0px 1px 1px #000000;
+    box-shadow: 0px 0px 5px #000000;
+    float:left;
+    clear: left;
+    font-size: 0.9em;
+}
+
+.BtNetInstUnchecked{
+    margin: 10px 5px 5px 5px;
+    height: 48px;
+    width: 60px;
+    padding: 15px 5px 5px 60px;
+    color: #ffffff;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-color: #aaaaaa;
+    border: solid thin #999999;
+    text-shadow: 0px 1px 1px #000000;
+    box-shadow: 0px 0px 5px #000000;
+    float:left;
+    clear: left;
+    font-size: 0.9em;
+    background-image: url('images/accessories-text-editor.png');
+}
+
+
+.BtIso{
+    background-image: url('images/iso.png');
+}
+.BtCreateMenus{
+    background-image: url('images/accessories-text-editor.png');
+}
+
+
+.BtIso:hover, .BtCreateMenus:hover{
+    background-color: #2f92f5;
+    cursor:pointer;
+}
+
+#BtIsoContainer{
+    margin-left: 20px;
+}

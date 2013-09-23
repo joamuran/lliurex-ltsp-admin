@@ -15,6 +15,15 @@
     padding: 20px 25px 15px;
 }
 
+#MirrorMessage{
+	display: none;
+	color: #b30e0e;
+	padding: 2px;
+	font-size: 1em;
+	background-color: #ffe643;
+	margin-top: -50px;
+	}
+
 #AppDescription{
     font-size: 0.9em;
 }
@@ -149,6 +158,12 @@
     border-color: #eaa00b;
     background-repeat: no-repeat;background-position: center 10px;}
 .ButtonClients:hover{background-color: #eaa00b;}
+.ButtonNetinst{
+    background-image: url('images/bignetinstwhite.png');
+    background-color: #7b34c3;
+    border-color: #54159b;
+    background-repeat: no-repeat;background-position: center 10px;}
+.ButtonNetinst:hover{background-color: #54159b;}
 
 .unavailable{background-color: #cccccc !important; border-color: #aaaaaa !important;}
 .unavailable:hover{background-color: #aaaaaa !important; cursor: default;}

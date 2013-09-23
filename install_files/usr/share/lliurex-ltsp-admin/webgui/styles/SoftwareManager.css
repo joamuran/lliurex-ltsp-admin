@@ -7,7 +7,7 @@
     max-height:120px;
     }
 
-#ClientContent{margin-top: 20px;}
+#ClientContent{margin-top: 20px; overflow-y: auto;}
 
 
 .PgkItem{

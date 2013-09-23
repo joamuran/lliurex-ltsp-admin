@@ -21,8 +21,8 @@
     <script type="text/javascript" src="./lib/llx_utils.js"></script>
     <script type="text/javascript" src="./lib/llx-gui.js"></script>
     <script type="text/javascript" src="./js/data.js"></script>
-    <script type="text/javascript" src="./js/ImageManager.js"></script>
-    <!- just CSS for Shell -!>
+    <script type="text/javascript" src="./js/IsoManager.js"></script>
+    <!-- just CSS for Shell -->
     <link rel="stylesheet" href="styles/ImageAdvanced.css">
     <script type="text/javascript" src="./js/top.js"></script>
     
@@ -30,15 +30,21 @@
   <body>
   
   
-    <div id="ImageManagerContainer" class="Container">
+    <div id="IsoManagerContainer" class="Container">
         <!-- Container of the Image Manager -->
         <div id="top"><div class="MiniButtonList" id="MiniButtonList"></div></div>
-        <div id="helptip" class="helptip"></div>
-        <div id="content"></div>
-          
-        <div id="bottom"></div>
-        <div id="ConfirmWindow">
+        
+        <!-- Netinstall -->
+        <div id="titleNetinstallManager" style="width: 100%; display: block;float: left; clear: both;padding-left: 15px;  font-size: 1.1em;border-bottom: solid thin #333333; margin-bottom: 20px;"></div>
+        <div id="helptipnetinst" class="helptip"></div>
+        <div id="divnetinst" style="margin: 20px; background: #eeeeee; display: block; float:left; clear: both;">
+          <div id="NetinstContainer"></div>
         </div>
+        
+        <!-- ISO MANAGER -- >
+        <div id="titleIsoManager" style="width: 100%; display: block; float: left; clear: both; padding-left: 15px; margin-top: 20px; font-size: 1.1em;border-bottom: solid thin #333333; margin-bottom: 20px;"></div>
+        <div id="helptip" class="helptip"></div>
+        <div id="BtIsoContainer"></div -->
     </div>
 
   <!-- Window with shell -->    
@@ -52,6 +58,8 @@
     <!-- Area for messages and dialogs -->
     <div id="MessageArea"></div>
     <div id="dialog-modal" title=""></div>
+     <div id="bottom"></div>
+
     
   </body>
 </html>

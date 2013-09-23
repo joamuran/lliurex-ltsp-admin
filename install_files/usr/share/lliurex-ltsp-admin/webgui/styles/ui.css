@@ -33,7 +33,7 @@ body
 }
 
 #content{
-    height: 450px;
+    height: 370px;
     /*background: #eeeeee;*/
     overflow-y: auto;
 }
@@ -77,6 +77,8 @@ body
 /* UI Buttons */
 
 .ButtonList{clear: both; float: left; width: 100%; font-size: 12px; }
+#ButtonList{margin-top: -10px !important; margin-left: 50px; width: 300px;}
+
 .Button{
     float: left; width: auto;
     height: 25px;

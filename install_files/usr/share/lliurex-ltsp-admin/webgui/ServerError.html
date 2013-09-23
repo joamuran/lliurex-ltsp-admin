@@ -49,8 +49,17 @@
       // Display Main Window
     $("#MainContainer").css("display", "block");
     $("#ErrorTitle").append(gettext("LTSP Network Error"));
-    $("#ErrorDescription").append(gettext("No connection could be possible with LTSP Server. Maybe Network is unreacheable or service n4d is disabled on the server."));
     $("#BackButton").append(gettext("Back"));
+
+    error=getUrlVar('error');
+
+    if (error==false) {
+      $("#ErrorDescription").append(gettext("No connection could be possible with LTSP Server. Maybe Network is unreacheable or service n4d is disabled on the server."));
+    }
+    else{
+        $("#ErrorDescription").append(decodeURIComponent(error));
+    }
+
     
     });
     </script>

@@ -91,23 +91,30 @@ $(document).ready(function() {
 // Event Dispatchers
 // Functions called from python
 
-function loginSuccess(mirror_installed){
+function loginSuccess(mirror_installed, pool_ok){
     $('body').css('cursor', 'default');
+    if(pool_ok=="False"){
+	$("#MirrorMessage").empty();
+	$("#MirrorMessage").show();
+	$("#MirrorMessage").append(gettext("<span><stong>Warning: </strong>Mirror seems to be inconsistent, so, installations and image creation won't success. Please, refresh it from Mirror Manager.</span>"));
+     }
     
     var mirrorData={"installed": "true", "date": "10/10/2012"}
     
     if (mirror_installed=="available"){
-        buttons="<div tabindex='3' class='BigButton ButtonClients' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
-          <div tabindex='2' class='BigButton ButtonImages' id='ImageManager'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'><div>"+gettext("Update Mirror")+"</div> \
+        buttons="<div tabindex='4' class='BigButton ButtonNetinst' style='margin-top:5px !important' id='NetInstall'>"+gettext("Network Install")+"</div> \
+          <div tabindex='3' class='BigButton ButtonClients' style='margin-top:5px !important' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
+          <div tabindex='2' class='BigButton ButtonImages' style='margin-top:5px !important' id='ImageManager'>"+gettext("Manage Images")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'><div>"+gettext("Mirror Manager")+"</div> \
           <div style='font-size:0.6em;'>"+gettext("last: ")+mirrorData["date"]+"</div></div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
     }
     else{
-        buttons="<div class='BigButton ButtonClients unavailable' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
-          <div class='BigButton ButtonImages unavailable' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+        buttons="<div class='BigButton ButtonNetinst unavailable' style='margin-top:5px !important' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
+          <div class='BigButton ButtonClients unavailable' style='margin-top:5px !important' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
+          <div class='BigButton ButtonImages unavailable' style='margin-top:5px !important' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
+          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
         }
@@ -146,7 +153,7 @@ function SubmitLogin() {
         $('body').css('cursor', 'wait');  // Seem that does not run...
 
         $("#ErrorLoginMessage").empty();
-        $("#ErrorLoginMessage").append(gettext("<span>Validing user...</span>"));
+        $("#ErrorLoginMessage").append(gettext("<span>Validating user...</span>"));
         
         // We must establish a timeout to wait that jquery writes the validating message
         setTimeout(function() 
@@ -173,6 +180,11 @@ function BindMainEventHandlers(){
         location.href='ltsp://ClientManager';
     });
      
+    $("#NetInstall").bind('click', function( event ){
+        location.href='ltsp://IsoManager';
+    });
+     
+
       $("#ImageManager").bind('click', function( event ){
         location.href='ltsp://ImageManager';
     });

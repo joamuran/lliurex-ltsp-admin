@@ -34,7 +34,7 @@ function DisplayImageWindow(){
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
-                        <div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
@@ -63,7 +63,7 @@ function DisplayImageWindow(){
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
-                        <div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
@@ -89,7 +89,7 @@ function DisplayImageWindow(){
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
-                        <div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
@@ -111,7 +111,7 @@ function DisplayImageWindow(){
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
                         <div class='Button Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
-                        <div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div>\
+                        <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='ButtonSel DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                     </div>\
@@ -137,6 +137,9 @@ function DisplayImageWindow(){
         var command=this.id.split(":")[0];
         var imageid=this.id.split(":")[1];
         
+        $("#helptip").css("display", "none");
+
+        
         switch (command) {
             case "install":
                 console.log("You pressed on install ");
@@ -150,7 +153,7 @@ function DisplayImageWindow(){
                 //location.href='ltsp://CreateNewClient/'+imageid;
                 break;
             case "update":
-
+                /* Deprecadet case: Use lliurex-up from advanced!! */
 
                 console.log("You pressed on update ");
                 title="Updating Client"
@@ -241,10 +244,10 @@ function PerformAction(action, Message) {
     /*
     invoques action in ltsp
     */
-    if (Message === undefined) Message = "Working...";
+    /*if (Message === undefined) Message = "Working...";
     status="working";
     $("#shellheader").append("<span>"+Message+"</span>");
-    $("#shellbox").css('display', 'block');
+    $("#shellbox").css('display', 'block');*/
     location.href=action;
 }
 
@@ -307,7 +310,15 @@ $(document).ready(function() {
         }
     return false;
     }*/
-    
+
+    // Print Help tip
+
+    tiptext=gettext("From Image Manager you'll be able to create (install) thin (or far-thin) \
+            clients from the server mirror, update and manage its software. It is strongly \
+            recommended to have updated the mirror before install a new client in order to \
+            get last versions of all the software.")
+    $("#helptip").append(tiptext);
+
     var clients=getUrlVar('imageData'); // name
     // alert (decodeURIComponent(clients));
     //alert(clients)
@@ -328,10 +339,9 @@ $(document).ready(function() {
         } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
         
     })
-
-     
-    
+   
     DisplayImageWindow();
+
 });
 
 function setStatus(newstatus){

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -13,10 +14,13 @@
    height="100"
    id="svg2611"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="0.48.3.1 r9886"
    version="1.0"
    sodipodi:docname="lliurex.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/joamuran/Desktop/backllx.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs2613">
     <linearGradient
@@ -214,16 +218,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.8993631"
-     inkscape:cx="139.32225"
-     inkscape:cy="48.571429"
+     inkscape:zoom="1.3430525"
+     inkscape:cx="327.97062"
+     inkscape:cy="-15.044272"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
      inkscape:window-height="942"
      inkscape:window-x="0"
-     inkscape:window-y="32" />
+     inkscape:window-y="13"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata2616">
     <rdf:RDF>
@@ -232,6 +237,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -239,6 +245,13 @@
      inkscape:label="Capa 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.61208749;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect7984"
+       width="381.40704"
+       height="104.39261"
+       x="-1.9240322"
+       y="-0.85166562" />
     <path
        style="fill:url(#linearGradient4196);fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient4270);stroke-width:1.79999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 335.75969,79.061649 C 315.89134,59.193299 296.02299,39.324959 276.15464,19.456609 C 285.17981,18.742389 294.20498,18.028169 303.23015,17.313941 C 325.37102,39.389879 347.51188,61.465819 369.65275,83.541761 C 358.80879,81.948631 348.05953,80.107041 337.07275,80.006891 C 336.63396,79.789281 336.24916,79.498411 335.75969,79.061649 z"
