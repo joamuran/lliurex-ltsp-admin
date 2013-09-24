@@ -1122,6 +1122,9 @@ class LliureXLTSPAdmin:
             command="x-editor"
         elif args[3]=='launch_session':
             command="start_session"
+        elif args[3]=='llum':
+            command="llum"
+
         #elif args[3]=='apply':
         #    # Apply changes to image!
         #    self.updateImage(urllib.url2pathname(args[4]));

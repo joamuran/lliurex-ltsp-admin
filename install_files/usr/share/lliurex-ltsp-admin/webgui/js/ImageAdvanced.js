@@ -3,6 +3,7 @@ var lastid=0; // To save the last image id
 var metaPkgData = new Object();
 var chrootpath="";
 var section="ImageAdvanced"
+var ChrootChanged=false 
 
 var status="available";
 
@@ -10,25 +11,28 @@ var status="available";
 var DesktopApps= {"Apps": [
         {"id": "synaptic",
         "icon": "styles/images/synaptic.png",
-         "text": "Synaptic, Package Manager"},
+         "text": gettext("Synaptic, Package Manager")},
         {"id": "lliurex-up",
         "icon": "styles/images/lliurex-up.png",
-         "text": "LliureX-Up, System Updter"},
+         "text": gettext("LliureX-Up, System Updter")},
         {"id": "gnome-terminal",
         "icon": "styles/images/gnome-terminal.png",
-         "text": "Terminal"},
+         "text": gettext("Terminal")},
         {"id": "texteditor",
         "icon": "styles/images/accessories-text-editor.png",
-         "text": "Edit File"},
+         "text": gettext("Edit File")},
         {"id": "run_command",
         "icon": "styles/images/run_command.png",
-         "text": "Run Command"},
+         "text": gettext("Run Command")},
         {"id": "launch_session",
         "icon": "styles/images/session.png",
-         "text": "Start Session"},
+         "text": gettext("Start Session")},
+        {"id": "llum",
+        "icon": "styles/images/llum.png",
+         "text": gettext("Classroom User Management")},
         {"id": "xfce",
         "icon": "styles/images/llx-xfcelogo.png",
-         "text": "Install LliureX Light Desktop"}]}
+         "text": gettext("Install LliureX Light Desktop")}]}
 
 
 
@@ -83,10 +87,12 @@ function ExecuteApp(cb) {
     setTimeout(function() 
         {
             if (command=='apply') {
+                ChrootChanged=false;
                 newlocation='ltsp://ApplyChangesToImageWithCheck/'+command+'/'+encodeURIComponent(chrootpath);
                 location.href=newlocation;
                 }
             else{
+                ChrootChanged=true;
                 newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
                 //alert("Execute:"+newlocation);
                 location.href=newlocation;
@@ -197,6 +203,8 @@ function AskWhatToDoIfNotEnoughSpace(file, space, used) {
  
 }
 
+
+
 $(document).ready(function() {
     
     /*function getUrlVar(uv) {
@@ -215,7 +223,9 @@ $(document).ready(function() {
         }
     return false;
     }*/
-
+    
+    
+    ChrootChanged=false
     //alert(window.location.search.substring(1).split('?')[0])
     var meta=getUrlVar('meta'); // name
     chrootpath=getUrlVar('chroot');
@@ -230,6 +240,15 @@ $(document).ready(function() {
             break;
         case "infantil":
             $("#ImageDesktop").addClass("Infantil");
+            break;
+        case "lite":
+            $("#ImageDesktop").addClass("Lite");
+            break;
+        case "pime":
+            $("#ImageDesktop").addClass("Pime");
+            break;
+        case "musica":
+            $("#ImageDesktop").addClass("Musica");
             break;
     }
     
@@ -250,12 +269,21 @@ $(document).ready(function() {
             $('#shellbox').css('display', 'none');
             //$('#WaitingWindow').css('display', 'none');
         }
-        
+
     })
 
 
 
 });
+
+window.onbeforeunload = unloadPage;
+
+function unloadPage(){
+        if(ChrootChanged==true){
+                return gettext("If you did changes into client, you have to Apply them to images by clicking in 'Apply to image' to be effective. Continue anyway?");
+        }
+}
+
 
 // Event Dispatchers
 // Functions called from python

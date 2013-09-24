@@ -45,7 +45,8 @@ height:100%;
 .iconContainer{
     border-radius: 5px;
     float: left;
-    width: 56px;
+    /*width: 56px;*/
+    width: 66px;
     padding: 4px;
 }
 
@@ -120,7 +121,8 @@ height:100%;
 
 .iconImage{
     float: left;
-    width: 56px;
+    /*width: 56px;*/
+    width: 66px;
     /*padding: 4px;*/
     /*height: 70px;*/
 }
