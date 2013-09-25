@@ -38,12 +38,12 @@ ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"<
         </select></div>\
     <div class='ClassroomItem' style='float:left; clear:both;'>Default boot:</div>\
         <div>\
-       <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
-          <option value='hd' "+selected_session_gnome+">"+gettext("Boot from hard drive")+"</option> \
+       <select class='ClassroomItem' name='PXEBoot' id='PXEBoot'> \
+          <!--option value='hd' "+selected_session_gnome+">"+gettext("Boot from hard drive")+"</option> \
           <option value='desktop'"+selected_session_xfce+">"+gettext("Boot from LliureX Desktop")+"</option> \
-          <option value='client'"+selected_session_xfce+">"+gettext("Boot from LliureX Classroom Client")+"</option> \
+          <option value='client'"+selected_session_xfce+">"+gettext("Boot from LliureX Classroom Client")+"</option--> \
         </select></div></div>\
-        <div style='float: left; display: block; clear: both;'><span class='ClassroomItem'>"+gettext("Timeout: ")+"</span><input class='FormInput' type='text' /></div>";
+        <div style='float: left; display: block; clear: both;'><span class='ClassroomItem'>"+gettext("Timeout: ")+"</span><input class='FormInput' id='timeout' type='text' /></div>";
         
     $("#ClassroomConfig").append(ItemClass);
 
@@ -504,24 +504,7 @@ function ExistsMac(mac){
 }
 
 $(document).ready(function() {
-    
-    /*function getUrlVar(uv) {
-        //extract the query string from the url
-    //var query = window.location.search.substring(1);
-    var query = window.location.search.substring(1).split('?')[0]
-        //split the query into separate name/value pairs
-    var vars = query.split("&amp;");
-    for (var i=0;i<vars.length;i++) {
-                //split each pair into separate names and values
-        var pair = vars[i].split("=");
-                //find the required name and return it's value
-        if (pair[0] == uv) {
-            return pair[1];
-        }
-        }
-    return false;
-    }*/
-    
+       
     var clients=getUrlVar('clientlist'); // name
 
 
@@ -536,6 +519,28 @@ $(document).ready(function() {
     DisplayClassroomConfig();
     DisplayClients();
 
+    $.xmlrpc({
+	url: 'https://'+srv_ip+':9779',
+        methodName: 'getImageList',
+	params: ['', "n4dPXEManager"],
+        success: function(response,status,jqXHR){
+                //alert(response[0]['timeout']);
+                $("#timeout").val(response[0]['timeout']);
+                
+                for (i in response[0]['images']) {
+                    /*alert(response[0]['images'][i]);*/
+                    option=response[0]['images'][i];
+                    if (option==response[0]['default']) {
+                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+option+"</option>");
+                    } else $("#PXEBoot").append("<option value='"+option+"'>"+option+"</option>");
+                }
+                
+                
+                
+            },
+	error: function(jqXHR, status, error) { alert("Error")}
+    }); 
+    
     // Bind events with actions
     //BindEventHandlers();
 });
