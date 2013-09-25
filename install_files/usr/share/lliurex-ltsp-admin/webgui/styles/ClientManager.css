@@ -9,7 +9,7 @@
     /*border: solid thin #333333;*/
     width: 725px;
     margin-left: 25px;
-    height: 100px;
+    height: 160px;
     
 }
 
@@ -28,6 +28,12 @@
     font-size: 0.8em !important;
 }
 
+.FormInput{
+    height: 15px;
+    margin-top: 3px;
+    border: solid 1px #aaaaaa;
+    background: -webkit-linear-gradient(top, #efefef 0%,#ffffff 100%);
+}
 
 /* Client Config*/
 

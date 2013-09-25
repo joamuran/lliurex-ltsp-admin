@@ -35,8 +35,16 @@ ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"<
        <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
           <option value='gnome' "+selected_session_gnome+">"+gettext("Classic Desktop (Gnome-Classic)")+"</option> \
           <option value='xfce'"+selected_session_xfce+">"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
-        </select></div>";
-
+        </select></div>\
+    <div class='ClassroomItem' style='float:left; clear:both;'>Default boot:</div>\
+        <div>\
+       <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
+          <option value='hd' "+selected_session_gnome+">"+gettext("Boot from hard drive")+"</option> \
+          <option value='desktop'"+selected_session_xfce+">"+gettext("Boot from LliureX Desktop")+"</option> \
+          <option value='client'"+selected_session_xfce+">"+gettext("Boot from LliureX Classroom Client")+"</option> \
+        </select></div></div>\
+        <div style='float: left; display: block; clear: both;'><span class='ClassroomItem'>"+gettext("Timeout: ")+"</span><input class='FormInput' type='text' /></div>";
+        
     $("#ClassroomConfig").append(ItemClass);
 
 }
