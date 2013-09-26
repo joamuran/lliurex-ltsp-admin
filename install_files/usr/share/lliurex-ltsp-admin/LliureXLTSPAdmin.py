@@ -30,7 +30,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.2.7' # Version required of n4d plugins in server
+    require_version_plugins='0.2.8' # Version required of n4d plugins in server
 
     
     # Temp data that we will extract from n4d-ltsp
@@ -602,13 +602,18 @@ class LliureXLTSPAdmin:
         connection_user = (self.username,self.password)
         default_type=args[4]
         default_session=args[5]
+        timeout=args[6]
+        default_boot=args[7]
         self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients, default_type, default_session)
         
+        print "[LliureXLTSPAdmin] Modifying PXE Boot with timeout="+timeout+" and default boot="+default_boot
+        
+        self.server.setImageDefaultBoot(connection_user,'n4dPXEManager',default_boot, timeout)
+                
         file = os.path.abspath('webgui/ClientManager.html')
         # Reload new config
         self.jsonclients=self.server.get_ltsp_conf(self.connection_user,'LtspClientConfig')
-
-        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed
+        uri = 'file://' + urllib.pathname2url(file)+'?clientlist='+self.jsonclients+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
         browser.open_url(uri)
     
     def GetMacFromN4d(self, args):

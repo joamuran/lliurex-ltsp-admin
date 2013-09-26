@@ -1,9 +1,11 @@
-
 var lastid=0; // To save the last image id
 var clientData=new Object();
 var classroomsession="gnome"
 var classroomtype="thin"
 var section="ClientManager"
+
+var timeout="60";
+var default_option="localboot";
 
 
 function DisplayClassroomConfig(){
@@ -146,6 +148,9 @@ function SaveChanges(){
     // send data to python core to save it and refresh the view
     //alert($.toJSON(clientData));
     
+    timeout=$("#timeout").val();
+    default_option=$("#PXEBoot").val();
+    
     var newClientList=new Object();
     newClientList.clients=new Array();
     
@@ -183,7 +188,7 @@ function SaveChanges(){
 
           
      
-    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList))+"/"+ClassroomType+"/"+ClassroomSession;
+    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList))+"/"+ClassroomType+"/"+ClassroomSession+"/"+timeout+"/"+default_option;
 
     
     
@@ -507,8 +512,6 @@ $(document).ready(function() {
        
     var clients=getUrlVar('clientlist'); // name
 
-
-    //alert(clients)
     clientData=$.parseJSON(decodeURIComponent(clients));
 
     classroomsession=clientData.default_session
@@ -526,24 +529,52 @@ $(document).ready(function() {
         success: function(response,status,jqXHR){
                 //alert(response[0]['timeout']);
                 $("#timeout").val(response[0]['timeout']);
-                
+                timeout=response[0]['timeout'];
                 for (i in response[0]['images']) {
                     /*alert(response[0]['images'][i]);*/
                     option=response[0]['images'][i];
                     if (option==response[0]['default']) {
-                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+option+"</option>");
-                    } else $("#PXEBoot").append("<option value='"+option+"'>"+option+"</option>");
-                }
-                
-                
-                
+                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                        
+                        default_option=option;
+                    } else $("#PXEBoot").append("<option value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                }         
             },
-	error: function(jqXHR, status, error) { alert("Error")}
+	error: function(jqXHR, status, error) { alert("Error: "+error[0])}
     }); 
     
     // Bind events with actions
     //BindEventHandlers();
 });
+
+function getCompleteLabel(option) {
+    switch (option) {
+        case "localboot":
+            return gettext("Arranca des del disc dur");
+            break;
+        case "llx-client":
+            return gettext("Classroom Client");
+            break;
+        case "llx-desktop":
+            return gettext("LliureX Desktop");
+            break;
+        case "llx-infantil":
+            return gettext("LliureX Infantil");
+            break;
+        case "llx-musica":
+            return gettext("LliureX Musica");
+            break;
+           case "llx-pime":
+            return gettext("LliureX Pime");
+            break;
+        case "llx-lite":
+            return gettext("LliureX Lite");
+            break;
+        
+    }
+    return (option);
+    
+}
 
 // Event Dispatchers
 // Functions called from python
