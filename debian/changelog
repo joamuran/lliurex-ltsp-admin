@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.22) precise; urgency=low
+
+  * Done PXE Menu Configuration
+
+ -- Jose A. Murcia <joamuran@lite>  Thu, 26 Sep 2013 12:08:01 +0200
+
 lliurex-ltsp-admin (0.21) precise; urgency=low
 
   * Added advice when modifying chroot to refresh image and added LLUM launcher.
