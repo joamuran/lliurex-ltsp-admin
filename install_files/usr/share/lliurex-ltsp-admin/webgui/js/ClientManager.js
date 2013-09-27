@@ -29,7 +29,7 @@ ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"<
 <div class='ClassroomItem'>"+gettext("Use this classroom cliens as:")+"</div>\
         <div>\
        <select class='ClassroomItem' name='ClassroomType' id='ClassroomType'> \
-          <option value='thin' "+selected_type_thin+">"+gettext("Thin Client Classroom")+"</option> \
+          <option value='thin' "+selected_type_thin+">"+gettext("Thin Client Classroom (recommend)")+"</option> \
           <option value='fat' "+selected_type_fat+">"+gettext("Fat-Thin Client Classroom")+"</option> \
         </select></div> \
         <div class='ClassroomItem' style='float:left; clear:both;'>Default session to use:</div>\
