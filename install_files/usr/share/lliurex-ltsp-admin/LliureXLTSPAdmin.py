@@ -61,6 +61,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "ApplyChangesToImage")] = 'onApplyChangesToImage';
     binding[("ltsp", "SelectIso")] = 'onSelectIso';
     binding[("ltsp", "SetPXENetinst")] = 'onSetPXENetinst';
+    binding[("ltsp", "Export")] = 'onExport';
     
 
     def __init__(self):
@@ -152,6 +153,12 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print ("Exception reading log. Message: "+str(e))
             return False
+
+    def onExport(self, args):
+        print "Exporting"
+        pass
+    
+
 
     def onSetPXENetinst(self, args):
 

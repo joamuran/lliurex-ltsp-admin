@@ -37,6 +37,7 @@ function DisplayImageWindow(){
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> "+UpdatedImage+"\
@@ -66,6 +67,7 @@ function DisplayImageWindow(){
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'>"+ErrorLine+" \
@@ -92,6 +94,7 @@ function DisplayImageWindow(){
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'>"+ErrorLine+" \
@@ -114,6 +117,7 @@ function DisplayImageWindow(){
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='ButtonSel DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>\
                     </div>\
                 </div>\
                 <div class='ImageStatus'>"+ErrorLine+" \

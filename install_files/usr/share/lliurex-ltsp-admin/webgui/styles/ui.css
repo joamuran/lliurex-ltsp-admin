@@ -59,6 +59,15 @@ body
 /*  List of Images  */
 
 /*.ImageRow{clear: both; float: left; height: 110px; width: 100%; border-bottom: thin #000000 solid;}*/
+
+.ImportRow{clear: both;
+        height: 60px; width:96.5%;
+        border: thin #e5e5e5 solid; margin: 5px;
+        background: #f1f1f1;
+        }
+.ImportRow:hover{background: #e5e5e5; border-color: #e5e5e5;}
+
+
 .ImageRow{clear: both; float: left;
         height: 110px; width:98%;
         border: thin #e5e5e5 solid; margin: 5px;
@@ -110,6 +119,36 @@ body
 .Updateable{border-color: #e18113 !important; background-color: #f59f1d !important;}
 .Add{background-image: url('images/packageswhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Adv{background-image: url('images/advancedwhite.png'); background-repeat: no-repeat;background-position: left center;}
+.Export{background-image: url('images/exportwhite.png'); background-repeat: no-repeat;background-position: left center;}
+.Import{background-image: url('images/importwhite.png'); background-repeat: no-repeat;background-position: left center;}
+
+     div.fileinputs {
+            position: relative;
+        }
+
+        div.fakefile {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1;
+        }
+
+        div.fakefile input[type=button] {
+            /* enough width to completely overlap the real hidden file control */
+            cursor: pointer;
+            width: 148px;
+        }
+
+        div.fileinputs input.file {
+            position: relative;
+            text-align: right;
+            -moz-opacity:0 ;
+            filter:alpha(opacity: 0);
+            opacity: 0;
+            z-index: 2;
+        }
+
+
 .Delete{background-color: #e51212; border-color: #cf1111; background-image: url('images/deletewhite.png'); background-repeat: no-repeat;background-position: left center;}
 .DeleteSel{background-image: url('images/deletewhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Delete:hover{background-color: #cf1111 !important;}
