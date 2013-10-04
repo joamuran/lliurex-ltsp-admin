@@ -1,6 +1,6 @@
 {
     "globalSettings":{
 	"app_dir":"/usr/share/lliurex-ltsp-admin",
-	"check_mirror":"true
+	"check_mirror":"true"
 	}
 }
