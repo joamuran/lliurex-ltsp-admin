@@ -2,7 +2,7 @@ var lastid=0; // To save the last image id
 //var clientData=new Object();
 var metaPkgData = new Object();
 var chrootpath="";
-var section="ImageAdvanced"
+var section="ImageManager"
 var ChrootChanged=false 
 
 var status="available";

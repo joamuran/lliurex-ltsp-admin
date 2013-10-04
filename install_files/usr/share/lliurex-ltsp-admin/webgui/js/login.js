@@ -110,14 +110,23 @@ function loginSuccess(mirror_installed, pool_ok){
         $("#ButtonList").empty();
         $("#ButtonList").append(buttons);
     }
-    else{
-        buttons="<div class='BigButton ButtonNetinst unavailable' style='margin-top:5px !important' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
-          <div class='BigButton ButtonClients unavailable' style='margin-top:5px !important' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
-          <div class='BigButton ButtonImages unavailable' style='margin-top:5px !important' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
-          <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
-        $("#ButtonList").empty();
-        $("#ButtonList").append(buttons);
-        }
+    else if (mirror_installed=="busy"){
+	    buttons="<div class='BigButton ButtonNetinst unavailable' style='margin-top:5px !important' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
+	    <div class='BigButton ButtonClients' style='margin-top:5px !important' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
+              <div class='BigButton ButtonImages unavailable' style='margin-top:5px !important' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
+	    <div tabindex='1' class='BigButton ButtonMirror unavailable' style='margin-top:5px !important' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+	    $("#ButtonList").empty();
+            $("#ButtonList").append(buttons);
+	  } else {
+	      buttons="<div class='BigButton ButtonNetinst unavailable' style='margin-top:5px !important' id='NetinstallUninstalled'>"+gettext("Network Install")+"</div> \
+	    <div class='BigButton ButtonClients unavailable' style='margin-top:5px !important' id='ClientManagerUninstalled'>"+gettext("Manage Classroom")+"</div> \
+              <div class='BigButton ButtonImages unavailable' style='margin-top:5px !important' id='ImageManagerUninstalled'>"+gettext("Manage Images")+"</div> \
+	    <div tabindex='1' class='BigButton ButtonMirror' style='margin-top:5px !important' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+	    $("#ButtonList").empty();
+            $("#ButtonList").append(buttons);
+	}
+    
+    
     
     // Binding New Event Handlers
     BindMainEventHandlers();
@@ -170,6 +179,10 @@ function BindLoginEventHandlers(){
     });
 
     $("#LoginButton").enterKey(function () {
+        SubmitLogin() ;
+    })
+    
+    $("#userpass").enterKey(function () {
         SubmitLogin() ;
     })
 }

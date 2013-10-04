@@ -27,11 +27,12 @@ class LliureXLTSPAdmin:
     password=''
     mirror_installed='false'
     abstract=''
+    pool_ok='cheking'
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
     require_version_plugins='0.2.8' # Version required of n4d plugins in server
-
+    check_mirror='true'
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
@@ -64,8 +65,9 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "Export")] = 'onExport';
     
 
-    def __init__(self):
+    def __init__(self, check_mirror):
         ''' Init LTSP Admin and connects to N4D '''
+        self.check_mirror=check_mirror;
         
         try:
             # Connecto to n4s-server to get SRV_IP
@@ -414,11 +416,17 @@ class LliureXLTSPAdmin:
                 #print (":::::::::::"+status)
                 if self.mirror_installed=='available':
                     # test if mirror is sane
-                    try:
-                        exec("status_pool="+self.server.check_mirror("", "LliurexMirrorNonGtk"))
-                    except Exception:
-                        status_pool={'status':'Unavailable', 'msg':'Pool is not available'}
+                    
+                    if (self.check_mirror=='true'):
+                        try:
+                            exec("status_pool="+self.server.check_mirror("", "LliurexMirrorNonGtk"))
+                        except Exception:
+                            status_pool={'status':'Unavailable', 'msg':'Pool is not available'}
+                    else:
+                            status_pool={'status':'Unchecked', 'msg':'Pool has not been checked'}
+                            
                     self.pool_ok=status_pool['status']
+                    
                     #self.pool_ok=str(self.server.check_mirror("", "LliurexMirrorNonGtk")['status']).strip();
                     
                     # Abstract
@@ -440,11 +448,12 @@ class LliureXLTSPAdmin:
                         self.mirror_installed='uninstalled'
                 
                 elif self.mirror_installed=='uninstalled':
-                    self.pool_ok="Uninstalled";            
+                    self.pool_ok="Uninstalled";
                     self.abstract="Mirror Not Installed"
                 else: # i.e. Busy
                     self.abstract="LliureX Mirror is Working"
                     #self.date=""
+                
                 
                 # Launch browser
 
@@ -1384,12 +1393,13 @@ if __name__ == "__main__":
         myjson=conffile.read()
         dic=json.loads(myjson)
         print ("Reading App from: "+dic["globalSettings"]["app_dir"])
+        print ("Check Mirror: "+dic["globalSettings"]["check_mirror"])
     
         os.chdir(dic["globalSettings"]["app_dir"])
 
     
         # Create an App instance
-        ltspadmin = LliureXLTSPAdmin()
+        ltspadmin = LliureXLTSPAdmin(dic["globalSettings"]["check_mirror"])
         
         # create Browser
         browser = Browser(language=ltspadmin.language)

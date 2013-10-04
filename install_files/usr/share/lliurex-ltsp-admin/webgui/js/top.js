@@ -16,6 +16,12 @@ $(document).ready(function() {
         $("#MiniButtonList").empty();
         $("#MiniButtonList").append(buttons);
     }
+    else if (mirror_installed=="busy") {
+        buttons="<div class='MiniButtonContainer'><span class='MiniButtonText' id='textclients'></span><span class='MiniButton ButtonClients' id='MiniClientManager'>"+gettext("Manage Classroom")+"</span></div> \
+          <div class='BigButton ButtonImages unavailable' id='ImageManager'>"+gettext("Manage Images")+"</div> \
+          <div class='BigButton ButtonImages unavailable' id='IsoManager'>"+gettext("Network Installation")+"</div> \
+          <div class='BigButton ButtonMirror' id='MirrorManager'>"+gettext("Create Mirror")+"</div>";
+    }
     else{
         buttons="<div class='BigButton ButtonClients unavailable' id='ClientManager'>"+gettext("Manage Classroom")+"</div> \
           <div class='BigButton ButtonImages unavailable' id='ImageManager'>"+gettext("Manage Images")+"</div> \
