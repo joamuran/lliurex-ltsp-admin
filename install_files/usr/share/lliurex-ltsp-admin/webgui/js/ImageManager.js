@@ -437,9 +437,17 @@ function showDescription(id){
         });
 }
 
-function showfile(file) {
+function showfile(file,percent) {
     
-    $("#MessageArea").css("display","block");
-    //$("#dialog-modal").css("display","block");
- 
+    //$("#MessageArea").css("display","block");
+    
+    $("#message").empty();
+    $("#message").append("Adding... "+file);
+    $("#progress").css("width",percent);
+    
+    
+    /*$("#MessageArea").css("display","block");
+    $("#message").css("display","block");
+    $("#progress").css("display","block");*/
  }
+ 

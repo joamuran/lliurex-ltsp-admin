@@ -46,6 +46,11 @@ class Browser:
         
     def execute_script(self, script):
         return (self.view.execute_script(script))
+    
+    def execute_script_async(self, script):
+        import threading
+        thread = threading.Thread(target=self.execute_script(script))
+        thread.start()
         
         
     

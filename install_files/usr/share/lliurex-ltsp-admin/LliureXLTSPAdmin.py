@@ -163,20 +163,54 @@ class LliureXLTSPAdmin:
         print "Exporting /opt/ltsp/llx-"+args[3]
         
         try:
-            file=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
+            destfile=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
+            
+            xscript="/tmp/xscript.sh"
+            print "Building file: "+xscript
+            f = open(xscript, 'w')
+            f.write("#/bin/bash\n\n")
+            #f.write("tar -cvzf ltsp_chroot.tgz --one-file-system --exclude=/lost+found /opt/ltsp/<arch>\n")
+            f.write("tar -cvzf "+destfile.rstrip()+".tgz --one-file-system --exclude=/lost+found /opt/ltsp/llx-"+args[3]+"\n")
+            f.write('read -p "Finished. Press Enter to close." tralari\n')
+            f.write("exit 0\n")
+            f.close()
+            
+            subprocess.Popen(["x-terminal-emulator", "-e", xscript])
+            
+
+            
+            '''
             
             myfiles=[]
 
-            for file in os.listdir('/tmp/client'):
-                myfiles.append('/tmp/client/'+file)
+            for file in os.listdir('/tmp/llx-client'):
+                myfiles.append('/tmp/llx-client/'+file)
             
-            
-
             #tar = tarfile.open("tralari.tar.gz", "w:gz")
+            progress=0
+            length=len(myfiles)
+            maxlength=300            
             for name in myfiles:
-                browser.execute_script("showfile('adding... "+name+"')")
+                print str(progress)+","+str(maxlength)+","+str(length)+"->",str(progress*maxlength/length)
+                
+                browser.execute_script('$("#MessageArea").css("display","none");')
+                browser.execute_script('$("#progress").css("display","none");')
+                browser.execute_script('$("#message").css("display","none");')
+                
+                browser.execute_script('$("#message").empty()')
+                browser.execute_script('$("#message").append("Adding... '+name+'")')
+                browser.execute_script('$("#progress").css("width",'+str(progress*maxlength/length)+')')
+                #browser.execute_script("showfile('adding... "+name+"','"+str(progress*maxlength/length)+"') ")
+                #browser.execute_script_async("showfile('adding... "+name+"','"+str(progress*maxlength/length)+"') ")
+                progress=progress+1
+                browser.execute_script('$("#message").css("display","block");')
+                browser.execute_script('$("#progress").css("display","block");')
+                browser.execute_script('$("#MessageArea").css("display","block");')
+                time.sleep(1)
                 #tar.add(name)
                 #tar.close()
+                
+                
     
             
             
@@ -185,9 +219,9 @@ class LliureXLTSPAdmin:
             
             #with tarfile.open(output_filename, "w:gz") as tar:
             #    tar.add(source_dir, arcname=os.path.basename(source_dir))
-            
-        except:
-            print ("Press on cancel")
+            '''
+        except Exception as e:
+            print ("Press on cancel or Error"+str(e))
             pass
         
         
@@ -197,13 +231,41 @@ class LliureXLTSPAdmin:
     
 
     def onImport(self, args):
+        import tarfile
         # FILE=`zenity --file-selection --title="Seleccione un archivo"`
         try:
             file=subprocess.check_output(["zenity","--file-selection", "--title='Select Image'"])
             # DO STUFF WITH FILE
             
-        except Exception:
-            print ("File selection cancelled")
+            tar = tarfile.open(file.rstrip(), "r:gz")
+            i=0
+            
+            for tarinfo in tar:
+                if (i>0):
+                    break;
+                chroot=tarinfo.name
+                '''
+                print tarinfo.name, "is", tarinfo.size, "bytes in size and is",
+                if tarinfo.isreg():
+                    print "a regular file."
+                elif tarinfo.isdir():
+                    print "a directory."
+                else:
+                    print "something else."
+                '''
+                i=i+1
+            tar.close()
+            
+            ruta=chroot.split("/")
+            print ruta[0]
+            print ruta[1]
+            print ruta[2]
+            
+            
+            
+            
+        except Exception as e:
+            print ("File selection cancelled or error: "+str(e))
             pass
         
         pass
