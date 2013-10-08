@@ -65,6 +65,7 @@ body
         border: thin #e5e5e5 solid; margin: 5px;
         background: #f1f1f1;
         }
+
 .ImportRow:hover{background: #e5e5e5; border-color: #e5e5e5;}
 
 
@@ -120,7 +121,23 @@ body
 .Add{background-image: url('images/packageswhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Adv{background-image: url('images/advancedwhite.png'); background-repeat: no-repeat;background-position: left center;}
 .Export{background-image: url('images/exportwhite.png'); background-repeat: no-repeat;background-position: left center;}
-.Import{background-image: url('images/importwhite.png'); background-repeat: no-repeat;background-position: left center;}
+.Import{background-image: url('images/importwhite.png'); background-repeat: no-repeat;background-position: left center; font-size: 1em;}
+
+.ImportTitle{
+    display:block;float:left; clear:right;padding-top:10px;
+}
+.ImportDescription{
+    font-family: ubuntu; font-size: 0.9em;
+    font-weight: lighter;
+    display:block;float:left; clear:right; 
+}
+
+.ImportDescTitle{
+    display: block;
+    float: left;
+    clear:right;
+    width: 650px;
+}
 
      div.fileinputs {
             position: relative;
@@ -172,3 +189,40 @@ body
 .ImageNameUninstalled{clear: both; float: left; width: 100%; font-size: 20px; }
 .ImageDescUninstalled{clear: both; float: left; width: 100%; font-size: 12px; cursor:pointer;}
 .ButtonGrey{float: left; width: 42px; height: 42px; margin: 10px; padding: 5px;}
+
+
+
+.FileCompressing{
+    position: relative;
+    top: 200px;
+    left: 300px;
+    color:#ffffff;
+    font-size:1.1em;
+    font-weight: bold;
+}
+
+#progressbox{
+    position: relative;
+    top: 250px;
+    left: 250px;
+    width: 300px;
+    height: 30px;
+    background: #000000;
+    /*border: solid thin #000000;*/
+    border-radius: 15px;
+
+        
+
+}
+
+#progress{
+    position: relative;
+    height: 100%;
+    background-image: url("images/progress.png");
+    background-repeat: repeat;
+    border-radius: 15px;
+    /*border: solid thin #000000;*/
+    width: 100px;
+    
+    
+}

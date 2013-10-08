@@ -27,6 +27,12 @@ function DisplayImageWindow(){
                  <div style='width:100%;clear:both; float:left'>Actualitzat el "+parseData(img_date)+"</div>";
                 Updateable=""
             }
+        
+        
+        exportButton="";
+        if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+        
+        
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -37,7 +43,7 @@ function DisplayImageWindow(){
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
-                        <!--div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
+                        "+exportButton+"\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> "+UpdatedImage+"\
@@ -57,6 +63,10 @@ function DisplayImageWindow(){
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
               */
 
+              
+            exportButton="";
+            if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+              
             ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -67,6 +77,7 @@ function DisplayImageWindow(){
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        "+exportButton+"\
                         <!--div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
@@ -84,6 +95,9 @@ function DisplayImageWindow(){
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
               */
 
+            exportButton="";
+            if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+              
             ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -94,6 +108,7 @@ function DisplayImageWindow(){
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        "+exportButton+"\
                         <!--div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
@@ -107,6 +122,9 @@ function DisplayImageWindow(){
 
         ErrorLine=""
         
+        exportButton="";
+        if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+        
         ItemList="<div class='ImageRow'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -117,6 +135,7 @@ function DisplayImageWindow(){
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='ButtonSel DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        "+exportButton+"\
                         <!--div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
@@ -141,7 +160,11 @@ function DisplayImageWindow(){
         var command=this.id.split(":")[0];
         var imageid=this.id.split(":")[1];
         
-        $("#helptip").css("display", "none");
+        
+        if (command!="ImportFile"&&command!="ImportFileSelector"&&command!="export") {
+            $("#helptip").css("display", "none");
+            $("#import").css("display", "none");
+        }
 
         
         switch (command) {
@@ -173,6 +196,7 @@ function DisplayImageWindow(){
                 location.href='ltsp://ImageAdvanced/'+imageid;
 
                 break;
+            
             case "delete":
                 console.log("You pressed on delete ");
                 description="<p>"+gettext("You are going to deleta a client image based on ")+getDescForId(imageid)+".</p>";
@@ -190,6 +214,19 @@ function DisplayImageWindow(){
                     }
                 }*/
                 
+                break;
+            case "ImportFile":
+                action='ltsp://ImportFile/';
+                location.href=action;
+
+                //$("#helptip").css("display", "block");
+                //$("#import").css("display", "block");
+                //$("#ImportFileSelector").trigger('click');
+                break;
+            
+            case "export":
+                action='ltsp://Export/'+imageid;
+                location.href=action;
                 break;
                 
         }
@@ -332,6 +369,15 @@ $(document).ready(function() {
     srv_ip=getUrlVar('srv_ip'); 
     //rv_ip=getUrlVar('mirror_installed'); // name
     
+    if (srv_ip!='127.0.0.1') {
+        $("#import").empty();
+        $("#import").css("font-size","0.9em");
+        $("#import").css("height","20");
+        $("#import").css("background-color","#ffc76c");        
+        $("#import").css("color","#b93902");
+        $("#import").append(gettext("<div>Import images are only available from local server</div>"));
+    }
+    
     $("#ConfirmWindow").css('display', 'none');
     $("#shellbox").css('display', 'none');
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");
@@ -343,7 +389,9 @@ $(document).ready(function() {
         } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
         
     })
+       
    
+
     DisplayImageWindow();
 
 });
@@ -388,3 +436,10 @@ function showDescription(id){
         //alert(response);
         });
 }
+
+function showfile(file) {
+    
+    $("#MessageArea").css("display","block");
+    //$("#dialog-modal").css("display","block");
+ 
+ }

@@ -35,20 +35,18 @@
         <div id="top"><div class="MiniButtonList" id="MiniButtonList"></div></div>
         <div id="helptip" class="helptip"></div>
         
-        
-        
-      <!-- div id="import" class="ImportRow">      
+      
+      
+      <div id="import" class="ImportRow">
       <div class="fileinputs">
-        <input type="file" class="file" />
-
-        <div class="fakefile">
-            <!--input type="button" class="Button Import" value="Import" /-- >
-            <div class="Button Import">Importa</div>
-            <div style="padding-top:15px;">Import image client from a file.</div>
-            <div class="helptip" style="position:relative;margin-left:130px;top:-18px;">If you have a tar.gz file from an LliureX Ltsp created, you can import it with this button.</div>
-        </div>  <!-- fakefile -- >
-      </div> <!-- fileinputs -- >  
-      </div> <!-- import -- > -->
+        <div id="ImportFile" class="Button Import"><script>document.write(gettext("Import"));</script></div>
+      </div> <!-- fileinputs -->
+      <div class="ImportDescTitle">
+         <div class="ImportTitle">Import image client from a file.</div>
+         <div class="ImportDescription">If you have a tar.gz file from an LliureX Ltsp created, you can import it with this button.</div>
+      </div>
+      </div> <!-- import -->
+      
       
       
         <div id="content"></div>
@@ -67,8 +65,12 @@
 
 
     <!-- Area for messages and dialogs -->
-    <div id="MessageArea"></div>
+    <div id="MessageArea">
+      <div id="message" class="FileCompressing">Hola</div>
+      <div id="progressbox"><div id="progress"></div></div>
+    </div>
     <div id="dialog-modal" title=""></div>
+    
     
   </body>
 </html>

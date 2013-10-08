@@ -63,6 +63,8 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "SelectIso")] = 'onSelectIso';
     binding[("ltsp", "SetPXENetinst")] = 'onSetPXENetinst';
     binding[("ltsp", "Export")] = 'onExport';
+    binding[("ltsp", "ImportFile")] = 'onImport';
+    
     
 
     def __init__(self, check_mirror):
@@ -157,9 +159,55 @@ class LliureXLTSPAdmin:
             return False
 
     def onExport(self, args):
-        print "Exporting"
+        import tarfile
+        print "Exporting /opt/ltsp/llx-"+args[3]
+        
+        try:
+            file=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
+            
+            myfiles=[]
+
+            for file in os.listdir('/tmp/client'):
+                myfiles.append('/tmp/client/'+file)
+            
+            
+
+            #tar = tarfile.open("tralari.tar.gz", "w:gz")
+            for name in myfiles:
+                browser.execute_script("showfile('adding... "+name+"')")
+                #tar.add(name)
+                #tar.close()
+    
+            
+            
+            
+            
+            
+            #with tarfile.open(output_filename, "w:gz") as tar:
+            #    tar.add(source_dir, arcname=os.path.basename(source_dir))
+            
+        except:
+            print ("Press on cancel")
+            pass
+        
+        
+        # Create tar.gz from chroot...
+        
         pass
     
+
+    def onImport(self, args):
+        # FILE=`zenity --file-selection --title="Seleccione un archivo"`
+        try:
+            file=subprocess.check_output(["zenity","--file-selection", "--title='Select Image'"])
+            # DO STUFF WITH FILE
+            
+        except Exception:
+            print ("File selection cancelled")
+            pass
+        
+        pass
+
 
 
     def onSetPXENetinst(self, args):
