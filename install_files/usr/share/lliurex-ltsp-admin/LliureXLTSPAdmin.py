@@ -177,7 +177,6 @@ class LliureXLTSPAdmin:
             
             subprocess.Popen(["x-terminal-emulator", "-e", xscript])
             
-
             
             '''
             
@@ -210,10 +209,6 @@ class LliureXLTSPAdmin:
                 #tar.add(name)
                 #tar.close()
                 
-                
-    
-            
-            
             
             
             
@@ -232,6 +227,7 @@ class LliureXLTSPAdmin:
 
     def onImport(self, args):
         import tarfile
+        import os
         # FILE=`zenity --file-selection --title="Seleccione un archivo"`
         try:
             file=subprocess.check_output(["zenity","--file-selection", "--title='Select Image'"])
@@ -255,17 +251,51 @@ class LliureXLTSPAdmin:
                 '''
                 i=i+1
             tar.close()
-            
-            ruta=chroot.split("/")
-            print ruta[0]
-            print ruta[1]
-            print ruta[2]
+                        
             
             
+            try:
+                
+                ruta=chroot.split("/")
+                
+                print ruta[0]
+                print ruta[0]!="opt"
+                print ruta[1]
+                print ruta[1]!="ltsp"
+                print ruta[2]
+                print chroot
+                print (os.path.isdir("/"+ruta[0]+"/"+ruta[1]+"/"+ruta[2]))
+                
+                if((ruta[0]!="opt")or(ruta[1]!="ltsp")):
+                    subprocess.call(["zenity","--error", "--title='Import Image'", "--text", \
+                                            "This is not a valid LTSP Compressed Image!"])
+                elif (os.path.isdir("/"+ruta[0]+"/"+ruta[1]+"/"+ruta[2])):
+                    
+                    selection=subprocess.check_output(["zenity","--question", "--title='Import Image'", "--text", \
+                            "There is another "+ruta[2]+" in your system. Continue anyway?"])
+            except Exception:
+                print "CANCELLED, or exception: "+Exception
+                return False
             
+            display=":42"
+            screen="600x450x16"
+            
+            XServer=LTSPX11Environment(display, screen)      
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+                       
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            connection_user = (self.username,self.password)
+            output=server.import_ltsp_tgz(connection_user,"LtspChroot", file.rstrip(), ruta[2])
+            # Remove Xephyr
+            os.kill(Xepid.pid,signal.SIGTERM)
+            print (output["status"])
+                    
+            browser.execute_script('$("#MessageArea").css("display", "none");')
+            pass
             
         except Exception as e:
             print ("File selection cancelled or error: "+str(e))
+            browser.execute_script('$("#MessageArea").css("display", "none");')
             pass
         
         pass

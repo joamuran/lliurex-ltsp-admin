@@ -216,8 +216,17 @@ function DisplayImageWindow(){
                 
                 break;
             case "ImportFile":
-                action='ltsp://ImportFile/';
-                location.href=action;
+                
+                $("#WaitingAnimation").css("display", "block");
+                $("#MessageArea").css("display", "block");
+               
+                setTimeout(function() {
+                    action='ltsp://ImportFile/';
+                    location.href=action;
+
+                }, 1);
+               
+                
 
                 //$("#helptip").css("display", "block");
                 //$("#import").css("display", "block");
