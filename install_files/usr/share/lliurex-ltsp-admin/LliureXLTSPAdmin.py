@@ -175,7 +175,8 @@ class LliureXLTSPAdmin:
             f.write("exit 0\n")
             f.close()
             
-            subprocess.Popen(["x-terminal-emulator", "-e", xscript])
+            subprocess.Popen(["chmod", "+x", xscript])
+            subprocess.Popen(["gnome-terminal", "-e", xscript])
             
             
             '''
