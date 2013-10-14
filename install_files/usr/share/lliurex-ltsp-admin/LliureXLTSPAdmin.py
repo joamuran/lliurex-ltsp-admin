@@ -164,58 +164,27 @@ class LliureXLTSPAdmin:
         
         try:
             destfile=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
-            
-            xscript="/tmp/xscript.sh"
-            print "Building file: "+xscript
-            f = open(xscript, 'w')
-            f.write("#/bin/bash\n\n")
-            #f.write("tar -cvzf ltsp_chroot.tgz --one-file-system --exclude=/lost+found /opt/ltsp/<arch>\n")
-            f.write("tar -cvzf "+destfile.rstrip()+".tgz --one-file-system --exclude=/lost+found /opt/ltsp/llx-"+args[3]+"\n")
-            f.write('read -p "Finished. Press Enter to close." tralari\n')
-            f.write("exit 0\n")
-            f.close()
-            
-            subprocess.Popen(["chmod", "+x", xscript])
-            subprocess.Popen(["gnome-terminal", "-e", xscript])
-            
-            
-            '''
-            
-            myfiles=[]
-
-            for file in os.listdir('/tmp/llx-client'):
-                myfiles.append('/tmp/llx-client/'+file)
-            
-            #tar = tarfile.open("tralari.tar.gz", "w:gz")
-            progress=0
-            length=len(myfiles)
-            maxlength=300            
-            for name in myfiles:
-                print str(progress)+","+str(maxlength)+","+str(length)+"->",str(progress*maxlength/length)
-                
-                browser.execute_script('$("#MessageArea").css("display","none");')
-                browser.execute_script('$("#progress").css("display","none");')
-                browser.execute_script('$("#message").css("display","none");')
-                
-                browser.execute_script('$("#message").empty()')
-                browser.execute_script('$("#message").append("Adding... '+name+'")')
-                browser.execute_script('$("#progress").css("width",'+str(progress*maxlength/length)+')')
-                #browser.execute_script("showfile('adding... "+name+"','"+str(progress*maxlength/length)+"') ")
-                #browser.execute_script_async("showfile('adding... "+name+"','"+str(progress*maxlength/length)+"') ")
-                progress=progress+1
-                browser.execute_script('$("#message").css("display","block");')
-                browser.execute_script('$("#progress").css("display","block");')
-                browser.execute_script('$("#MessageArea").css("display","block");')
-                time.sleep(1)
-                #tar.add(name)
-                #tar.close()
-                
+                        
             
             
             
-            #with tarfile.open(output_filename, "w:gz") as tar:
-            #    tar.add(source_dir, arcname=os.path.basename(source_dir))
-            '''
+            display=":42"
+            screen="600x450x16"
+            
+            XServer=LTSPX11Environment(display, screen)
+            Xepid=XServer.prepare_X11_applications_on_chroot()
+                       
+            server = ServerProxy("https://"+self.srv_ip+":9779")
+            connection_user = (self.username,self.password)
+            output=server.export_ltsp_tgz(connection_user,"LtspChroot", destfile.rstrip(), args[3])
+            # Remove Xephyr
+            os.kill(Xepid.pid,signal.SIGTERM)
+            print (output["status"])
+                    
+            browser.execute_script('$("#MessageArea").css("display", "none");')
+            pass
+            
+            
         except Exception as e:
             print ("Press on cancel or Error"+str(e))
             pass
