@@ -354,7 +354,7 @@ class LliureXLTSPAdmin:
 
         print ("Updating Mirror")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.n4dupdate(connection_user,"LliurexMirrorNonGtk")
@@ -775,7 +775,7 @@ class LliureXLTSPAdmin:
 
         print ("Updating Image")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.regenerate_img(connection_user,"LtspImage",img_chroot)
@@ -793,7 +793,7 @@ class LliureXLTSPAdmin:
 
         print ("[n4dCreateClient] Creating client...")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.n4d_create_client(connection_user,"LtspImage",img_id, img_chroot)
@@ -811,7 +811,7 @@ class LliureXLTSPAdmin:
 
         print ("[n4dUpdateClient] Updating client...")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.n4d_update_client(connection_user,"LtspImage",img_id, img_chroot, self.username,self.password)
@@ -830,7 +830,7 @@ class LliureXLTSPAdmin:
 
         print ("[n4dDeleteClient] Deleting client...")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         result=server.n4d_delete_client(connection_user,"LtspImage",img_id, img_chroot, img_file, connection_user)
@@ -849,7 +849,7 @@ class LliureXLTSPAdmin:
 
         print ("[n4dModifyClient] Installing XFCE...")
         connection_user = (self.username,self.password)
-        print ("Connection user: "+str(connection_user))
+        #print ("Connection user: "+str(connection_user))
         # n4d connection to server
         
         server.n4d_install_xfce(connection_user,"LtspImage",img_id, img_chroot, connection_user)
@@ -1244,31 +1244,46 @@ class LliureXLTSPAdmin:
         import urllib
         #import subprocess
         command=""
+        print "***********"+args[3]
+        screen="1024x768x24"
         #sys.stdout = open('/tmp/stdout.txt', 'a')
-        if args[3]=='terminal':
-            command="terminal"
+        if (args[3]=='terminal' or args[3]=='gnome-terminal'):
+            #command="terminal"
+            command="gnome-terminal"
+            screen="650x402x24"
+        elif args[3]=='lliurex-up':
+            command="lliurex-up"
+            screen="702x722x24"
         elif args[3]=='synaptic':
             command="synaptic"
+            screen="1055x725x24"
         elif args[3]=='texteditor':
             command="x-editor"
+            screen="576x740x24"
         elif args[3]=='launch_session':
             command="start_session"
+            screen="1024x768x24"
         elif args[3]=='llum':
             command="llum"
-
+            screen="698x499x24"
         #elif args[3]=='apply':
         #    # Apply changes to image!
         #    self.updateImage(urllib.url2pathname(args[4]));
         elif args[3]=='xfce':
-            self.installXFCEonClient(urllib.url2pathname(args[4]));
-
-            return 0
+            print "iiiiis xfce!!"
+            ## TO MODIFY
+            #self.installXFCEonClient(urllib.url2pathname(args[4]));
+            command="apt-get install lliurex-cdd-xdesktop"
+            #return 0
             pass
-        else: #Otherwise it's a "run_command" option, so, command is this.
+        else:
+            print "*****************: "+args[3]
+            #Otherwise it's a "run_command" option, so, command is this.
             command=args[3]
 
         # Gettint Chroot
 
+        print command
         chroot=urllib.url2pathname(args[4])
         print ("Executing "+command+" on "+chroot)
 
@@ -1280,7 +1295,7 @@ class LliureXLTSPAdmin:
 
         # Set up X11 Environment for Chroot, Connection to n4d in local
         display=":42" # The answer to the Universe, the Existence and all other things  (i.e. Xephire Display)
-        screen="1024x768x16"
+        #screen="1024x768x16"
 
 
         # XServer es una connexio a les x locals, no una connexio n4d!!
@@ -1290,7 +1305,8 @@ class LliureXLTSPAdmin:
 
         try:
             # PRepare X11 Xephyr environment
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            title="LliureX LTSP: '"+str(command)+"' en "+str(chroot)
+            Xepid=XServer.prepare_X11_applications_on_chroot(title)
             print "Xephyr PID: "+str(Xepid.pid)
             
             if (command=="start_session"):

@@ -44,7 +44,7 @@ class LTSPX11Environment:
 	#def RemoveXephyrProcess():
 	
 	
-	def prepare_X11_applications_on_chroot(self):
+	def prepare_X11_applications_on_chroot(self, title):
 		'''
 		Prepare a X11 environment to run graphical apps remotely (not necessary in chroot)
 		'''
@@ -54,7 +54,7 @@ class LTSPX11Environment:
 			self.RemoveXephyrProcess(self.display)
 			# Display on display
 			print ("Display...")
-			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display, "-dpi", "96", "-wr"])
+			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display, "-dpi", "96", "-wr", "-title",title])
 			#800x480x16 -dpi 96
 			# Waiting for process
 			while(pid.poll()==False):
