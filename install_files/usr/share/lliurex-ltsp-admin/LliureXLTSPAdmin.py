@@ -1270,10 +1270,12 @@ class LliureXLTSPAdmin:
         #    # Apply changes to image!
         #    self.updateImage(urllib.url2pathname(args[4]));
         elif args[3]=='xfce':
-            print "iiiiis xfce!!"
+            #print "iiiiis xfce!!"
             ## TO MODIFY
             #self.installXFCEonClient(urllib.url2pathname(args[4]));
-            command="apt-get install lliurex-cdd-xdesktop"
+            #command="apt-get install lliurex-cdd-xdesktop"
+            screen="570x570x24"
+            command=args[3]
             #return 0
             pass
         else:
@@ -1317,7 +1319,7 @@ class LliureXLTSPAdmin:
                 
                 #XServer.prepare_chroot_for_session()
             
-            # Run APP into REMOTE Server            
+            # Run APP into REMOTE Server
             output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display, str(Xepid.pid))
             #print ("OUTPUT: "+str(output['msg']))
             if (str(output['msg'])=='127'):
