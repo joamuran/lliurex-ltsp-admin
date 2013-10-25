@@ -48,7 +48,7 @@ function DisplayDesktop() {
                     <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
         }
             AppsList=AppsList+"<div class='ApplyiconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
-                    <div class='iconImageApply'><img src='styles/images/lliurex-installer.png'/></div> \
+                    <div id='iconImageApply' class='iconImageApply'><img src='styles/images/lliurex-installer.png'/></div> \
                     <div class='iconText'>"+gettext('Apply to Image')+"</div> </div>";
         $("#ImageDesktop").append(AppsList);
 }
@@ -272,10 +272,22 @@ $(document).ready(function() {
 
     })
 
-
+ animate_apply_button();
 
 });
 
+function animate_apply_button(){
+    $('#iconImageApply').animate({
+        fontSize: $('#iconImageApply').css('fontSize') == '120px' ? '150px' : '120px'
+    }, 500, animate_apply_button);
+}
+/*
+function animateHeart() {
+    $('span.heart').animate({
+        fontSize: $('span.heart').css('fontSize') == '60px' ? '50px' : '60px'
+    }, 500, animateHeart);
+};
+*/
 window.onbeforeunload = unloadPage;
 
 function unloadPage(){
