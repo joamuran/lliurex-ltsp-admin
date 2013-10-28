@@ -47,8 +47,8 @@ function DisplayDesktop() {
                     <div class='iconImage'><img src='"+DesktopApps.Apps[i].icon+"'/></div> \
                     <div class='iconText'>"+gettext(DesktopApps.Apps[i].text)+"</div> </div>";
         }
-            AppsList=AppsList+"<div class='ApplyiconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
-                    <div id='iconImageApply' class='iconImageApply'><img src='styles/images/lliurex-installer.png'/></div> \
+            AppsList=AppsList+"<div id='iconImageApply' class='ApplyiconContainer' style='float:right;' onclick='ExecuteApp(this);' id='apply'> \
+                    <div class='iconImageApply'><img src='styles/images/lliurex-installer.png'/></div> \
                     <div class='iconText'>"+gettext('Apply to Image')+"</div> </div>";
         $("#ImageDesktop").append(AppsList);
 }
@@ -94,8 +94,10 @@ function ExecuteApp(cb) {
             else{
                 ChrootChanged=true;
                 newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
-                //alert("Execute:"+newlocation);
                 location.href=newlocation;
+                show_apply_button();
+                //alert("Execute:"+newlocation);
+                
             }
         }, 1);
 
@@ -272,14 +274,28 @@ $(document).ready(function() {
 
     })
 
- animate_apply_button();
+ hide_apply_button();
 
 });
 
-function animate_apply_button(){
-    $('#iconImageApply').animate({
-        fontSize: $('#iconImageApply').css('fontSize') == '120px' ? '150px' : '120px'
-    }, 500, animate_apply_button);
+function hide_apply_button(){
+    /*$('#iconImageApply').animate({
+        width: $('#iconImageApply').css('width') == '165px' ? '150px' : '165px',
+        opacity:  $('#iconImageApply').css('opacity') == '0.1' ? '0.9' : '0.1'
+        //left:  $('#iconImageApply').css('left') == '-55' ? '0px' : '-55'
+    }, 500, animate_apply_button);*/
+  //$('#iconImageApply').css('width', '0px');
+  $('#iconImageApply').hide();
+
+}
+
+function show_apply_button(){
+        $('#iconImageApply').show();
+       /* $('#iconImageApply').animate({
+        width: $('#iconImageApply').css('width', '100px'),
+        }, 500, show_apply_button);
+*/
+
 }
 /*
 function animateHeart() {

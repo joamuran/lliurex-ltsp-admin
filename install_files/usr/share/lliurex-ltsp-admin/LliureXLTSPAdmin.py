@@ -1337,10 +1337,16 @@ class LliureXLTSPAdmin:
 
                 #XServer.remove_session()
             
+            subprocess.call(["zenity","--warning", "--title=Remember...'", "--text", \
+                                        "Remember that you have to hit on Apply Changes to Apply Changes into This Client Image.", "--no-wrap"])
+   
+            
         except Exception as e:
             print ("Exception in XServer...:"+str(e))
             return None
         return None
+
+                     
 
 
         #server.run_command_on_chroot(connection_user,'chroot')
