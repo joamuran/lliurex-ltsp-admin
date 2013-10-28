@@ -31,7 +31,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.2.9' # Version required of n4d plugins in server
+    require_version_plugins='0.2.10' # Version required of n4d plugins in server
     check_mirror='true'
     
     # Temp data that we will extract from n4d-ltsp
@@ -1337,8 +1337,9 @@ class LliureXLTSPAdmin:
 
                 #XServer.remove_session()
             
-            subprocess.call(["zenity","--warning", "--title=Remember...'", "--text", \
-                                        "Remember that you have to hit on Apply Changes to Apply Changes into This Client Image.", "--no-wrap"])
+            #subprocess.call(["zenity","--warning", "--title=Remember...'", "--text", \
+            #                            "Remember that you have to hit on Apply Changes to Apply Changes into This Client Image.", "--no-wrap"])
+            browser.execute_script("ShowApplyMessage()");
    
             
         except Exception as e:

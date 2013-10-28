@@ -95,7 +95,7 @@ function ExecuteApp(cb) {
                 ChrootChanged=true;
                 newlocation='ltsp://ExecuteInChroot/'+command+'/'+encodeURIComponent(chrootpath);
                 location.href=newlocation;
-                show_apply_button();
+                //show_apply_button();
                 //alert("Execute:"+newlocation);
                 
             }
@@ -290,13 +290,20 @@ function hide_apply_button(){
 }
 
 function show_apply_button(){
-        $('#iconImageApply').show();
-       /* $('#iconImageApply').animate({
-        width: $('#iconImageApply').css('width', '100px'),
-        }, 500, show_apply_button);
-*/
-
+        $('#iconImageApply').fadeIn(1500);
+        $('#iconImageApply').append("<img id='hand' style='position: relative; float:left; z-index:1; bottom:60px;' src='styles/images/hand.png'>");
+        function movehand(){
+                $('#hand').animate({
+                left: $('#hand').css('left') == '10px' ? '0px' : '10px',
+                bottom: $('#hand').css('bottom') == '60px' ? '70px' : '60px'
+        }, 500, movehand);
+        }
+        movehand();
+        
+        
 }
+       
+       
 /*
 function animateHeart() {
     $('span.heart').animate({
@@ -310,6 +317,27 @@ function unloadPage(){
         if(ChrootChanged==true){
                 return gettext("If you did changes into client, you have to Apply them to images by clicking in 'Apply to image' to be effective. Continue anyway?");
         }
+}
+
+function ShowApplyMessage(){
+        $('#hand').remove();
+        showDescription();
+}
+
+function showDescription(){
+    
+     title="Apply to Image";
+     version="";
+     text="<div style='margin-left: 150px;'>If you have performed any change into this image client, and you want these changes to be effective, you have to press on <i>Apply to Image</i> buttom to Apply these changes to Client Image.</div>";
+     image="images/apply-changes.png";
+     //buttons={"ok":{"text":"d'Acord","ReturnValue":"true","image":"images/ok.png"},"ok2":{"text":"d'Acord","ReturnValue":"true","image":"images/ok.png"}};     
+     buttons={"ok":{"text":"Ok","ReturnValue":"false","image":"images/check.png"}};
+     tip=""
+     
+          
+     ShowDialog(title, text, image, buttons, tip, function(response){
+        show_apply_button();
+        });
 }
 
 

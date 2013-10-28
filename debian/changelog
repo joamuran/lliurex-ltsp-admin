@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.25) precise; urgency=low
+
+  * Enhacing GUI
+
+ -- Jose A. Murcia <joamuran@gmail.com>  Mon, 28 Oct 2013 12:59:23 +0100
+
 lliurex-ltsp-admin (0.24) precise; urgency=low
 
   * Added capabilities to import and export images.
