@@ -160,7 +160,8 @@ class LliureXLTSPAdmin:
 
     def onExport(self, args):
         import tarfile
-        print "Exporting /opt/ltsp/llx-"+args[3]
+        title="Exporting /opt/ltsp/llx-"+args[3]
+        print title
         
         try:
             destfile=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
@@ -172,7 +173,7 @@ class LliureXLTSPAdmin:
             screen="600x450x16"
             
             XServer=LTSPX11Environment(display, screen)
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot(title)
                        
             server = ServerProxy("https://"+self.srv_ip+":9779")
             connection_user = (self.username,self.password)
@@ -251,7 +252,7 @@ class LliureXLTSPAdmin:
             screen="600x450x16"
             
             XServer=LTSPX11Environment(display, screen)      
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot("Importing image")
                        
             server = ServerProxy("https://"+self.srv_ip+":9779")
             connection_user = (self.username,self.password)
@@ -419,7 +420,7 @@ class LliureXLTSPAdmin:
             XServer=LTSPX11Environment(display, screen)
             # PRepare X11 Xephyr environment
             
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot("LliureX LTSP. Updating Mirror")
             print "Xephyr PID: "+str(Xepid.pid)
             print "1111111111111111111111"+str(my_ip_for_server)+"-"+str(display)+"-"+str(Xepid.pid)
             output=server.launchLliurexMirrorGui(connection_user, "LtspMirrorUpdater", my_ip_for_server, display, Xepid.pid)
@@ -919,7 +920,7 @@ class LliureXLTSPAdmin:
             XServer=LTSPX11Environment(display, screen)
             
             # PRepare X11 Xephyr environment
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot("Applying changes into chroot")
             print "Xephyr PID: "+str(Xepid.pid)
             
             output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
@@ -1078,7 +1079,7 @@ class LliureXLTSPAdmin:
             XServer=LTSPX11Environment(display, screen)
             
             # PRepare X11 Xephyr environment
-            Xepid=XServer.prepare_X11_applications_on_chroot()
+            Xepid=XServer.prepare_X11_applications_on_chroot("Create New Client")
             print "Xephyr PID: "+str(Xepid.pid)
             
             output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
@@ -1310,27 +1311,32 @@ class LliureXLTSPAdmin:
             title="LliureX LTSP: '"+str(command)+"' en "+str(chroot)
             Xepid=XServer.prepare_X11_applications_on_chroot(title)
             print "Xephyr PID: "+str(Xepid.pid)
-            
             if (command=="start_session"):
-                print ("#####################")
                 ret=server.prepare_chroot_for_session(connection_user, "LtspChroot",chroot)
                 print (str(ret))
-                print ("#####################")
                 
                 #XServer.prepare_chroot_for_session()
             
             # Run APP into REMOTE Server
+            
+            
             output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, display, str(Xepid.pid))
+            print str(output)
+            
             #print ("OUTPUT: "+str(output['msg']))
-            if (str(output['msg'])=='127'):
-                print ("command not found")
-                browser.execute_script("alert('Command "+command+" not found!')")
+            try:
+                if (str(output['msg'])=='127'):
+                    print ("command not found")
+                    browser.execute_script("alert('Command "+command+" not found!')")
+            except Exception as e:
+                    # some error messages could give some errors
+                    pass
 
                 #print ("ERROR: COMMAND NOT FOUND")
             # Delete XServer: When Finished, delete XServer
             print ("UMOUNT CHROOT")
             XServer.remove_X11_applications_on_chroot()
-
+            
             print ("UMOUNT HOME")
             if (command=="start_session"):
                 server.remove_session(connection_user, "LtspChroot", chroot)
@@ -1339,11 +1345,13 @@ class LliureXLTSPAdmin:
             
             #subprocess.call(["zenity","--warning", "--title=Remember...'", "--text", \
             #                            "Remember that you have to hit on Apply Changes to Apply Changes into This Client Image.", "--no-wrap"])
+            
             browser.execute_script("ShowApplyMessage()");
    
             
         except Exception as e:
             print ("Exception in XServer...:"+str(e))
+            browser.execute_script("ShowApplyMessage()");
             return None
         return None
 

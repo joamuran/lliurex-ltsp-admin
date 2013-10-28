@@ -72,7 +72,7 @@ function ExecuteApp(cb) {
             $('#WaitingWindow').css('display', 'block');
         }
 
-        if (cb.id=="apply") {
+        if (cb.id=="apply"||cb.id=="iconImageApply") {
             $('#WaitingText').empty();
             $('#WaitingText').append(gettext("Checking for free space. Please Wait."));
             $('#WaitingWindow').css('display', 'block');
@@ -86,7 +86,7 @@ function ExecuteApp(cb) {
 
     setTimeout(function() 
         {
-            if (command=='apply') {
+            if (command=='apply'||command=='iconImageApply') {
                 ChrootChanged=false;
                 newlocation='ltsp://ApplyChangesToImageWithCheck/'+command+'/'+encodeURIComponent(chrootpath);
                 location.href=newlocation;
