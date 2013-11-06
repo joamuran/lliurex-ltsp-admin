@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (0.26) precise; urgency=low
+
+  * Added support to clean PXE menus.
+
+ -- Jose A. Murcia <joamuran@lite>  Wed, 06 Nov 2013 14:26:31 +0100
+
 lliurex-ltsp-admin (0.25) precise; urgency=low
 
   * Enhacing GUI

@@ -31,7 +31,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.2.10' # Version required of n4d plugins in server
+    require_version_plugins='0.2.12' # Version required of n4d plugins in server
     check_mirror='true'
     
     # Temp data that we will extract from n4d-ltsp
@@ -564,6 +564,20 @@ class LliureXLTSPAdmin:
                 else: # i.e. Busy
                     self.abstract="LliureX Mirror is Working"
                     #self.date=""
+                
+                # Check sanity in PXE Menu
+                server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+                image_error_list = server.check_PXE_menu("","LtspChroot");
+                
+                if(len(image_error_list)>0):
+                    print image_error_list;
+                    selection=subprocess.call(["zenity","--question", "--title='PXE Menu is inconsistent'", "--text", \
+                                        "There are "+str(len(image_error_list))+" invalid menu entries in PXE Menu. Shall LliureX LTSP Manager delete them?", "--no-wrap"])
+            
+                    if (selection==0):
+                        self.connection_user = (self.username,self.password)
+                        server.clean_tftpboot(self.connection_user, "LtspChroot" ,image_error_list);
+                        
                 
                 
                 # Launch browser
