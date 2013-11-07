@@ -576,6 +576,7 @@ class LliureXLTSPAdmin:
             
                     if (selection==0):
                         self.connection_user = (self.username,self.password)
+                        server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
                         server.clean_tftpboot(self.connection_user, "LtspChroot" ,image_error_list);
                         
                 
