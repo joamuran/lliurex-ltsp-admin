@@ -32,6 +32,7 @@ $(function(){
     
 
 function MyAlert(text, title) {
+    $( "#dialog-modal" ).dialog( "option", "modal", false );
     $('#dialog-modal').empty();
     $('#dialog-modal').append("<p>"+text+"</p>");
     $('#dialog-modal').dialog('open');
