@@ -46,11 +46,20 @@ ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"<
           <option value='client'"+selected_session_xfce+">"+gettext("Boot from LliureX Classroom Client")+"</option--> \
         </select></div></div>\
         <div style='float: left; display: block; clear: both;'><span class='ClassroomItem'>"+gettext("Timeout: ")+"</span><input class='FormInput' id='timeout' type='text' /></div>";
+
+ButtonRefreshMenu="<div class='Button RefreshMenu' onclick='refreshMenu()'>"+gettext("Refresh PXE Menu")+"</div>";
+ItemClass=ItemClass+ButtonRefreshMenu;
+
+  //      images/regenerate_menu.png
         
     $("#ClassroomConfig").append(ItemClass);
 
 }
 
+function refreshMenu(){
+    alert("tralari");
+    
+}
 
 function DisplayClients(){
     // Display all clients, with possibility to expand its properties

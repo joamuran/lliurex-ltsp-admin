@@ -132,6 +132,11 @@
     background-image: url('images/deleteclient.png');  background-repeat: no-repeat;background-position: left center;}
 .ButtonDeleteRight:hover{cursor: pointer;}
 
+.RefreshMenu{
+    float: right; position: relative; margin: 0px 20px 0px 0px !important; padding: 5px 10px 0px 30px !important; z-index: 1;
+    background-image: url('images/regenerate_menu.png');  background-repeat: no-repeat;background-position: left center; font-size: 0.9em;}
+.RefreshMenu:hover{cursor: pointer;}
+
 .NewClient{background-image: url('images/addclient.png');  background-repeat: no-repeat;background-position: left center;}
 .SaveChanges{background-image: url('images/applychangeswhite.png');  background-repeat: no-repeat;background-position: left center;}
 
