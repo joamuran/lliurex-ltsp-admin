@@ -2,6 +2,8 @@
 var srv_ip="unknown"
 var status="available";
 var section="IsoManager"
+var OriginalStateNetinstall=""
+
 var ErrorMessage=new Array();
 
 
@@ -70,8 +72,14 @@ $(document).ready(function() {
     $("#helptipnetinst").append(helpnetinst);
 
     if (netinst_installed=="True") {
-        if (netinst_available=="True") checked="checked='checked'";
-            else checked="";
+        if (netinst_available=="True") {
+            checked="checked='checked'";
+            OriginalStateNetinstall="available"; // Set Original state to avoid multiple selections
+        } else {
+                checked="";
+                OriginalStateNetinstall="unavailable"; // Set Original state to avoid multiple selections
+        };
+
         
         netinstcontent="<input id='checkinst' style='display: block; float: left; margin-left: 50px; clear: both;' onchange='handleChange(this);' class='ClientItemCheckBox' \
                     type='checkbox' name='allownetinst' value='enabled' "+checked+">"+gettext("Allow network installation")+"</div>";
@@ -151,25 +159,36 @@ function ModifyPXEMenu(netinstall) {
 
 function handleChange(cb) {
     
-    action="";
-    $("#BtCreateMenus").off('click');
-    $("#BtCreateMenus").removeClass("BtNetInstUnchecked").addClass("BtNetInst BtCreateMenus");
-    $("#BtCreateMenus").click(function(){   
     if (cb.checked){
          action="available";
         }
     if (!cb.checked){
         action="unavailable";
         }
+
+    if (action==OriginalStateNetinstall){ 
+        //alert("Set "+action+"\n"+"Original State was "+OriginalStateNetinstall+"\n INHABILITA BOTO");
+        $("#BtCreateMenus").removeClass("BtNetInst BtCreateMenus").addClass("BtNetInstUnchecked");
+    } else{
+        //alert("Set "+action+"\n"+"Original State was "+OriginalStateNetinstall+"\n HABILITA BOTO ****");
+        $("#BtCreateMenus").removeClass("BtNetInstUnchecked").addClass("BtNetInst BtCreateMenus");
+    }
     
-    ModifyPXEMenu(action);
-    })
-    
-    
-    
+    $("#BtCreateMenus").off('click');
+    $("#BtCreateMenus").click(function(){
+        if ($("#BtCreateMenus").hasClass("BtNetInst"))
+        {
+            //alert ("PENDING !!");
+            ModifyPXEMenu(action);
+            OriginalStateNetinstall=action;
+        }
+        $("#BtCreateMenus").removeClass("BtNetInst BtCreateMenus").addClass("BtNetInstUnchecked");
+    //ModifyPXEMenu(action);
+    })    
+
 }
 
-
+    
 
 function setStatus(newstatus){
     status=newstatus;

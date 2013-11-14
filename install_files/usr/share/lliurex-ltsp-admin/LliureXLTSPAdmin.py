@@ -31,7 +31,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.2.12' # Version required of n4d plugins in server
+    require_version_plugins='0.2.13' # Version required of n4d plugins in server
     check_mirror='true'
     
     # Temp data that we will extract from n4d-ltsp
@@ -64,7 +64,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "SetPXENetinst")] = 'onSetPXENetinst';
     binding[("ltsp", "Export")] = 'onExport';
     binding[("ltsp", "ImportFile")] = 'onImport';
-    
+    binding[("ltsp", "refreshPXEMenu")] = 'onrefreshPXEMenu';
     
 
     def __init__(self, check_mirror):
@@ -578,6 +578,7 @@ class LliureXLTSPAdmin:
                         self.connection_user = (self.username,self.password)
                         server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
                         server.clean_tftpboot(self.connection_user, "LtspChroot" ,image_error_list);
+                        #server.clean_tftpboot(self.connection_user, "LtspChroot" ,str(image_error_list));
                         
                 
                 
@@ -605,6 +606,28 @@ class LliureXLTSPAdmin:
             browser.open_url(uri)
             pass
     
+
+    def onrefreshPXEMenu(self, args):
+            try:
+                server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+                image_error_list = server.check_PXE_menu("","LtspChroot");
+                print str(image_error_list)
+                self.connection_user = (self.username,self.password)
+                print "111111111"
+                server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
+                print "22222222"
+                server.clean_tftpboot(self.connection_user, "LtspChroot" ,str(image_error_list));
+                print "333333333"
+                selection=subprocess.call(["zenity","--info", "--title='PXE Menu Reneneration'", "--text", "Done"])
+                print "444444444"
+                return True        
+            except Exception as e:
+                print "ERRORRRRRRRRR!!!!!!!"+str(e)
+                return False
+  
+
+
+
     def onMirrorManager(self, args):
         file = os.path.abspath('webgui/MirrorManager.html')
         if (type(self.date)==type(None)):

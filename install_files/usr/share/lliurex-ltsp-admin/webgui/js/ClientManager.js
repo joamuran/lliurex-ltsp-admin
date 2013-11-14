@@ -57,8 +57,7 @@ ItemClass=ItemClass+ButtonRefreshMenu;
 }
 
 function refreshMenu(){
-    alert("tralari");
-    
+    location.href='ltsp://refreshPXEMenu';
 }
 
 function DisplayClients(){
