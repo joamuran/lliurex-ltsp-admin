@@ -85,6 +85,11 @@ class LliureXLTSPAdmin:
             # n4d connection done in login
             
             print (self.jsonclients)
+
+            # Get Environment
+            my_env=dict(os.environ)
+            self.localserver.xenv_set_environment("", "ltspClientXServer", my_env['XAUTHORITY'], my_env['DISPLAY'])
+
         except Exception:
             print (Exception)
             self.ConnectionStatus='off'
@@ -921,7 +926,6 @@ class LliureXLTSPAdmin:
         spacefree=server.is_enough_space_in_disk(connection_user,"LtspImage", imgchroot)
 
         print str(spacefree)
-        
         if (spacefree['status']==False):
             browser.execute_script("AskWhatToDoIfNotEnoughSpace('"+imgchroot+"','"+spacefree['free']+"','"+spacefree['used']+"')")
         else:
@@ -1276,7 +1280,83 @@ class LliureXLTSPAdmin:
     # End Main functions to perform predefined actions in chroot
 
 
+
     def onExecuteInChroot(self, args):
+        '''
+        Executes some specific functions into chroot. After them, we shoud to regenerate img file.
+        '''
+
+        import urllib
+        #import subprocess
+        command=""
+        screen="1024x768x24"
+
+        if (args[3]=='terminal' or args[3]=='gnome-terminal'):
+            #command="terminal"
+            command="gnome-terminal"
+            screen="650x402x24"
+        elif args[3]=='lliurex-up':
+            command="lliurex-up"
+            screen="702x722x24"
+        elif args[3]=='synaptic':
+            command="synaptic"
+            screen="1055x725x24"
+        elif args[3]=='texteditor':
+            command="x-editor"
+            screen="576x740x24"
+        elif args[3]=='launch_session':
+            command="start_session"
+            screen="1024x768x24"
+        elif args[3]=='llum':
+            command="llum"
+            screen="698x499x24"
+        #elif args[3]=='apply':
+        #    # Apply changes to image!
+        #    self.updateImage(urllib.url2pathname(args[4]));
+        elif args[3]=='xfce':
+            #print "iiiiis xfce!!"
+            ## TO MODIFY
+            #self.installXFCEonClient(urllib.url2pathname(args[4]));
+            #command="apt-get install lliurex-cdd-xdesktop"
+            screen="570x570x24"
+            command=args[3]
+            #return 0
+            pass
+        else:
+            #Otherwise it's a "run_command" option, so, command is this.
+            command=args[3]
+
+        # Gettint Chroot
+
+
+        chroot=urllib.url2pathname(args[4])
+        print ("Executing "+command+" on "+chroot)
+
+        # Configure Server LTSP connection
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        my_ip_for_server=self.get_my_ip_for_server()
+        print (my_ip_for_server)
+
+
+        try:
+            print (str(connection_user)+" : "+chroot+" : "+command+" : "+my_ip_for_server+" : "+screen)
+            output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, screen)
+            #output=server.run_command_on_chroot(connection_user, "LtspChroot", chroot, command, my_ip_for_server, "", "")
+
+
+            ##### TO REVIEWWWWWWWWW
+            browser.execute_script("ShowApplyMessage()");
+            
+        except Exception as e:
+            print ("Exception in XServer...:"+str(e))
+            browser.execute_script("ShowApplyMessage()");
+            return None
+        return None
+
+                     
+
+    def deprecated_onExecuteInChroot(self, args):
         '''
         Executes some specific functions into chroot. After them, we shoud to regenerate img file.
         '''

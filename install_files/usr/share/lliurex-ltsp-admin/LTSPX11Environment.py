@@ -26,7 +26,6 @@ class LTSPX11Environment:
 		'''
 		Removes all instances running on display
 		'''
-		
 		display=str_display[1:]
 		# Check if Xephir is running on :display
 		fname='/tmp/.X'+display+'-lock'
@@ -39,7 +38,9 @@ class LTSPX11Environment:
 					os.kill(int(line.strip()), signal.SIGTERM)
 				else:
 					print("File does not exists")
+			print "111111111111- "+fname
 			os.remove(fname)
+			print "22222222- "
 			
 	#def RemoveXephyrProcess():
 	
@@ -51,10 +52,13 @@ class LTSPX11Environment:
 		import time
 		try:
 			# Check if Xephir is running on :display. If so, remove it
+			print "1111111111111111111111111"
 			self.RemoveXephyrProcess(self.display)
+			print "22222222222222222222222222"
 			# Display on display
 			print ("Display...")
 			pid=subprocess.Popen(["Xephyr","-ac","-screen",self.screen,self.display, "-dpi", "96", "-wr", "-title",title])
+			print "33333333333333333333333333"
 			#800x480x16 -dpi 96
 			# Waiting for process
 			while(pid.poll()==False):
