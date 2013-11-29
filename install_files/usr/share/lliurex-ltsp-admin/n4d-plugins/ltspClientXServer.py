@@ -26,6 +26,9 @@ class ltspClientXServer:
 	
 	display=":42"
 	screen="1024x768x16"
+	env_Xauthority=""
+	env_display="0:0"
+
 
 	def __init__(self):
 		'''
@@ -95,33 +98,48 @@ class ltspClientXServer:
 			return {'status': False, 'msg':'[LTSPX11Environment] '+str(e)}
 
 
-	def xenv_prepare_X11_applications_on_chroot(self, title, client_display, client_xauthority):
+	def xenv_set_environment(self, 	env_Xauthority, env_display):
+		# Set local environment for Xephyr
+		self.env_Xauthority=env_Xauthority
+		self.env_display=env_display
+		print ("Setting Xauthority to: "+self.env_Xauthority)
+		print ("Setting env_Display to: "+self.env_display)
+		pass
+
+	def xenv_prepare_X11_applications_on_chroot(self, title, screen):
 		'''
 		Prepare a X11 environment to run graphical apps remotely (not necessary in chroot)
 		'''
 		import time
 		try:
 
-			display=self.get_first_display_free();
-
+			display=self.get_first_display_free()
 			# Display on display (first free) with appropiate environment
-			print ("Display...:")
+			print ("Display...:"+display)
 			my_env=dict(os.environ)
-			my_env['DISPLAY'] = client_display
-			my_env['XAUTHORITY']=client_xauthority
 
-			pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", "400x300x24", "-wr", "-title",title], env=my_env)
+			# Take environment from local config
+			my_env['DISPLAY'] = self.env_display
+			my_env['XAUTHORITY']=self.env_Xauthority
+			
+			print("[ltspClientXServer::xenv_prepare_X11_applications_on_chroot] Setting environment: Display-"+my_env['DISPLAY']+" and Xauthority -"+my_env['XAUTHORITY'])
+
+			pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", screen, "-wr", "-title",title], env=my_env)
+			#pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", "400x300x24", "-wr", "-title",title])
+
+
+			print (str(pid))
 			
 			# Waiting for process
 			while(pid.poll()==False):
 				print "watiting for xephyr"
-				time.sleep(0.5);
+				#time.sleep(0.5);
 			
 			return [pid, display]
 			
 		except Exception as e:
 			print "Captured: "+str(e)
-			return {'status': False, 'msg':'[LTSPX11Environment] '+str(e)}
+			return {'status': False, 'MSG':'[LTSPX11Environment] '+str(e)}
 
 	#def xenv_prepare_X11_applications_on_chroot(self,chroot_dir)
 	
