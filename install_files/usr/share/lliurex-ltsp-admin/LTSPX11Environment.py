@@ -7,6 +7,8 @@ import string
 import time
 import subprocess
 import signal
+from xmlrpclib import *
+
 
 class LTSPX11Environment:
 	'''
@@ -25,7 +27,11 @@ class LTSPX11Environment:
 	def RemoveXephyrProcess(self, str_display):
 		'''
 		Removes all instances running on display
+		WRAPPER for xenv_RemoveXephyrProcess
 		'''
+		server = ServerProxy("https://localhost:9779")
+		server.xenv_RemoveXephyrProcess("", "ltspClientXServer", str_display)
+        '''
 		display=str_display[1:]
 		# Check if Xephir is running on :display
 		fname='/tmp/.X'+display+'-lock'
@@ -38,10 +44,10 @@ class LTSPX11Environment:
 					os.kill(int(line.strip()), signal.SIGTERM)
 				else:
 					print("File does not exists")
-			print "111111111111- "+fname
+			print "111111111111KKKK- "+fname
 			os.remove(fname)
 			print "22222222- "
-			
+			'''
 	#def RemoveXephyrProcess():
 	
 	
