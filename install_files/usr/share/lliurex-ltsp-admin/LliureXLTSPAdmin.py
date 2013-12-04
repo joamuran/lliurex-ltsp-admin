@@ -932,8 +932,18 @@ class LliureXLTSPAdmin:
             self.onApplyChangesToImage(args)
         
 
-    
     def onApplyChangesToImage(self, args):
+        print "sssssss"
+        # Prepare an X11 environment for Console
+        localserver = ServerProxy("https://127.0.0.1:9779")
+        print "zzzzzzz"
+        proc=localserver.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "BuildingImage", "640x480x24")
+        print "rrrrrrrrrrr"
+        print proc
+        print "klllllll"
+
+
+    def onApplyChangesToImage_old(self, args):
 
         import threading
 
