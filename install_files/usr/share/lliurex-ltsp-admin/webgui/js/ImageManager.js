@@ -289,6 +289,12 @@ function DisplayConfirmWindow(title, message, btText, action, btclass) {
     
 }
 
+function DisableConfirmButton(){
+    $(".CofirmButton").css("background-color","#cccccc");
+    $(".CofirmButton").css("border-color","#ffffff");
+    $(".CofirmButton").css("mouseover","#ffffff");
+    $(".CofirmButton").attr('onclick','').unbind('click');
+}
 
 function PerformAction(action, Message) {
     /*

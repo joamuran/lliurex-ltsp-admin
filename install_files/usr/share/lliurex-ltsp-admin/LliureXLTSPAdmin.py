@@ -933,14 +933,45 @@ class LliureXLTSPAdmin:
         
 
     def onApplyChangesToImage(self, args):
-        print "sssssss"
-        # Prepare an X11 environment for Console
-        localserver = ServerProxy("https://127.0.0.1:9779")
-        print "zzzzzzz"
-        proc=localserver.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "BuildingImage", "640x480x24")
-        print "rrrrrrrrrrr"
-        print proc
-        print "klllllll"
+      
+        # Getting chroot
+        
+        imgchroot=str(urllib.unquote(args[4]))
+        print ("Image is: "+imgchroot)
+
+        if(len(args)>5):
+            ret_value=str(urllib.unquote(args[5]))
+            if (ret_value=='cancel'):
+                return False;
+
+        # server connection
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        
+        command="ltsp-update-image "+imgchroot
+        my_ip_for_server=self.get_my_ip_for_server()
+        
+        try:
+        
+            # First chech mounts and force umount if necessary
+            checked=server.force_umount_chroot(connection_user, "LtspChroot", imgchroot)
+
+            # Prepare an X11 environment for Console (n4d service from localhost)
+            XServer = ServerProxy("https://127.0.0.1:9779")
+            screen="1000x700x24"
+            proc=XServer.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "BuildingImage", screen)
+            
+            pid=str(proc[0]['pid'])
+            display=proc[1]
+                        
+            print "Xephyr PID: "+pid
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, pid)
+            print str(output)
+            
+        except Exception as e:
+                print ("[LTSPAdmin] Exception in onApplyChangesToImage: "+str(e))
+                browser.execute_script("alert('Exception in onApplyChangesToImage:"+str(e)+"')")
+        
 
 
     def onApplyChangesToImage_old(self, args):
@@ -1103,6 +1134,8 @@ class LliureXLTSPAdmin:
         '''
         import threading
 
+        browser.execute_script("DisableConfirmButton()");
+        
         print ("Create Image. Args:")
         print (args)
 
@@ -1119,27 +1152,37 @@ class LliureXLTSPAdmin:
         server = ServerProxy("https://"+self.srv_ip+":9779")
         connection_user = (self.username,self.password)
        
-        # Prepare X11 environment
-        display=":42" 
-        screen="1024x768x16"
+        # DEPRECATED: Prepare X11 environment
+        #display=":42" 
+        #screen="1024x768x16"
+
         command="lliurex-ltsp-create-client "+id
         my_ip_for_server=self.get_my_ip_for_server()
         print (my_ip_for_server)
         
         try:
-            # XServer es una connexio a les x locals, no una connexio n4d!!
-            XServer=LTSPX11Environment(display, screen)
+            # DEPRECATED: XServer es una connexio a les x locals, no una connexio n4d!!
+            ##XServer=LTSPX11Environment(display, screen)
+
+            # Prepare an X11 environment for Console (n4d service from localhost)
+            XServer = ServerProxy("https://127.0.0.1:9779")
+            screen="1000x700x24"
+            proc=XServer.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "CreateClient", screen)
             
-            # PRepare X11 Xephyr environment
-            Xepid=XServer.prepare_X11_applications_on_chroot("Create New Client")
-            print "Xephyr PID: "+str(Xepid.pid)
+            pid=str(proc[0]['pid'])
+            display=proc[1]
             
-            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, str(Xepid.pid))
+
+            # DEPRECATED_ PRepare X11 Xephyr environment
+            #Xepid=XServer.prepare_X11_applications_on_chroot("Create New Client")
+            #print "Xephyr PID: "+str(Xepid.pid)
+            
+            output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, pid)
             print str(output)
             
         except Exception as e:
-                print ("*********"+str(e))
-                browser.execute_script("alert('Exception "+str(e)+"')")
+                print ("[LliureXLTSPAdmin] Exception in onCreateNEwClient: "+str(e))
+                browser.execute_script("alert('Exception onCreateNEwClient: "+str(e)+"')")
             
 
         
@@ -1239,13 +1282,13 @@ class LliureXLTSPAdmin:
         
         import threading
 
+        browser.execute_script("DisableConfirmButton()");
+
         print ("Deleting Image. Args:")
         print (args)
 
         # Getting chroot
         id=args[3]
-        
-        # Getting chroot
         imgchroot=str(self.getChrootFromImageList(id))
         img_client=str(self.getImagenameFromImageList(id))
 
