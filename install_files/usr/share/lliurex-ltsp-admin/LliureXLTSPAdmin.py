@@ -662,9 +662,8 @@ class LliureXLTSPAdmin:
             print "****"+str(self.imagelist)+"*****"
     
             file = os.path.abspath('webgui/ImageManager.html')
-            
-            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip
-            
+            my_ip_for_server=self.get_my_ip_for_server()            
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;username='+self.username+'&amp;srv_ip='+self.password+'&amp;xserver_ip='+my_ip_for_server
             print (uri)
             browser.open_url(uri)
         except Exception as e:

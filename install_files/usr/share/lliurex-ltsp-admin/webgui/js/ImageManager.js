@@ -1,6 +1,8 @@
 var srv_ip="unknown"
 var status="available";
 var section="ImageManager"
+var username=""
+var userpass=""
 var ErrorMessage=new Array();
 
 
@@ -193,7 +195,53 @@ function DisplayImageWindow(){
                 break;
             case "adv":
                 console.log("You pressed on Advanced ");
-                location.href='ltsp://ImageAdvanced/'+imageid;
+                imagedata=getUrlVar('imageData');
+                clients=decodeURIComponent(imagedata);
+                squashfs_dir=""
+                image=$.parseJSON(clients);
+                for (i=0;i<image['images'].length;i++){
+                    if (image['images'][i]['id']==imageid){
+                        squashfs_dir=image['images'][i]['squashfs_dir'];
+                        continue;
+                    }
+                }
+
+                if (squashfs_dir[squashfs_dir.length-1]=="/")
+                    squashfs_dir=squashfs_dir.substring(0,squashfs_dir.length-1);
+
+
+                username=getUrlVar('username');
+                userpass=getUrlVar('userpass');
+
+
+                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', '/opt/ltsp/llx-client');
+
+
+                /*$.xmlrpc({
+                      url: 'https://'+srv_ip+':9779',
+                      methodName: 'run_command_on_chroot',
+                      params: [[username, userpass], "LtspChroot", squashfs_dir, '', srv_ip, ''],
+                      success: function(response,status,jqXHR){
+                         alert("DENTRO");
+                                /* /alert(response[0]['timeout']);
+                                $("#timeout").val(response[0]['timeout']);
+                                timeout=response[0]['timeout'];
+                                for (i in response[0]['images']) {
+                                    
+                                    option=response[0]['images'][i];
+                                    if (option==response[0]['default']) {
+                                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                                        
+                                        default_option=option;
+                                    } else $("#PXEBoot").append("<option value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                                } * /        
+                            },
+                    error: function(jqXHR, status, error) { alert("Status: "+status+"\nError: "+error);}
+                    });*/
+
+                //location.href='ltsp://ImageAdvanced/'+imageid;
+
+                //window.location.reload();
 
                 break;
             
@@ -404,12 +452,38 @@ $(document).ready(function() {
         } else MyAlert(gettext("LliureX LTSP is working, please, wait and don't close this window!"),gettext("LTSP is Working..."));
         
     })
-       
-   
 
     DisplayImageWindow();
 
 });
+
+
+function run_awesome_Desktop(srv_ip, username, userpass, chroot){
+        xserver_ip=getUrlVar('xserver_ip');
+
+            $.xmlrpc({
+                      url: 'https://'+srv_ip+':9779',
+                      methodName: 'run_command_on_chroot',
+                      params: [[username, userpass], "LtspChroot", chroot, '', xserver_ip, ''],
+                      success: function(response,status,jqXHR){
+                                /* /alert(response[0]['timeout']);
+                                $("#timeout").val(response[0]['timeout']);
+                                timeout=response[0]['timeout'];
+                                for (i in response[0]['images']) {
+                                    
+                                    option=response[0]['images'][i];
+                                    if (option==response[0]['default']) {
+                                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                                        
+                                        default_option=option;
+                                    } else $("#PXEBoot").append("<option value='"+option+"'>"+getCompleteLabel(option)+"</option>");
+                                } */       
+                            },
+                    error: function(jqXHR, status, error) { alert("Status: "+status+"\nError: "+error);}
+                    });
+
+}
+
 
 function setStatus(newstatus){
     status=newstatus;

@@ -124,7 +124,8 @@ class ltspClientXServer:
 			
 			print("[ltspClientXServer::xenv_prepare_X11_applications_on_chroot] Setting environment: Display-"+my_env['DISPLAY']+" and Xauthority -"+my_env['XAUTHORITY'])
 
-			pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", screen, "-wr", "-title",title], env=my_env)
+			pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", "900x675x24", "-wr", "-title",title], env=my_env)
+			#pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", screen, "-wr", "-title",title], env=my_env)
 			#pid=subprocess.Popen(["Xephyr","-ac",display, "-dpi", "96", "-screen", "400x300x24", "-wr", "-title",title])
 
 
