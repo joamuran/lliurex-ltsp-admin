@@ -35,7 +35,7 @@ function DisplayImageWindow(){
         if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
         
         
-        ItemList="<div class='ImageRow'> \
+        ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
@@ -69,7 +69,7 @@ function DisplayImageWindow(){
             exportButton="";
             if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
               
-            ItemList="<div class='ImageRow'> \
+            ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
@@ -100,7 +100,7 @@ function DisplayImageWindow(){
             exportButton="";
             if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
               
-            ItemList="<div class='ImageRow'> \
+            ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
@@ -127,7 +127,7 @@ function DisplayImageWindow(){
         exportButton="";
         if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
         
-        ItemList="<div class='ImageRow'> \
+        ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
@@ -214,7 +214,7 @@ function DisplayImageWindow(){
                 userpass=getUrlVar('userpass');
 
 
-                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', '/opt/ltsp/llx-client');
+                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', '/opt/ltsp/llx-client', imageid);
 
 
                 /*$.xmlrpc({
@@ -458,7 +458,9 @@ $(document).ready(function() {
 });
 
 
-function run_awesome_Desktop(srv_ip, username, userpass, chroot){
+function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
+        $("#hide_window").css("display","block");
+
         xserver_ip=getUrlVar('xserver_ip');
 
             $.xmlrpc({
@@ -466,18 +468,15 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot){
                       methodName: 'run_command_on_chroot',
                       params: [[username, userpass], "LtspChroot", chroot, '', xserver_ip, ''],
                       success: function(response,status,jqXHR){
-                                /* /alert(response[0]['timeout']);
-                                $("#timeout").val(response[0]['timeout']);
-                                timeout=response[0]['timeout'];
-                                for (i in response[0]['images']) {
-                                    
-                                    option=response[0]['images'][i];
-                                    if (option==response[0]['default']) {
-                                        $("#PXEBoot").append("<option selected='selected' value='"+option+"'>"+getCompleteLabel(option)+"</option>");
-                                        
-                                        default_option=option;
-                                    } else $("#PXEBoot").append("<option value='"+option+"'>"+getCompleteLabel(option)+"</option>");
-                                } */       
+                                //$("#hide_window").css("display","block");
+                                 var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
+                                if(conf == true){
+                                    alert("let's go!");
+                                }
+                                window.location.reload();
+                                backid='"#'+id+'"'
+                                $(backid).css("background", "#ff0000");
+                                alert("12");
                             },
                     error: function(jqXHR, status, error) { alert("Status: "+status+"\nError: "+error);}
                     });
