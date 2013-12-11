@@ -32,10 +32,23 @@ function DisplayImageWindow(){
         
         
         exportButton="";
+
         if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+
         
+        background_updateable=""
+        if (imageData.images[i].img_needs_update=="False"){
+            refresh_chroot_bt="<div><div class='Button Update' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
+            </div>";}
+        else{
+            refresh_chroot_bt="<div><div class='Button Update Updateable' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
+            <div class='ButtonCross' onclick=unmark_updateable('"+imageData.images[i].squashfs_dir+"')><img src='styles/images/deletewhite.png' /></div>\
+            </div>";
+            background_updateable="background_updateable"
+        }
         
-        ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
+  
+        ItemList="<div class='ImageRow "+background_updateable+"' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"<span class='llx-version'>"+imageData.images[i].lliurex_version+"</span></div>\
@@ -46,6 +59,7 @@ function DisplayImageWindow(){
                         <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                         "+exportButton+"\
+                        "+refresh_chroot_bt+"\
                     </div>\
                 </div>\
                 <div class='ImageStatus'> "+UpdatedImage+"\
@@ -193,6 +207,10 @@ function DisplayImageWindow(){
                 DisplayConfirmWindow(title, description, btText, action, command)
                 //location.href='ltsp://UpdateImageClient/'+imageid;
                 break;
+
+            case "refresh":
+                console.log("You pressed on refresh ");
+                alert("Refreshing "+imageid);
             case "adv":
                 console.log("You pressed on Advanced ");
                 imagedata=getUrlVar('imageData');
@@ -539,3 +557,7 @@ function showfile(file,percent) {
     $("#progress").css("display","block");*/
  }
  
+ function unmark_updateable(id){
+    action='ltsp://unmark_updateable/'+encodeURIComponent(id);
+    location.href=action;
+ }

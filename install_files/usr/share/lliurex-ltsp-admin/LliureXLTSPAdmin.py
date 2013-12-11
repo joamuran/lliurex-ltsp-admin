@@ -65,6 +65,10 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "Export")] = 'onExport';
     binding[("ltsp", "ImportFile")] = 'onImport';
     binding[("ltsp", "refreshPXEMenu")] = 'onrefreshPXEMenu';
+    binding[("ltsp", "unmark_updateable")] = 'onUnmark_Updateable';
+    binding[("ltsp", "mark_updateable")] = 'onMark_Updateable';
+
+    
     
 
     def __init__(self, check_mirror):
@@ -162,6 +166,23 @@ class LliureXLTSPAdmin:
         except Exception as e:
             print ("Exception reading log. Message: "+str(e))
             return False
+
+
+    def onUnmark_Updateable(self, args):
+        
+        print "*"+args[3]+"*"
+        
+        '''server = ServerProxy("https://"+self.srv_ip+":9779")
+            connection_user = (self.username,self.password)
+            output=server.unmark_chroot_as_updateable(connection_user,"LtspChroot", destfile.rstrip(), args[3])
+        -c  -m  -a /opt/ltsp/llx-client/'''
+        self.onImageManager(args)
+        pass
+
+
+    def onMark_Updateable(self, args):
+        pass
+
 
     def onExport(self, args):
         import tarfile

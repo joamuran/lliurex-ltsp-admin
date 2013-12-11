@@ -92,19 +92,41 @@ body
 .Button{
     float: left; width: auto;
     height: 25px;
-    margin: 10px; background-color: #4dafff;color: #ffffff;
+    margin: 10px 3px 10px 3px; background-color: #4dafff;color: #ffffff;
     border: solid thin #2f92f5; border-radius: 2px;font-size: 1.2em;
     font-family: ubuntu;
     padding: 5px 10px 0px 35px;}
 .ButtonSel{ /* Grey Button */
     float: left; width: auto;
     height: 25px;
-    margin: 10px; background-color: #b9b9b9 !important;color: #ffffff;
+    margin: 10px 3px 10px 3px; background-color: #b9b9b9 !important;color: #ffffff;
     border: solid thin #9b9b9b !important; border-radius: 2px;font-size: 1.2em;
     font-family: ubuntu;
     padding: 5px 10px 0px 35px;}
     
 .ButtonSel:hover{cursor:arrow; background-color: #b9b9b9 !important;}
+
+.ButtonCross{
+    float: left; width: auto;
+    height: 25px;
+    position: relative;
+    left: -5px;
+    margin: 10px 0px 10px 0px; background-color: #F59F1D;color: #ffffff;
+    border: solid thin #E18113; border-radius: 0px 2px 2px 0px;font-size: 1.2em;
+    font-family: ubuntu;
+    padding: 5px 5px 0px 5px;}
+
+.ButtonCross:hover{
+    cursor:arrow;
+    background-color: #E18113 !important;
+}
+
+.background_updateable{
+    background: #ffc86c;
+}
+.background_updateable:hover{
+    background: #ffc532;
+}
 
 /*.Install{background-image: url('images/installwhite.png');  background-repeat: no-repeat;background-position: left center;}
 .Update{background-color: #9ee118; border-color: #7dbb02;background-image: url('images/updatewhite.png'); background-repeat: no-repeat;background-position: left center;}
