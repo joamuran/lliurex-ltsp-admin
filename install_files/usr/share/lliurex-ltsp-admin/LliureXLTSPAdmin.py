@@ -169,18 +169,20 @@ class LliureXLTSPAdmin:
 
 
     def onUnmark_Updateable(self, args):
-        
-        print "*"+args[3]+"*"
-        
-        '''server = ServerProxy("https://"+self.srv_ip+":9779")
-            connection_user = (self.username,self.password)
-            output=server.unmark_chroot_as_updateable(connection_user,"LtspChroot", destfile.rstrip(), args[3])
-        -c  -m  -a /opt/ltsp/llx-client/'''
+        chroot= urllib.unquote(args[3])
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        output=server.unmark_chroot_as_updateable(connection_user,"LtspChroot", chroot)
         self.onImageManager(args)
         pass
 
 
     def onMark_Updateable(self, args):
+        chroot= urllib.unquote(args[3])
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        output=server.mark_chroot_as_updateable(connection_user,"LtspChroot", chroot)
+        self.onImageManager(args)
         pass
 
 

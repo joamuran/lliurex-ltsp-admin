@@ -21,28 +21,29 @@ function DisplayImageWindow(){
                         
         if (((today-img_date)/86400000)>30) {
             UpdatedImage="<div style='width:100%;clear:both; float:left'><img src='images/check_old.png' /></div>\
-                 <div style='width:100%;clear:both; float:left; color: #ff3333'>Actualitzat el "+parseData(img_date)+"</div>";
+                 <div style='width:100%;clear:both; float:left; color: #ff3333'>"+gettext("Updated on ")+parseData(img_date)+"</div>";
             Updateable="Updateable"
         } else
             {
                 UpdatedImage="<div style='width:100%;clear:both; float:left'><img src='images/check.png' /></div>\
-                 <div style='width:100%;clear:both; float:left'>Actualitzat el "+parseData(img_date)+"</div>";
+                 <div style='width:100%;clear:both; float:left'>"+gettext("Updated on ")+parseData(img_date)+"</div>";
                 Updateable=""
             }
         
         
         exportButton="";
 
-        if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+        if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' title='"+gettext("Export Image to a portable file")+"' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
 
         
+
         background_updateable=""
         if (imageData.images[i].img_needs_update=="False"){
-            refresh_chroot_bt="<div><div class='Button Update' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
+            refresh_chroot_bt="<div><div class='Button Update' title='"+gettext("Rebuild NBD image")+"' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
             </div>";}
         else{
-            refresh_chroot_bt="<div><div class='Button Update Updateable' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
-            <div class='ButtonCross' onclick=unmark_updateable('"+imageData.images[i].squashfs_dir+"')><img src='styles/images/deletewhite.png' /></div>\
+            refresh_chroot_bt="<div title='"+gettext("Client Image maybe needs to be regenerated")+"'><div class='Button Update Updateable' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
+            <div class='ButtonCross' title='"+gettext("Press to unmark")+"' onclick=unmark_updateable('"+imageData.images[i].squashfs_dir+"')><img src='styles/images/deletewhite.png' /></div>\
             </div>";
             background_updateable="background_updateable"
         }
@@ -56,8 +57,8 @@ function DisplayImageWindow(){
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
-                        <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
-                        <div class='Button DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button Adv'  title='"+gettext("Install, update or modify thin client system")+"' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='Button DeleteSel' title='"+gettext("Complete removal of thin client image")+"' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                         "+exportButton+"\
                         "+refresh_chroot_bt+"\
                     </div>\
@@ -73,7 +74,7 @@ function DisplayImageWindow(){
         if (imageData.images[i].errortype=="ERROR") {        
             errorDescription='Error';
             ErrorLine="<div onclick='MyAlert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"],errorDescription)' class='imgerror'><img src='images/error.png' /></div>\
-            <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
+            <div style='width:100%;clear:both; float:left; color: #ff3333'>"+gettext("Error. Click for details.")+"</div>";
 
               /*ErrorLine="<div onclick='alert(ErrorMessage[imageData.images["+i+"].errorcode+"+i+"])' class='imgerror'><img src='images/error.png' /></div>\
                  <div style='width:100%;clear:both; float:left; color: #ff3333'>Error. Click for details.</div>";
@@ -82,7 +83,12 @@ function DisplayImageWindow(){
               
             exportButton="";
             if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
-              
+
+            // Button for rebuils image
+            refresh_chroot_bt="<div><div class='ButtonSel Update' id='refresh:"+
+                        imageData.images[i].id+"'>"+gettext("Rebuild")+"</div></div>";
+
+
             ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
@@ -92,8 +98,9 @@ function DisplayImageWindow(){
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
-                        <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button DeleteSel Updateable' title='"+gettext("Complete removal of thin client image.")+"' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                         "+exportButton+"\
+                        "+refresh_chroot_bt+"\
                         <!--div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
@@ -112,9 +119,17 @@ function DisplayImageWindow(){
               */
 
             exportButton="";
-            if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+            if (srv_ip=='127.0.0.1') exportButton="<div class='Button Export' title='"+gettext("Export thin client image to a file")+"' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
+
+            
+            // Button for rebuils image
+            refresh_chroot_bt="<div><div class='Button Update Updateable' title='"+gettext("Rebuild thin client image")+"' id='refresh:"+
+                        imageData.images[i].id+"'>"+gettext("Rebuild")+"</div></div>";
+        
+            background_updateable="background_updateable"
+       
               
-            ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
+            ItemList="<div class='ImageRow "+background_updateable+"' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
@@ -122,10 +137,11 @@ function DisplayImageWindow(){
                     <div class='ButtonList'> \
                         <div class='ButtonSel Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
                         <!--div class='Button Update "+Updateable+"' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
-                        <div class='Button Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
-                        <div class='Button DeleteSel Updateable' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
+                        <div class='Button Adv' title='"+gettext("Install, update or modify thin client system")+"' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
+                        <div class='Button DeleteSel Updateable' title='"+gettext("Complete removal of thin client image")+"' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                         "+exportButton+"\
-                        <!--div class='Button Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
+                        "+refresh_chroot_bt+"\
+                        <!--div class='Button Export' title='"+gettext("Export thin client image to a file")+"' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
                 <div class='ImageStatus'>"+ErrorLine+" \
@@ -141,17 +157,23 @@ function DisplayImageWindow(){
         exportButton="";
         if (srv_ip=='127.0.0.1') exportButton="<div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div>";
         
+        // Button for rebuils image
+            refresh_chroot_bt="<div><div class='ButtonSel Update' id='refresh:"+
+                        imageData.images[i].id+"'>"+gettext("Rebuild")+"</div></div>";
+
+
         ItemList="<div class='ImageRow' id='"+imageData.images[i].id+"'> \
                 <div class='ImageImage'><img src='images/"+imageData.images[i].img+"' /></div> \
                 <div class='ImageDetail'> \
                     <div class='ImageName'>"+imageData.images[i].name+"</div>\
                     <div class='ImageDesc' onclick=showDescription("+i+")>"+imageData.images[i].desc.substring(0, 80)+"...</div>\
                     <div class='ButtonList'> \
-                        <div class='Button Install' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
+                        <div class='Button Install' title='"+gettext("Create a new thin client environment based on ")+getDescForId(imageData.images[i].id)+"' id='install:"+imageData.images[i].id+"'>"+gettext("Install")+"</div>\
                         <!--div class='ButtonSel Update' id='update:"+imageData.images[i].id+"'>"+gettext("Update")+"</div-->\
                         <div class='ButtonSel Adv' id='adv:"+imageData.images[i].id+"'>"+gettext("Advanced")+"</div>\
                         <div class='ButtonSel DeleteSel' id='delete:"+imageData.images[i].id+"'>"+gettext("Delete")+"</div>\
                         "+exportButton+"\
+                        "+refresh_chroot_bt+"\
                         <!--div class='ButtonSel Export' id='export:"+imageData.images[i].id+"'>"+gettext("Export")+"</div-->\
                     </div>\
                 </div>\
@@ -232,7 +254,7 @@ function DisplayImageWindow(){
                 userpass=getUrlVar('userpass');
 
 
-                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', '/opt/ltsp/llx-client', imageid);
+                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', squashfs_dir, imageid);
 
 
                 /*$.xmlrpc({
@@ -489,12 +511,18 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                                 //$("#hide_window").css("display","block");
                                  var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
                                 if(conf == true){
-                                    alert("let's go!");
+                                   // action='ltsp://mark_updateable/'+encodeURIComponent(id);
+                                   // location.href=action;
+                                   alert("to refresh image");
                                 }
+
                                 window.location.reload();
-                                backid='"#'+id+'"'
-                                $(backid).css("background", "#ff0000");
-                                alert("12");
+                                action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
+                                location.href=action;
+
+                                //backid='"#'+id+'"'
+                                //$(backid).css("background", "#ff0000");
+                                //alert("12");
                             },
                     error: function(jqXHR, status, error) { alert("Status: "+status+"\nError: "+error);}
                     });
