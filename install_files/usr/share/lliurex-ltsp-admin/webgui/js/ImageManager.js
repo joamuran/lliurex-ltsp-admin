@@ -43,7 +43,7 @@ function DisplayImageWindow(){
             </div>";}
         else{
             refresh_chroot_bt="<div title='"+gettext("Client Image maybe needs to be regenerated")+"'><div class='Button Update Updateable' id='refresh:"+imageData.images[i].id+"'>"+gettext("Rebuild")+"</div> \
-            <div class='ButtonCross' title='"+gettext("Press to unmark")+"' onclick=unmark_updateable('"+imageData.images[i].squashfs_dir+"')><img src='styles/images/deletewhite.png' /></div>\
+            <div class='ButtonCross' title='"+gettext("Press to unmark")+"' onclick=unmark_updateable('"+imageData.images[i].squashfs_dir+"')><img src='styles/images/unmark.png' /></div>\
             </div>";
             background_updateable="background_updateable"
         }
@@ -509,16 +509,26 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                       params: [[username, userpass], "LtspChroot", chroot, '', xserver_ip, ''],
                       success: function(response,status,jqXHR){
                                 //$("#hide_window").css("display","block");
-                                 var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
-                                if(conf == true){
-                                   // action='ltsp://mark_updateable/'+encodeURIComponent(id);
-                                   // location.href=action;
-                                   alert("to refresh image");
-                                }
 
+                                    if (response=='false') {
+                                        warning(gettext("Thin Client Environments needs a critical update. We are going to install new features. \nAfter that, you will be able to enjoy new awesome features."));
+                                        // TODO !!!!
+
+                                    }
+                                    else {
+                                        var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
+                                        if(conf == true){
+                                            // action='ltsp://mark_updateable/'+encodeURIComponent(id);
+                                            // location.href=action;
+                                            alert("to refresh image----------");
+                                            // TODO !!!!
+
+                                        }
+                                }
                                 window.location.reload();
                                 action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
                                 location.href=action;
+                            
 
                                 //backid='"#'+id+'"'
                                 //$(backid).css("background", "#ff0000");
