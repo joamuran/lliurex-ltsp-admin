@@ -67,6 +67,7 @@ class LliureXLTSPAdmin:
     binding[("ltsp", "refreshPXEMenu")] = 'onrefreshPXEMenu';
     binding[("ltsp", "unmark_updateable")] = 'onUnmark_Updateable';
     binding[("ltsp", "mark_updateable")] = 'onMark_Updateable';
+    binding[("ltsp", "install_awesome")] = 'onInstall_awesome';
 
     
     
@@ -184,6 +185,16 @@ class LliureXLTSPAdmin:
         output=server.mark_chroot_as_updateable(connection_user,"LtspChroot", chroot)
         self.onImageManager(args)
         pass
+
+    def onInstall_awesome(self,args):
+        chroot= urllib.unquote(args[3])
+        server = ServerProxy("https://"+self.srv_ip+":9779")
+        connection_user = (self.username,self.password)
+        output=server.update_awesome_environment(connection_user,"LtspChroot", chroot,self.srv_ip, ":2")
+        selection=subprocess.call(["zenity","--info", "--title='Installation new awesome features'", "--text", str(output)])
+        self.onImageManager(args)
+        pass
+
 
 
     def onExport(self, args):

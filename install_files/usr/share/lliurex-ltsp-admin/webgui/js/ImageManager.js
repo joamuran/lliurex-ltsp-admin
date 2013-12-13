@@ -511,11 +511,15 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                                 //$("#hide_window").css("display","block");
 
                                     if (response=='false') {
-                                        warning(gettext("Thin Client Environments needs a critical update. We are going to install new features. \nAfter that, you will be able to enjoy new awesome features."));
-                                        // TODO !!!!
+                                        alert(gettext("Thin Client Environments needs a critical update. We are going to install new features. \nAfter that, you will be able to enjoy new awesome features."));
+                                        action='ltsp://install_awesome/'+encodeURIComponent(chroot+"/");
+                                        alert(action)
+                                        location.href=action;
+
 
                                     }
                                     else {
+                                        alert(response)
                                         var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
                                         if(conf == true){
                                             // action='ltsp://mark_updateable/'+encodeURIComponent(id);
@@ -524,10 +528,11 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                                             // TODO !!!!
 
                                         }
+                                    window.location.reload();
+                                    action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
+                                    location.href=action;
                                 }
-                                window.location.reload();
-                                action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
-                                location.href=action;
+                                
                             
 
                                 //backid='"#'+id+'"'
