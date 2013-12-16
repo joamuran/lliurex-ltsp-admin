@@ -232,7 +232,24 @@ function DisplayImageWindow(){
 
             case "refresh":
                 console.log("You pressed on refresh ");
-                alert("Refreshing "+imageid);
+                imagedata=getUrlVar('imageData');
+                clients=decodeURIComponent(imagedata);
+                squashfs_dir=""
+                image=$.parseJSON(clients);
+                for (i=0;i<image['images'].length;i++){
+                    if (image['images'][i]['id']==imageid){
+                        squashfs_dir=image['images'][i]['squashfs_dir'];
+                        continue;
+                    }
+                }
+
+                if (squashfs_dir[squashfs_dir.length-1]=="/")
+                    squashfs_dir=squashfs_dir.substring(0,squashfs_dir.length-1);
+
+                newlocation='ltsp://ApplyChangesToImageWithCheck/apply/'+encodeURIComponent(squashfs_dir);
+                location.href=newlocation;
+                break;
+
             case "adv":
                 console.log("You pressed on Advanced ");
                 imagedata=getUrlVar('imageData');
@@ -253,8 +270,7 @@ function DisplayImageWindow(){
                 username=getUrlVar('username');
                 userpass=getUrlVar('userpass');
 
-
-                run_awesome_Desktop(srv_ip, 'joamuran', 'lliurex', squashfs_dir, imageid);
+                run_awesome_Desktop(srv_ip, username, userpass, squashfs_dir, imageid);
 
 
                 /*$.xmlrpc({
@@ -513,28 +529,27 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                                     if (response=='false') {
                                         alert(gettext("Thin Client Environments needs a critical update. We are going to install new features. \nAfter that, you will be able to enjoy new awesome features."));
                                         action='ltsp://install_awesome/'+encodeURIComponent(chroot+"/");
-                                        alert(action)
+                                        //alert(action)
                                         location.href=action;
-
-
                                     }
                                     else {
-                                        alert(response)
+                                        //alert(response)
                                         var conf = confirm(gettext("You have to regenerate the thin client image to apply changes. Apply now?"));
                                         if(conf == true){
                                             // action='ltsp://mark_updateable/'+encodeURIComponent(id);
                                             // location.href=action;
-                                            alert("to refresh image----------");
-                                            // TODO !!!!
 
-                                        }
-                                    window.location.reload();
-                                    action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
-                                    location.href=action;
+                                            newlocation='ltsp://ApplyChangesToImageWithCheck/apply/'+encodeURIComponent(chroot);
+                                            alert(newlocation)
+                                            location.href=newlocation;
+                                            
+                                        } else{
+                                            window.location.reload();
+                                            action='ltsp://mark_updateable/'+encodeURIComponent(chroot+"/");
+                                            location.href=action;
+                                            }
                                 }
                                 
-                            
-
                                 //backid='"#'+id+'"'
                                 //$(backid).css("background", "#ff0000");
                                 //alert("12");

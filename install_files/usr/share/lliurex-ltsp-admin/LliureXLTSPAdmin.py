@@ -188,10 +188,34 @@ class LliureXLTSPAdmin:
 
     def onInstall_awesome(self,args):
         chroot= urllib.unquote(args[3])
+
+        # Prepare an X11 environment for Console (n4d service from localhost)
+        #XServer = ServerProxy("https://127.0.0.1:9779")
+        #screen="1000x700x24"
+        #proc=XServer.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "Updating...", screen)
+        #pid=str(proc[0]['pid'])
+        #display=proc[1]
+
+        display=":424"
+        screen=" 900x650x24"
+            
+        XServer=LTSPX11Environment(display, screen)
+        Xepid=XServer.prepare_X11_applications_on_chroot("Updating")
+                
+
         server = ServerProxy("https://"+self.srv_ip+":9779")
         connection_user = (self.username,self.password)
-        output=server.update_awesome_environment(connection_user,"LtspChroot", chroot,self.srv_ip, ":2")
-        selection=subprocess.call(["zenity","--info", "--title='Installation new awesome features'", "--text", str(output)])
+        output=server.update_awesome_environment(connection_user,"LtspChroot", chroot,self.srv_ip, display)
+        if (output['status']==False):
+            selection=subprocess.call(["zenity","--error", "--title='Installation new features'", "--text", str(output['msg'])])
+
+
+        
+        os.kill(Xepid.pid,signal.SIGTERM)
+        print (output["status"])
+
+
+
         self.onImageManager(args)
         pass
 
@@ -697,7 +721,8 @@ class LliureXLTSPAdmin:
     
             file = os.path.abspath('webgui/ImageManager.html')
             my_ip_for_server=self.get_my_ip_for_server()            
-            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;username='+self.username+'&amp;srv_ip='+self.password+'&amp;xserver_ip='+my_ip_for_server
+            #uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;username='+self.username+'&amp;srv_ip='+self.password+'&amp;xserver_ip='+my_ip_for_server
+            uri = 'file://' + urllib.pathname2url(file)+'?imageData='+json.dumps(json_obj)+'&amp;mirror_installed='+self.mirror_installed+'&amp;srv_ip='+self.srv_ip+'&amp;username='+self.username+'&amp;srv_ip='+self.srv_ip+'&amp;userpass='+self.password+'&amp;xserver_ip='+my_ip_for_server
             print (uri)
             browser.open_url(uri)
         except Exception as e:
@@ -991,7 +1016,7 @@ class LliureXLTSPAdmin:
 
             # Prepare an X11 environment for Console (n4d service from localhost)
             XServer = ServerProxy("https://127.0.0.1:9779")
-            screen="1000x700x24"
+            screen="900x650x24"
             proc=XServer.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "BuildingImage", screen)
             
             pid=str(proc[0]['pid'])
