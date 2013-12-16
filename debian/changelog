@@ -1,3 +1,10 @@
+lliurex-ltsp-admin (1.0) precise; urgency=high
+
+  * Release 1.0
+  * Enhaced methods to image creation and update
+
+ -- Jose A. Murcia <joamuran@gmail.com>  Mon, 16 Dec 2013 13:57:24 +0100
+
 lliurex-ltsp-admin (0.27.1) precise; urgency=low
 
   * Moved plugin n4d to app folder and made link in n4d plugins folder.

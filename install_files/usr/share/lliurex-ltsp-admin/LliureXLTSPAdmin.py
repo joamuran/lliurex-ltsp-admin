@@ -31,7 +31,7 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='0.2.13' # Version required of n4d plugins in server
+    require_version_plugins='1.0' # Version required of n4d plugins in server
     check_mirror='true'
     
     # Temp data that we will extract from n4d-ltsp
@@ -676,13 +676,9 @@ class LliureXLTSPAdmin:
                 image_error_list = server.check_PXE_menu("","LtspChroot");
                 print str(image_error_list)
                 self.connection_user = (self.username,self.password)
-                print "111111111"
                 server = ServerProxy("https://"+ltspadmin.srv_ip+":9779")
-                print "22222222"
                 server.clean_tftpboot(self.connection_user, "LtspChroot" ,str(image_error_list));
-                print "333333333"
                 selection=subprocess.call(["zenity","--info", "--title='PXE Menu Reneneration'", "--text", "Done"])
-                print "444444444"
                 return True        
             except Exception as e:
                 print "ERRORRRRRRRRR!!!!!!!"+str(e)
@@ -1025,6 +1021,7 @@ class LliureXLTSPAdmin:
             print "Xephyr PID: "+pid
             output=server.run_Image_Command(connection_user, "LtspImage", command, my_ip_for_server, display, pid)
             print str(output)
+            self.onImageManager(args)
             
         except Exception as e:
                 print ("[LTSPAdmin] Exception in onApplyChangesToImage: "+str(e))
