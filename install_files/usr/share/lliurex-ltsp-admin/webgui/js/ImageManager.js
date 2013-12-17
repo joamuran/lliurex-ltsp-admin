@@ -540,7 +540,7 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
                                             // location.href=action;
 
                                             newlocation='ltsp://ApplyChangesToImageWithCheck/apply/'+encodeURIComponent(chroot);
-                                            alert(newlocation)
+                                            //alert(newlocation)
                                             location.href=newlocation;
                                             
                                         } else{

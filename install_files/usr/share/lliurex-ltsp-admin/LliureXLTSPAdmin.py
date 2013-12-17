@@ -207,7 +207,7 @@ class LliureXLTSPAdmin:
         connection_user = (self.username,self.password)
         output=server.update_awesome_environment(connection_user,"LtspChroot", chroot,self.srv_ip, display)
         if (output['status']==False):
-            selection=subprocess.call(["zenity","--error", "--title='Installation new features'", "--text", str(output['msg'])])
+            selection=subprocess.call(["zenity","--error", "--title='Installation new features'", "--text", "Install Error. Code: "+str(output['msg'])])
 
 
         
