@@ -222,28 +222,38 @@ class LliureXLTSPAdmin:
 
 
     def onExport(self, args):
-        import tarfile
-        title="Exporting /opt/ltsp/llx-"+args[3]
+        imgchroot="/opt/ltsp/llx-"+args[3]
+        title="Exporting "+imgchroot
         print title
         
         try:
             destfile=subprocess.check_output(["zenity","--file-selection", "--save","--title='Select where to save the image...'"])
-                        
-            
-            
-            
-            display=":42"
-            screen="600x450x16"
-            
-            XServer=LTSPX11Environment(display, screen)
-            Xepid=XServer.prepare_X11_applications_on_chroot(title)
                        
+            
             server = ServerProxy("https://"+self.srv_ip+":9779")
             connection_user = (self.username,self.password)
+
+            # First chech mounts and force umount if necessary
+            checked=server.force_umount_chroot(connection_user, "LtspChroot", imgchroot)
+
+            '''
+            # Prepare an X11 environment for Console (n4d service from localhost)
+            XServer = ServerProxy("https://127.0.0.1:9779")
+            screen="900x650x24"
+            proc=XServer.xenv_prepare_X11_applications_on_chroot("", "ltspClientXServer", "BuildingImage", screen)
+                        
+            pid=str(proc[0]['pid'])
+            display=proc[1]
+                        
+            print "Xephyr PID: "+pid
+            
+            '''
+
             output=server.export_ltsp_tgz(connection_user,"LtspChroot", destfile.rstrip(), args[3])
             # Remove Xephyr
-            os.kill(Xepid.pid,signal.SIGTERM)
+            #os.kill(pid,signal.SIGTERM)
             print (output["status"])
+            
                     
             browser.execute_script('$("#MessageArea").css("display", "none");')
             pass
@@ -310,18 +320,18 @@ class LliureXLTSPAdmin:
             except Exception:
                 print "CANCELLED, or exception: "+Exception
                 return False
-            
+            '''
             display=":42"
             screen="600x450x16"
             
             XServer=LTSPX11Environment(display, screen)      
             Xepid=XServer.prepare_X11_applications_on_chroot("Importing image")
-                       
+            '''        
             server = ServerProxy("https://"+self.srv_ip+":9779")
             connection_user = (self.username,self.password)
             output=server.import_ltsp_tgz(connection_user,"LtspChroot", file.rstrip(), ruta[2])
             # Remove Xephyr
-            os.kill(Xepid.pid,signal.SIGTERM)
+            #os.kill(Xepid.pid,signal.SIGTERM)
             print (output["status"])
                     
             browser.execute_script('$("#MessageArea").css("display", "none");')
