@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (1.0.3) precise; urgency=low
+
+  * Fixed export and import bugs.
+
+ -- Jose A. Murcia <joamuran@gmail.com>  Wed, 18 Dec 2013 09:04:26 +0100
+
 lliurex-ltsp-admin (1.0.1) precise; urgency=high
 
   * Fixed alerts

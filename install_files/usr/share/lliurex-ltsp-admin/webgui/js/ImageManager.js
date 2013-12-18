@@ -518,7 +518,7 @@ function run_awesome_Desktop(srv_ip, username, userpass, chroot, id){
         $("#hide_window").css("display","block");
 
         xserver_ip=getUrlVar('xserver_ip');
-
+            //alert("Connecting with https://"+srv_ip+":9779, amb xserver_ip="+xserver_ip);
             $.xmlrpc({
                       url: 'https://'+srv_ip+':9779',
                       methodName: 'run_command_on_chroot',
