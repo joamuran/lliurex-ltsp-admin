@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (1.0.4) precise; urgency=high
+
+  * Send xauthority and display to n4d method that displays export and import progress.
+
+ -- Jose A. Murcia <joamuran@gmail.com>  Thu, 09 Jan 2014 12:34:26 +0100
+
 lliurex-ltsp-admin (1.0.3) precise; urgency=low
 
   * Fixed export and import bugs.
