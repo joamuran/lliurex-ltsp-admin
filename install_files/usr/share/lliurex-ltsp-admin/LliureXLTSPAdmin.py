@@ -31,8 +31,9 @@ class LliureXLTSPAdmin:
     date=None
     language=locale.getdefaultlocale()[0] # Gettins system language
     imagelist=None; # List of images installed, chroots, etc
-    require_version_plugins='1.0.5' # Version required of n4d plugins in server
+    require_version_plugins='1.0.7' # Version required of n4d plugins in server
     check_mirror='true'
+    selected_ip_for_server=""
     
     # Temp data that we will extract from n4d-ltsp
     jsonclients=''
@@ -838,7 +839,9 @@ class LliureXLTSPAdmin:
         default_session=args[5]
         timeout=args[6]
         default_boot=args[7]
-        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients, default_type, default_session)
+        use_swap=args[8]
+        nbd_swap_size=args[9]
+        self.server.set_ltsp_conf(connection_user,'LtspClientConfig',self.jsonclients, default_type, default_session, use_swap, nbd_swap_size)
         
         print "[LliureXLTSPAdmin] Modifying PXE Boot with timeout="+timeout+" and default boot="+default_boot
         
@@ -1669,16 +1672,23 @@ class LliureXLTSPAdmin:
         # If we are in the server, return localhost
         if self.srv_ip=='127.0.0.1':
             return '127.0.0.1'
+        
+        if self.selected_ip_for_server!="":
+            return self.selected_ip_for_server;
 
         # Else, let's check the ip address in the same network that server
         for interface in lliurex.net.get_devices_info():
-            ip=interface['ip']
-            mask=interface['netmask']
-            ipnet=lliurex.net.get_network_ip(ip, mask)
-            ipsrvnet=lliurex.net.get_network_ip(str(self.srv_ip), mask)
-            if ipnet==ipsrvnet:
-                return ip
-        
+            try:
+                ip=interface['ip']
+                mask=interface['netmask']
+                ipnet=lliurex.net.get_network_ip(ip, mask)
+                ipsrvnet=lliurex.net.get_network_ip(str(self.srv_ip), mask)
+                if ipnet==ipsrvnet:
+                    return ip
+            except Exception as e:
+                print "[LTSP get_my_ip_for_server] error:"+str(e)
+                
+                
         # If arrives here (server is not in our network), let's check local interfaces to other networks and user will select it
         output = subprocess.check_output(["ip","addr"])
         num_ips=0
@@ -1699,8 +1709,10 @@ class LliureXLTSPAdmin:
                 resp=subprocess.check_output(command)
                 print ("RETURN "+resp)
                 if (resp):
+                    self.selected_ip_for_server=resp.strip()
                     return resp.strip()
                 else:
+                    self.selected_ip_for_server=resp.strip()
                     return '127.0.0.1'
             except:
                 print "Exception"

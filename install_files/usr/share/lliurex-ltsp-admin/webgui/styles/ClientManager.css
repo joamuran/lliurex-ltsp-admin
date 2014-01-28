@@ -9,7 +9,9 @@
     /*border: solid thin #333333;*/
     width: 725px;
     margin-left: 25px;
-    height: 160px;
+    padding: 10px;
+    display: inline-block;
+    /*height: 160px;*/
     
 }
 

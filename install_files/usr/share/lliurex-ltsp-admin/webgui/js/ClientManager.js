@@ -3,6 +3,12 @@ var clientData=new Object();
 var classroomsession="gnome"
 var classroomtype="thin"
 var section="ClientManager"
+var selected_swap="selected"
+var selected_swap_256=""
+var selected_swap_512=""
+var selected_swap_1024=""
+
+// https://help.ubuntu.com/community/UbuntuLTSP/EnableNBDSWAP
 
 var timeout="60";
 var default_option="localboot";
@@ -21,9 +27,27 @@ if (classroomtype=="fat") {
 else{
     selected_type_fat=""; selected_type_thin="selected";}
 
-
 classroomsession=clientData.default_session
 classroomtype=clientData.default_type
+
+    
+alert(clients_use_nbd_swap + clients_amount_swap);
+selected_swap=""; selected_swap_256=""; selected_swap_512=""; selected_swap_1024="";
+
+if (clients_use_nbd_swap.toLowerCase()=="true" && clients_amount_swap=='256') selected_swap_256="selected";
+else if (clients_use_nbd_swap.toLowerCase()=="true" && clients_amount_swap=='512') selected_swap_512="selected";
+else if (clients_use_nbd_swap.toLowerCase()=="true" && clients_amount_swap=='1024') selected_swap_1024="selected";
+else selected_swap="selected";
+
+ItemSwap="<div class='ClassroomItem' style='float:left; clear:both;'>Enable Swap on Server:</div>\
+        <div>\
+       <select class='ClassroomItem' name='UseSwap' id='UseSwap'> \
+          <option value='not_use' "+selected_swap+">"+gettext("Do not use Remote Swap.")+"</option> \
+          <option value='256' "+selected_swap_256+">"+gettext("256Mb")+"</option> \
+          <option value='512' "+selected_swap_512+">"+gettext("512Mb")+"</option> \
+          <option value='1024' "+selected_swap_1024+">"+gettext("1Gb")+"</option> \
+        </select></div>";
+
 
 ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"</div>\
 <div class='ClassroomItem'>"+gettext("Use this classroom cliens as:")+"</div>\
@@ -37,7 +61,7 @@ ItemClass="<div class='ClassConfigTitle'>"+gettext("Classroom Configuration")+"<
        <select class='ClassroomItem' name='ClassroomSession' id='ClassroomSession'> \
           <option value='gnome' "+selected_session_gnome+">"+gettext("Classic Desktop (Gnome-Classic)")+"</option> \
           <option value='xfce'"+selected_session_xfce+">"+gettext("Alternate Lite Desktop (XFCE)")+"</option> \
-        </select></div>\
+        </select></div>"+ItemSwap+"\
     <div class='ClassroomItem' style='float:left; clear:both;'>Default boot:</div>\
         <div>\
        <select class='ClassroomItem' name='PXEBoot' id='PXEBoot'> \
@@ -146,7 +170,7 @@ function DisplayClients(){
     
     ButtonNew="<div class='Button NewClient' onclick='addNewClient()'>"+gettext("New Client")+"</div>"
     ButtonSave="<div class='Button SaveChanges' onclick='SaveChanges()'>"+gettext("Apply Changes")+"</div>"
-    divButtons="<div class='ButtonList'>"+ButtonNew+ButtonSave+"</div>";
+    divButtons="<div class='ButtonList' style='bottom: 20px !important; position: fixed;'>"+ButtonNew+ButtonSave+"</div>";
         
     $("#AppContainer").append(divButtons);
 }
@@ -159,6 +183,15 @@ function SaveChanges(){
     timeout=$("#timeout").val();
     default_option=$("#PXEBoot").val();
     
+    swap=$("#UseSwap").val();
+    if (swap=="not_use") {
+        nbd_swap="False";
+        nbd_swap_size=0;
+    } else {
+        nbd_swap="True";
+        nbd_swap_size=swap;
+    }
+        
     var newClientList=new Object();
     newClientList.clients=new Array();
     
@@ -196,7 +229,7 @@ function SaveChanges(){
 
           
      
-    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList))+"/"+ClassroomType+"/"+ClassroomSession+"/"+timeout+"/"+default_option;
+    location.href='ltsp://ClientSaveConfig/'+escape($.toJSON(newClientList))+"/"+ClassroomType+"/"+ClassroomSession+"/"+timeout+"/"+default_option+"/"+nbd_swap+"/"+nbd_swap_size;
 
     
     
@@ -519,11 +552,13 @@ function ExistsMac(mac){
 $(document).ready(function() {
        
     var clients=getUrlVar('clientlist'); // name
-
+    
     clientData=$.parseJSON(decodeURIComponent(clients));
 
-    classroomsession=clientData.default_session
-    classroomtype=clientData.default_type
+    classroomsession=clientData.default_session;
+    classroomtype=clientData.default_type;
+    clients_use_nbd_swap=clientData.nbd_swap;
+    clients_amount_swap=clientData.size;
         
     srv_ip=getUrlVar('srv_ip');     
     $("#bottom").append("<span>Connected to server: "+srv_ip+"</span>");

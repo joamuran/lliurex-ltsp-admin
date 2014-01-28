@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (1.0.5) precise; urgency=low
+
+  * Added use_nbdswap capabilities
+
+ -- joamuran <joamuran@gmail.com>  Tue, 28 Jan 2014 11:27:59 +0100
+
 lliurex-ltsp-admin (1.0.4) precise; urgency=high
 
   * Send xauthority and display to n4d method that displays export and import progress.
