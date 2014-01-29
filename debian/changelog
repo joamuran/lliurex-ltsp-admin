@@ -1,3 +1,9 @@
+lliurex-ltsp-admin (1.0.6) precise; urgency=low
+
+  * Fixed alert.
+
+ -- joamuran <joamuran@gmail.com>  Wed, 29 Jan 2014 08:31:04 +0100
+
 lliurex-ltsp-admin (1.0.5) precise; urgency=low
 
   * Added use_nbdswap capabilities

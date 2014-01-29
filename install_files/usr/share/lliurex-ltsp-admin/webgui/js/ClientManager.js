@@ -31,7 +31,7 @@ classroomsession=clientData.default_session
 classroomtype=clientData.default_type
 
     
-alert(clients_use_nbd_swap + clients_amount_swap);
+//alert(clients_use_nbd_swap + clients_amount_swap);
 selected_swap=""; selected_swap_256=""; selected_swap_512=""; selected_swap_1024="";
 
 if (clients_use_nbd_swap.toLowerCase()=="true" && clients_amount_swap=='256') selected_swap_256="selected";
