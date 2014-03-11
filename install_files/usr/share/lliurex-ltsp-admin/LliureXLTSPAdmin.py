@@ -89,12 +89,18 @@ class LliureXLTSPAdmin:
             self.ConnectionStatus='on'
             
             # n4d connection done in login
-            
             print (self.jsonclients)
-
             # Get Environment
             my_env=dict(os.environ)
+            print "<<<<<"+my_env['DISPLAY']
+            try:
+                print "<<<<<"+my_env['XAUTHORITY']
+            except Exception:
+                # Xauthority is not defined...
+                my_env['XAUTHORITY']="~/.Xauthority"
+            
             self.localserver.xenv_set_environment("", "ltspClientXServer", my_env['XAUTHORITY'], my_env['DISPLAY'])
+            print "444"
 
         except Exception:
             print (Exception)
